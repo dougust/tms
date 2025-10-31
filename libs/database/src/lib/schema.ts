@@ -1,12 +1,7 @@
-// Export all enums
+import { pessoasJuridicas, users } from './tenant';
+
 export * from './enums';
+export { tenant } from './core-tables';
 
-// Export core tables
-export * from './core-tables';
-
-
-// Re-export the main tables for convenience
-export { tenant, users, pessoasJuridicas } from './core-tables';
-
-// Re-export relations
-export { tenantsRelations } from './core-tables';
+export const usersTpl = users('__tenant');
+export const pessoasJuridicasTpl = pessoasJuridicas('__tenant');

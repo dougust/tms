@@ -7,7 +7,7 @@ export class UserContextMiddleware implements NestMiddleware {
   constructor(private readonly context: UserContextService) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    const businessId = process.env.BUSINESS_ID;
+    const businessId = process.env.TENANT_ID;
     this.context.run({ businessId }, next);
   }
 }

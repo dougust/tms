@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:clean": "docker compose down -v",
     "db:push": "nx push database",
     "db:seed": "nx seed database",
     "db:update": "nx run db:push && nx run db:seed"
