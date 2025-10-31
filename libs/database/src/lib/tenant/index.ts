@@ -8,6 +8,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 import { userRoleEnum } from '../enums';
+import { relations } from 'drizzle-orm';
 
 export const users = (tenantId: string) =>
   pgSchema(tenantId).table('users', {
@@ -34,11 +35,37 @@ export const pessoasJuridicas = (tenantId: string) =>
     })
       .notNull()
       .unique(),
-    accessTokenEncrypted: text('access_token_encrypted').notNull(),
-    webhookVerifyToken: varchar('webhook_verify_token', {
-      length: 255,
-    }).notNull(),
     nomeFantasia: varchar('nome_fantasia', { length: 255 }),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
   });
+
+export const funcionarios = (tenantId: string) =>
+  pgSchema(tenantId).table('funcionarios', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    // TODO: CPF Validation?
+    cpf: varchar('cpf', {
+      length: 12,
+    })
+      .notNull()
+      .unique(),
+    projetoId: uuid('projetos_id')
+      .notNull()
+      .references(() => projetos(tenantId).id, { onDelete: 'set null' }),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+  });
+
+export const projetos = (tenantId: string) =>
+  pgSchema(tenantId).table('projetos', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    nome: varchar('nome', { length: 255 }).notNull(),
+    descricao: text('descricao'),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+  });
+
+export const projetosRelations = (tenantId: string) =>
+  relations(projetos(tenantId), ({ many }) => ({
+    funcionarios: many(funcionarios(tenantId)),
+  }));

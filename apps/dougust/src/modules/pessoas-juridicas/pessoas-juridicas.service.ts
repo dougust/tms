@@ -1,11 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
-import { pessoasJuridicas } from '@dougust/database';
 import { and, eq } from 'drizzle-orm';
 import { CreatePessoaJuridicaDto } from './dto/create-pessoa-juridica.dto';
 import { UpdatePessoaJuridicaDto } from './dto/update-pessoa-juridica.dto';
 import { UserContextService } from '../../common/user-context/user-context.service';
+import { pessoasJuridicas } from '@dougust/database';
 
 @Injectable()
 export class PessoasJuridicasService {
@@ -23,8 +23,6 @@ export class PessoasJuridicasService {
       .insert(this.table)
       .values({
         cnpj: dto.cnpj,
-        accessTokenEncrypted: dto.accessTokenEncrypted,
-        webhookVerifyToken: dto.webhookVerifyToken,
         nomeFantasia: dto.nomeFantasia ?? null,
       })
       .returning();
@@ -65,8 +63,6 @@ export class PessoasJuridicasService {
       .update(this.table)
       .set({
         cnpj: dto.cnpj ?? undefined,
-        accessTokenEncrypted: dto.accessTokenEncrypted ?? undefined,
-        webhookVerifyToken: dto.webhookVerifyToken ?? undefined,
         nomeFantasia:
           dto.nomeFantasia === undefined ? undefined : dto.nomeFantasia,
         updatedAt: new Date(),
