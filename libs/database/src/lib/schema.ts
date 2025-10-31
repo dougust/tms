@@ -6,7 +6,7 @@ export * from './core-tables';
 
 
 // Re-export the main tables for convenience
-export { businesses, users, pessoasJuridicas } from './core-tables';
+export { tenant, users, pessoasJuridicas } from './core-tables';
 
 // Re-export relations
-export { businessesRelations } from './core-tables';
+export { tenantsRelations } from './core-tables';

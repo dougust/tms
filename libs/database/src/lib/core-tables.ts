@@ -10,8 +10,8 @@ import {
 import { relations } from 'drizzle-orm';
 import { subscriptionTierEnum, userRoleEnum } from './enums';
 
-// Businesses table - multi-tenant business accounts
-export const businesses = pgTable('businesses', {
+// tenant table - multi-tenant tenant accounts
+export const tenant = pgTable('tenantes', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: varchar('name', { length: 255 }).notNull(),
   description: text('description'),
@@ -35,7 +35,7 @@ export const businesses = pgTable('businesses', {
   updatedAt: timestamp('updated_at').defaultNow(),
 });
 
-// Users table - system users (business owners and agents)
+// Users table - system users (tenant owners and agents)
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: varchar('email', { length: 255 }).unique().notNull(),
@@ -48,9 +48,9 @@ export const users = pgTable('users', {
   isActive: boolean('is_active').default(true),
   emailVerifiedAt: timestamp('email_verified_at'),
   lastLoginAt: timestamp('last_login_at'),
-  businessId: uuid('business_id')
+  tenantId: uuid('tenant_id')
     .notNull()
-    .references(() => businesses.id, { onDelete: 'cascade' }),
+    .references(() => tenant.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });
@@ -59,9 +59,9 @@ export const pessoasJuridicas = pgTable(
   'pessoas_juridicas',
   {
     id: uuid('id').primaryKey().defaultRandom(),
-    businessId: uuid('business_id')
+    tenantId: uuid('tenant_id')
       .notNull()
-      .references(() => businesses.id, { onDelete: 'cascade' }),
+      .references(() => tenant.id, { onDelete: 'cascade' }),
     cnpj: varchar('cnpj', {
       length: 50,
     }).notNull(),
@@ -74,13 +74,13 @@ export const pessoasJuridicas = pgTable(
     updatedAt: timestamp('updated_at').defaultNow(),
   },
   (table) => ({
-    // Unique constraint on phone_number + business_id
-    cnpjUnicoPorEmpresa: unique().on(table.cnpj, table.businessId),
+    // Unique constraint on phone_number + tenant_id
+    cnpjUnicoPorEmpresa: unique().on(table.cnpj, table.tenantId),
   })
 );
 
 // Relations
-export const businessesRelations = relations(businesses, ({ many }) => ({
+export const tenantsRelations = relations(tenant, ({ many }) => ({
   users: many(users),
   pessoasJuridicas: many(pessoasJuridicas),
 }));
