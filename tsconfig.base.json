@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@dougust/database": ["libs/database/src/index.ts"]
+      "@dougust/database": ["libs/database/src/index.ts"],
+      "@dougust/clients": ["libs/autogen-clients/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

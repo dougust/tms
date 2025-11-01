@@ -1,0 +1,20 @@
+{
+  "name": "autogen-clients",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/autogen-clients/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/autogen-clients",
+        "tsConfig": "libs/autogen-clients/tsconfig.lib.json",
+        "packageJson": "libs/autogen-clients/package.json",
+        "main": "libs/autogen-clients/src/index.ts",
+        "assets": ["libs/autogen-clients/*.md"]
+      }
+    }
+  }
+}
