@@ -1,0 +1,229 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/pessoas-juridicas": {
+      "post": {
+        "operationId": "PessoasJuridicasController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePessoaJuridicaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "PessoasJuridicas"
+        ]
+      },
+      "get": {
+        "operationId": "PessoasJuridicasController_findAll",
+        "parameters": [
+          {
+            "name": "businessId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "PessoasJuridicas"
+        ]
+      }
+    },
+    "/pessoas-juridicas/{id}": {
+      "get": {
+        "operationId": "PessoasJuridicasController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "businessId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "PessoasJuridicas"
+        ]
+      },
+      "patch": {
+        "operationId": "PessoasJuridicasController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePessoaJuridicaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "PessoasJuridicas"
+        ]
+      },
+      "delete": {
+        "operationId": "PessoasJuridicasController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "businessId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "PessoasJuridicas"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "HealthController_getHealth",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Dougust API",
+    "description": "Auto-generated OpenAPI specification",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CreatePessoaJuridicaDto": {
+        "type": "object",
+        "properties": {
+          "businessId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cnpj": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "accessTokenEncrypted": {
+            "type": "string"
+          },
+          "webhookVerifyToken": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "nomeFantasia": {
+            "type": "string",
+            "nullable": true,
+            "minLength": 0,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "businessId",
+          "cnpj",
+          "accessTokenEncrypted",
+          "webhookVerifyToken"
+        ]
+      },
+      "UpdatePessoaJuridicaDto": {
+        "type": "object",
+        "properties": {
+          "businessId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cnpj": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "accessTokenEncrypted": {
+            "type": "string"
+          },
+          "webhookVerifyToken": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "nomeFantasia": {
+            "type": "string",
+            "nullable": true,
+            "minLength": 0,
+            "maxLength": 255
+          }
+        }
+      }
+    }
+  }
+}
