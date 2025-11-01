@@ -8,18 +8,41 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "webpack-cli build && node ../../dist/apps/dougust/main.js --gen-openapi",
-        "args": ["--node-env=production"],
+        "command": "webpack-cli build",
+        "args": [
+          "--node-env=production"
+        ],
         "cwd": "apps/dougust"
       },
       "configurations": {
         "development": {
-          "args": ["--node-env=development"]
+          "args": [
+            "--node-env=development"
+          ]
         }
       }
     },
+    "generate-open-api-specs": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node ../../dist/apps/dougust/main.js --gen-openapi",
+        "cwd": "apps/dougust"
+      },
+      "dependsOn": [
+        "build"
+      ]
+    },
+    "generate-clients": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "kubb generate",
+        "cwd": "apps/dougust"
+      },
+      "dependsOn": [
+        "generate-open-api-specs"
+      ]
+    },
     "prune-lockfile": {
-      "dependsOn": ["build"],
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
       "outputs": [
@@ -31,23 +54,32 @@
       }
     },
     "copy-workspace-modules": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": true,
-      "outputs": ["{workspaceRoot}/dist/apps/dougust/workspace_modules"],
+      "outputs": [
+        "{workspaceRoot}/dist/apps/dougust/workspace_modules"
+      ],
       "executor": "@nx/js:copy-workspace-modules",
       "options": {
         "buildTarget": "build"
       }
     },
     "prune": {
-      "dependsOn": ["prune-lockfile", "copy-workspace-modules"],
+      "dependsOn": [
+        "prune-lockfile",
+        "copy-workspace-modules"
+      ],
       "executor": "nx:noop"
     },
     "serve": {
       "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "buildTarget": "dougust:build",
         "runBuildTargetDependencies": false
