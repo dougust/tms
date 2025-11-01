@@ -1,1 +1,1 @@
-export * from './lib/autogen-clients';
+export * from './autogen';

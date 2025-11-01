@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "businessId": { "type": "string", "format": "uuid" },
+    "cnpj": { "type": "string", "minLength": 1, "maxLength": 50 },
+    "accessTokenEncrypted": { "type": "string" },
+    "webhookVerifyToken": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "nomeFantasia": {
+      "type": "string",
+      "nullable": true,
+      "minLength": 0,
+      "maxLength": 255
+    }
+  },
+  "x-readme-ref-name": "UpdatePessoaJuridicaDto"
+}
