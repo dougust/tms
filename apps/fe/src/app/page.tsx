@@ -1,4 +1,9 @@
+'use client';
+
+import { useHealthControllerGetHealth } from '@dougust/clients';
+
 export default function Index() {
+  const health = useHealthControllerGetHealth();
   /*
    * Replace the elements below with your own.
    *
@@ -10,6 +15,8 @@ export default function Index() {
         <div className="container">
           <div id="welcome">
             <h1>
+              {health.status}
+              {JSON.stringify(health.data)}
               <span> Hello there, </span>
               Welcome fe 👋
             </h1>

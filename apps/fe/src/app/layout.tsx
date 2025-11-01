@@ -1,4 +1,5 @@
 import './global.css';
+import { Providers } from '../lib/components';
 
 export const metadata = {
   title: 'Welcome to fe',
@@ -12,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
