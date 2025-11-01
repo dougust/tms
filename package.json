@@ -23,7 +23,10 @@
     "class-validator": "^0.14.2",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
+    "next": "~15.2.4",
     "pg": "^8.16.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0"
   },
@@ -42,6 +45,7 @@
     "@nx/jest": "22.0.2",
     "@nx/js": "22.0.2",
     "@nx/nest": "22.0.2",
+    "@nx/next": "^22.0.2",
     "@nx/node": "22.0.2",
     "@nx/web": "22.0.2",
     "@nx/webpack": "22.0.2",
