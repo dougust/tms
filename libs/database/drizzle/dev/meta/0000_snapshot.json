@@ -1,41 +1,146 @@
 {
-  "id": "dba256da-2149-4812-81de-585f1737b70a",
+  "id": "f10e9928-97cb-4463-ac04-9dd96c815666",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "c0dab083-af8d-46ab-6f31-3849aa772d68.pessoas_juridicas": {
-      "name": "pessoas_juridicas",
+    "c0dab083-af8d-46ab-6f31-3849aa772d68.atividades_obras": {
+      "name": "atividades_obras",
       "schema": "c0dab083-af8d-46ab-6f31-3849aa772d68",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
+        "atividadeobra_id": {
+          "name": "atividadeobra_id",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
-        "cnpj": {
-          "name": "cnpj",
-          "type": "varchar(50)",
+        "projeto_id": {
+          "name": "projeto_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "access_token_encrypted": {
-          "name": "access_token_encrypted",
-          "type": "text",
+        "data": {
+          "name": "data",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         },
-        "webhook_verify_token": {
-          "name": "webhook_verify_token",
+        "observacoes": {
+          "name": "observacoes",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "uq_atividades_obras_projeto_data": {
+          "name": "uq_atividades_obras_projeto_data",
+          "columns": [
+            {
+              "expression": "projeto_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "data",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "atividades_obras_projeto_id_projetos_projeto_id_fk": {
+          "name": "atividades_obras_projeto_id_projetos_projeto_id_fk",
+          "tableFrom": "atividades_obras",
+          "tableTo": "projetos",
+          "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+          "columnsFrom": [
+            "projeto_id"
+          ],
+          "columnsTo": [
+            "projeto_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "c0dab083-af8d-46ab-6f31-3849aa772d68.cadastros": {
+      "name": "cadastros",
+      "schema": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+      "columns": {
+        "cadastro_id": {
+          "name": "cadastro_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nome_razao": {
+          "name": "nome_razao",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "social_fantasia": {
+          "name": "social_fantasia",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cpf_cnpj": {
+          "name": "cpf_cnpj",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nascimento_registro": {
+          "name": "nascimento_registro",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "nome_fantasia": {
-          "name": "nome_fantasia",
-          "type": "varchar(255)",
+        "rg": {
+          "name": "rg",
+          "type": "varchar(11)",
           "primaryKey": false,
           "notNull": false
         },
@@ -58,11 +163,249 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "pessoas_juridicas_cnpj_unique": {
-          "name": "pessoas_juridicas_cnpj_unique",
+        "cadastros_cpf_cnpj_unique": {
+          "name": "cadastros_cpf_cnpj_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "cnpj"
+            "cpf_cnpj"
+          ]
+        },
+        "cadastros_email_unique": {
+          "name": "cadastros_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "c0dab083-af8d-46ab-6f31-3849aa772d68.frequencia": {
+      "name": "frequencia",
+      "schema": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+      "columns": {
+        "frequencia_id": {
+          "name": "frequencia_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "atividadeobra_id": {
+          "name": "atividadeobra_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "funcionario_id": {
+          "name": "funcionario_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "presente": {
+          "name": "presente",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "observacoes": {
+          "name": "observacoes",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "uq_frequencia_atividade_funcionario": {
+          "name": "uq_frequencia_atividade_funcionario",
+          "columns": [
+            {
+              "expression": "atividadeobra_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "funcionario_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "frequencia_atividadeobra_id_atividades_obras_atividadeobra_id_fk": {
+          "name": "frequencia_atividadeobra_id_atividades_obras_atividadeobra_id_fk",
+          "tableFrom": "frequencia",
+          "tableTo": "atividades_obras",
+          "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+          "columnsFrom": [
+            "atividadeobra_id"
+          ],
+          "columnsTo": [
+            "atividadeobra_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "frequencia_funcionario_id_funcionarios_funcionario_id_fk": {
+          "name": "frequencia_funcionario_id_funcionarios_funcionario_id_fk",
+          "tableFrom": "frequencia",
+          "tableTo": "funcionarios",
+          "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+          "columnsFrom": [
+            "funcionario_id"
+          ],
+          "columnsTo": [
+            "funcionario_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_frequencia": {
+          "name": "pk_frequencia",
+          "columns": [
+            "frequencia_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "c0dab083-af8d-46ab-6f31-3849aa772d68.funcionarios": {
+      "name": "funcionarios",
+      "schema": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+      "columns": {
+        "funcionario_id": {
+          "name": "funcionario_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "projetos": {
+          "name": "projetos",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "funcionarios_funcionario_id_cadastros_cadastro_id_fk": {
+          "name": "funcionarios_funcionario_id_cadastros_cadastro_id_fk",
+          "tableFrom": "funcionarios",
+          "tableTo": "cadastros",
+          "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+          "columnsFrom": [
+            "funcionario_id"
+          ],
+          "columnsTo": [
+            "cadastro_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "c0dab083-af8d-46ab-6f31-3849aa772d68.projetos": {
+      "name": "projetos",
+      "schema": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+      "columns": {
+        "projeto_id": {
+          "name": "projeto_id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nome": {
+          "name": "nome",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "projetos_projeto_id_cadastros_cadastro_id_fk": {
+          "name": "projetos_projeto_id_cadastros_cadastro_id_fk",
+          "tableFrom": "projetos",
+          "tableTo": "cadastros",
+          "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+          "columnsFrom": [
+            "projeto_id"
+          ],
+          "columnsTo": [
+            "cadastro_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "projetos_nome_unique": {
+          "name": "projetos_nome_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "nome"
           ]
         }
       },
@@ -223,41 +566,11 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "email": {
-          "name": "email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "password_hash": {
           "name": "password_hash",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
-        },
-        "first_name": {
-          "name": "first_name",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "last_name": {
-          "name": "last_name",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "phone": {
-          "name": "phone",
-          "type": "varchar(20)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "avatar_url": {
-          "name": "avatar_url",
-          "type": "varchar(500)",
-          "primaryKey": false,
-          "notNull": false
         },
         "role": {
           "name": "role",
@@ -274,8 +587,20 @@
           "notNull": false,
           "default": true
         },
-        "email_verified_at": {
-          "name": "email_verified_at",
+        "user_name": {
+          "name": "user_name",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login": {
+          "name": "login",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "login_verified_at": {
+          "name": "login_verified_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -302,17 +627,24 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "users_email_unique": {
-          "name": "users_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
+      "foreignKeys": {
+        "users_login_cadastros_email_fk": {
+          "name": "users_login_cadastros_email_fk",
+          "tableFrom": "users",
+          "tableTo": "cadastros",
+          "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
+          "columnsFrom": [
+            "login"
+          ],
+          "columnsTo": [
             "email"
-          ]
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

@@ -1,6 +1,8 @@
 import {
+  atividadesObras,
+  cadastros,
+  frequencia,
   funcionarios,
-  pessoasJuridicas,
   projetos,
   projetosRelations,
   users,
@@ -12,7 +14,9 @@ export { tenant } from './core-tables';
 
 export const schema = pgSchema(process.env.TENANT_ID);
 export const usersTpl = users(process.env.TENANT_ID);
-export const pessoasJuridicasTpl = pessoasJuridicas(process.env.TENANT_ID);
-export const functionariosTpl = funcionarios(process.env.TENANT_ID);
+export const cadastrosTpl = cadastros(process.env.TENANT_ID);
 export const projetosTpl = projetos(process.env.TENANT_ID);
+export const funcionariosTpl = funcionarios(process.env.TENANT_ID);
+export const atividadesObrasTpl = atividadesObras(process.env.TENANT_ID);
+export const frequenciaTpl = frequencia(process.env.TENANT_ID);
 export const projetosRelationsTpl = projetosRelations(process.env.TENANT_ID);
