@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import {
   Avatar,
   AvatarFallback,
@@ -12,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@dougust/ui';
 import { Bell, Settings, LogOut, User } from 'lucide-react';
+import { logout } from '../lib/auth';
 
 // Fake user data
 const fakeUser = {
@@ -22,6 +24,13 @@ const fakeUser = {
 };
 
 export function Navbar() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center gap-4 px-4">
@@ -62,7 +71,7 @@ export function Navbar() {
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>
