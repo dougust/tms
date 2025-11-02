@@ -1,31 +1,24 @@
 'use client';
 
-import { useHealthControllerGetHealth } from '@dougust/clients';
-import { Button } from '@dougust/ui';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { isAuthenticated } from '../lib/auth';
 
 export default function Index() {
-  const health = useHealthControllerGetHealth();
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./index.tailwind file.
-   */
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      router.push('/dashboard');
+    } else {
+      router.push('/login');
+    }
+  }, [router]);
+
   return (
-    <div>
-      <div className="wrapper">
-        <div className="container">
-          <div id="welcome">
-            <h1>
-              {health.status}
-              {JSON.stringify(health.data)}
-              <span> Hello there, </span>
-              Welcome fe 👋
-            </h1>
-          </div>
-
-          <Button>Button</Button>
-
-        </div>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <p className="text-muted-foreground">Redirecting...</p>
       </div>
     </div>
   );
