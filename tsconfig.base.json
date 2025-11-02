@@ -16,7 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@dougust/database": ["libs/database/src/index.ts"],
-      "@dougust/clients": ["libs/autogen-clients/src/index.ts"]
+      "@dougust/clients": ["libs/autogen-clients/src/index.ts"],
+      "@dougust/ui": ["libs/ui/src/index.ts"],
+      "@dougust/ui/*": ["libs/ui/src/*"],
+      "@dougust/fe/*": ["apps/fe/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
