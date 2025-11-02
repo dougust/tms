@@ -5,6 +5,7 @@ import {
   funcionarios,
   projetos,
   projetosRelations,
+  cadastrosRelations,
   users,
 } from './tenant';
 import { pgSchema } from 'drizzle-orm/pg-core';
@@ -19,4 +20,6 @@ export const projetosTpl = projetos(process.env.TENANT_ID);
 export const funcionariosTpl = funcionarios(process.env.TENANT_ID);
 export const atividadesObrasTpl = atividadesObras(process.env.TENANT_ID);
 export const frequenciaTpl = frequencia(process.env.TENANT_ID);
+
 export const projetosRelationsTpl = projetosRelations(process.env.TENANT_ID);
+export const cadastrosRelationsTpl = cadastrosRelations(process.env.TENANT_ID);

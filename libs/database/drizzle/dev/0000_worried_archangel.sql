@@ -3,8 +3,8 @@ CREATE SCHEMA "c0dab083-af8d-46ab-6f31-3849aa772d68";
 CREATE TYPE "public"."subscription_tier" AS ENUM('trial', 'starter', 'professional', 'enterprise');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('owner', 'admin', 'agent', 'viewer');--> statement-breakpoint
 CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."atividades_obras" (
-	"atividadeobra_id" integer PRIMARY KEY NOT NULL,
-	"projeto_id" integer NOT NULL,
+	"atividade_obra_id" uuid PRIMARY KEY NOT NULL,
+	"projeto_id" uuid NOT NULL,
 	"data" timestamp NOT NULL,
 	"observacoes" varchar(100),
 	"created_at" timestamp DEFAULT now(),
@@ -12,7 +12,7 @@ CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."atividades_obras" (
 );
 --> statement-breakpoint
 CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."cadastros" (
-	"cadastro_id" integer PRIMARY KEY NOT NULL,
+	"cadastro_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"nome_razao" varchar(100),
 	"social_fantasia" varchar(100),
 	"cpf_cnpj" varchar(15) NOT NULL,
@@ -27,9 +27,9 @@ CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."cadastros" (
 );
 --> statement-breakpoint
 CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."frequencia" (
-	"frequencia_id" integer NOT NULL,
-	"atividadeobra_id" integer NOT NULL,
-	"funcionario_id" integer NOT NULL,
+	"frequencia_id" uuid DEFAULT gen_random_uuid(),
+	"atividade_obra_id" uuid NOT NULL,
+	"funcionario_id" uuid NOT NULL,
 	"presente" boolean NOT NULL,
 	"observacoes" varchar(100),
 	"created_at" timestamp DEFAULT now(),
@@ -38,14 +38,14 @@ CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."frequencia" (
 );
 --> statement-breakpoint
 CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."funcionarios" (
-	"funcionario_id" integer PRIMARY KEY NOT NULL,
+	"funcionario_id" uuid PRIMARY KEY NOT NULL,
 	"projetos" jsonb,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."projetos" (
-	"projeto_id" integer PRIMARY KEY NOT NULL,
+	"projeto_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"nome" varchar(100),
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
@@ -89,10 +89,9 @@ CREATE TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."users" (
 );
 --> statement-breakpoint
 ALTER TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."atividades_obras" ADD CONSTRAINT "atividades_obras_projeto_id_projetos_projeto_id_fk" FOREIGN KEY ("projeto_id") REFERENCES "c0dab083-af8d-46ab-6f31-3849aa772d68"."projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."frequencia" ADD CONSTRAINT "frequencia_atividadeobra_id_atividades_obras_atividadeobra_id_fk" FOREIGN KEY ("atividadeobra_id") REFERENCES "c0dab083-af8d-46ab-6f31-3849aa772d68"."atividades_obras"("atividadeobra_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."frequencia" ADD CONSTRAINT "frequencia_atividade_obra_id_atividades_obras_atividade_obra_id_fk" FOREIGN KEY ("atividade_obra_id") REFERENCES "c0dab083-af8d-46ab-6f31-3849aa772d68"."atividades_obras"("atividade_obra_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."frequencia" ADD CONSTRAINT "frequencia_funcionario_id_funcionarios_funcionario_id_fk" FOREIGN KEY ("funcionario_id") REFERENCES "c0dab083-af8d-46ab-6f31-3849aa772d68"."funcionarios"("funcionario_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."funcionarios" ADD CONSTRAINT "funcionarios_funcionario_id_cadastros_cadastro_id_fk" FOREIGN KEY ("funcionario_id") REFERENCES "c0dab083-af8d-46ab-6f31-3849aa772d68"."cadastros"("cadastro_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."projetos" ADD CONSTRAINT "projetos_projeto_id_cadastros_cadastro_id_fk" FOREIGN KEY ("projeto_id") REFERENCES "c0dab083-af8d-46ab-6f31-3849aa772d68"."cadastros"("cadastro_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "c0dab083-af8d-46ab-6f31-3849aa772d68"."users" ADD CONSTRAINT "users_login_cadastros_email_fk" FOREIGN KEY ("login") REFERENCES "c0dab083-af8d-46ab-6f31-3849aa772d68"."cadastros"("email") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 CREATE UNIQUE INDEX "uq_atividades_obras_projeto_data" ON "c0dab083-af8d-46ab-6f31-3849aa772d68"."atividades_obras" USING btree ("projeto_id","data");--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_frequencia_atividade_funcionario" ON "c0dab083-af8d-46ab-6f31-3849aa772d68"."frequencia" USING btree ("atividadeobra_id","funcionario_id");
+CREATE UNIQUE INDEX "uq_frequencia_atividade_funcionario" ON "c0dab083-af8d-46ab-6f31-3849aa772d68"."frequencia" USING btree ("atividade_obra_id","funcionario_id");

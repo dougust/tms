@@ -1,5 +1,5 @@
 {
-  "id": "f10e9928-97cb-4463-ac04-9dd96c815666",
+  "id": "38d9add0-b497-47a9-b1f8-6160c3770b2b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -8,15 +8,15 @@
       "name": "atividades_obras",
       "schema": "c0dab083-af8d-46ab-6f31-3849aa772d68",
       "columns": {
-        "atividadeobra_id": {
-          "name": "atividadeobra_id",
-          "type": "integer",
+        "atividade_obra_id": {
+          "name": "atividade_obra_id",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
         "projeto_id": {
           "name": "projeto_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -98,9 +98,10 @@
       "columns": {
         "cadastro_id": {
           "name": "cadastro_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "nome_razao": {
           "name": "nome_razao",
@@ -188,19 +189,20 @@
       "columns": {
         "frequencia_id": {
           "name": "frequencia_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "gen_random_uuid()"
         },
-        "atividadeobra_id": {
-          "name": "atividadeobra_id",
-          "type": "integer",
+        "atividade_obra_id": {
+          "name": "atividade_obra_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "funcionario_id": {
           "name": "funcionario_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -236,7 +238,7 @@
           "name": "uq_frequencia_atividade_funcionario",
           "columns": [
             {
-              "expression": "atividadeobra_id",
+              "expression": "atividade_obra_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -255,16 +257,16 @@
         }
       },
       "foreignKeys": {
-        "frequencia_atividadeobra_id_atividades_obras_atividadeobra_id_fk": {
-          "name": "frequencia_atividadeobra_id_atividades_obras_atividadeobra_id_fk",
+        "frequencia_atividade_obra_id_atividades_obras_atividade_obra_id_fk": {
+          "name": "frequencia_atividade_obra_id_atividades_obras_atividade_obra_id_fk",
           "tableFrom": "frequencia",
           "tableTo": "atividades_obras",
           "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
           "columnsFrom": [
-            "atividadeobra_id"
+            "atividade_obra_id"
           ],
           "columnsTo": [
-            "atividadeobra_id"
+            "atividade_obra_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -303,7 +305,7 @@
       "columns": {
         "funcionario_id": {
           "name": "funcionario_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -357,9 +359,10 @@
       "columns": {
         "projeto_id": {
           "name": "projeto_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "nome": {
           "name": "nome",
@@ -383,22 +386,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "projetos_projeto_id_cadastros_cadastro_id_fk": {
-          "name": "projetos_projeto_id_cadastros_cadastro_id_fk",
-          "tableFrom": "projetos",
-          "tableTo": "cadastros",
-          "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
-          "columnsFrom": [
-            "projeto_id"
-          ],
-          "columnsTo": [
-            "cadastro_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "projetos_nome_unique": {
