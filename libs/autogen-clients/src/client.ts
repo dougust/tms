@@ -3,12 +3,20 @@ import fetch, {
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
 
-fetch.setConfig({
-  baseURL: 'http://localhost:3000',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+export interface IClientConfig {
+  baseURL: string;
+}
+
+export const setClientConfig = (config: IClientConfig) => {
+  const { baseURL } = config;
+
+  fetch.setConfig({
+    baseURL,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
 
 export type { RequestConfig, ResponseErrorConfig };
 
