@@ -32,7 +32,7 @@ export const users = (tenantId: string) =>
 
 export const cadastros = (tenantId: string) =>
   pgSchema(tenantId).table('cadastros', {
-    cadastroId: integer('cadastro_id').primaryKey().notNull(),
+    id: uuid('cadastro_id').primaryKey().defaultRandom(),
     nomeRazao: varchar('nome_razao', { length: 100 }),
     socialFantasia: varchar('social_fantasia', { length: 100 }),
     cpfCnpj: varchar('cpf_cnpj', { length: 15 }).unique().notNull(),
@@ -46,10 +46,7 @@ export const cadastros = (tenantId: string) =>
 
 export const projetos = (tenantId: string) =>
   pgSchema(tenantId).table('projetos', {
-    projetoId: integer('projeto_id')
-      .primaryKey()
-      .notNull()
-      .references(() => cadastros(tenantId).cadastroId),
+    id: uuid('projeto_id').primaryKey().defaultRandom(),
     nome: varchar('nome', { length: 100 }).unique(),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
@@ -57,10 +54,10 @@ export const projetos = (tenantId: string) =>
 
 export const funcionarios = (tenantId: string) =>
   pgSchema(tenantId).table('funcionarios', {
-    funcionarioId: integer('funcionario_id')
+    // TOOD: remove id
+    id: uuid('funcionario_id')
       .primaryKey()
-      .notNull()
-      .references(() => cadastros(tenantId).cadastroId),
+      .references(() => cadastros(tenantId).id),
     projetos: jsonb('projetos'),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
@@ -70,10 +67,10 @@ export const atividadesObras = (tenantId: string) =>
   pgSchema(tenantId).table(
     'atividades_obras',
     {
-      atividadeObraId: integer('atividadeobra_id').primaryKey().notNull(),
-      projetoId: integer('projeto_id')
+      id: uuid('atividade_obra_id').primaryKey().notNull(),
+      projetoId: uuid('projeto_id')
         .notNull()
-        .references(() => projetos(tenantId).projetoId),
+        .references(() => projetos(tenantId).id),
       data: timestamp('data').notNull(),
       observacoes: varchar('observacoes', { length: 100 }),
       createdAt: timestamp('created_at').defaultNow(),
@@ -81,22 +78,22 @@ export const atividadesObras = (tenantId: string) =>
     },
     (t) => ({
       uqAtividadeObraProjetoData: uniqueIndex(
-        'uq_atividades_obras_projeto_data',
+        'uq_atividades_obras_projeto_data'
       ).on(t.projetoId, t.data),
-    }),
+    })
   );
 
 export const frequencia = (tenantId: string) =>
   pgSchema(tenantId).table(
     'frequencia',
     {
-      frequenciaId: integer('frequencia_id').notNull(),
-      atividadeObraId: integer('atividadeobra_id')
+      id: uuid('frequencia_id').defaultRandom(),
+      atividadeObraId: uuid('atividade_obra_id')
         .notNull()
-        .references(() => atividadesObras(tenantId).atividadeObraId),
-      funcionarioId: integer('funcionario_id')
+        .references(() => atividadesObras(tenantId).id),
+      funcionarioId: uuid('funcionario_id')
         .notNull()
-        .references(() => funcionarios(tenantId).funcionarioId),
+        .references(() => funcionarios(tenantId).id),
       presente: boolean('presente').notNull(),
       observacoes: varchar('observacoes', { length: 100 }),
       createdAt: timestamp('created_at').defaultNow(),
@@ -104,16 +101,21 @@ export const frequencia = (tenantId: string) =>
     },
     (t) => ({
       pkFrequencia: primaryKey({
-        columns: [t.frequenciaId],
+        columns: [t.id],
         name: 'pk_frequencia',
       }),
       uqAtividadeFuncionario: uniqueIndex(
-        'uq_frequencia_atividade_funcionario',
+        'uq_frequencia_atividade_funcionario'
       ).on(t.atividadeObraId, t.funcionarioId),
-    }),
+    })
   );
 
 export const projetosRelations = (tenantId: string) =>
   relations(projetos(tenantId), ({ many }) => ({
     funcionarios: many(funcionarios(tenantId)),
+  }));
+
+export const cadastrosRelations = (tenantId: string) =>
+  relations(cadastros(tenantId), ({ one }) => ({
+    funcionario: one(funcionarios(tenantId)),
   }));

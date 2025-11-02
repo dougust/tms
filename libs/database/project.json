@@ -31,7 +31,7 @@
     },
     "generate": {
       "executor": "nx:run-commands",
-      "defaultConfiguration": "core",
+      "defaultConfiguration": "dev",
       "options": {
         "command": "npx drizzle-kit generate",
         "cwd": "libs/database"
@@ -49,7 +49,7 @@
     },
     "migrate": {
       "executor": "nx:run-commands",
-      "defaultConfiguration": "core",
+      "defaultConfiguration": "dev",
       "options": {
         "command": "npx drizzle-kit migrate",
         "cwd": "libs/database"
@@ -69,6 +69,31 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "tsx libs/database/src/seed.ts --config=drizzle-dev.config.ts"
+      }
+    },
+    "db": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "up",
+      "options": {
+        "command": "docker compose up -d"
+      },
+      "configurations": {
+        "up": {
+          "command": "docker compose up -d"
+        },
+        "down": {
+          "command": "docker compose down"
+        },
+        "clean": {
+          "command": "docker compose down -v"
+        }
+      }
+    },
+    "restore": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm run db:restore",
+        "cwd": "."
       }
     }
   }

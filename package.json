@@ -6,8 +6,10 @@
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "db:clean": "docker compose down -v",
-    "db:push": "nx push database",
+    "db:generate": "nx run database:generate:dev",
+    "db:migrate": "nx run database:migrate:dev",
     "db:seed": "nx seed database",
+    "db:restore": "npm run db:clean && npm run db:up && npm run db:migrate && npm run db:seed",
     "db:update": "nx run db:push && nx run db:seed"
   },
   "private": true,
