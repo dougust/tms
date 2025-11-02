@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "nx": {
+      "command": "npx",
+      "args": ["-y", "@nx/mcp-server"]
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": ["-y", "@shadcn/mcp-server"]
+    }
+  }
+}
