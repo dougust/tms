@@ -1,5 +1,6 @@
 import './global.css';
 import { Providers } from '../lib/components';
+import '@dougust/ui/styles/globals.css';
 
 export const metadata = {
   title: 'Welcome to fe',
