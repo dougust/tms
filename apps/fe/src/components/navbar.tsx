@@ -1,16 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
   Avatar,
   AvatarFallback,
   AvatarImage,
@@ -34,7 +25,6 @@ const fakeUser = {
 
 export function Navbar() {
   const router = useRouter();
-  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -81,7 +71,7 @@ export function Navbar() {
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setShowLogoutDialog(true)}>
+              <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>
@@ -89,23 +79,6 @@ export function Navbar() {
           </DropdownMenu>
         </div>
       </div>
-
-      <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
-            <AlertDialogDescription>
-              You will need to log in again to access your dashboard.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleLogout}>
-              Log out
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </header>
   );
 }
