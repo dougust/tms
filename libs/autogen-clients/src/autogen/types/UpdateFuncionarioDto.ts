@@ -11,7 +11,7 @@ export type UpdateFuncionarioDto = {
    */
   nome?: string;
   /**
-   * @minLength 1
+   * @minLength 0
    * @maxLength 100
    * @type string | undefined
    */
@@ -27,7 +27,7 @@ export type UpdateFuncionarioDto = {
    */
   nascimento?: string;
   /**
-   * @minLength 1
+   * @minLength 0
    * @maxLength 20
    * @type string | undefined
    */
@@ -37,7 +37,7 @@ export type UpdateFuncionarioDto = {
    */
   email?: string;
   /**
-   * @minLength 1
+   * @minLength 0
    * @maxLength 11
    * @type string | undefined
    */

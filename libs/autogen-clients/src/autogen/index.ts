@@ -80,3 +80,37 @@ export {
   healthControllerGetHealthQueryOptions,
   useHealthControllerGetHealth,
 } from './hooks/Health/useHealthControllerGetHealth.ts';
+export { cadastroDtoSchema } from './zod/cadastroDtoSchema.ts';
+export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';
+export { funcionarioDtoSchema } from './zod/funcionarioDtoSchema.ts';
+export {
+  funcionariosControllerCreate201Schema,
+  funcionariosControllerCreateMutationRequestSchema,
+  funcionariosControllerCreateMutationResponseSchema,
+} from './zod/funcionariosControllerCreateSchema.ts';
+export {
+  funcionariosControllerFindAll200Schema,
+  funcionariosControllerFindAllQueryResponseSchema,
+} from './zod/funcionariosControllerFindAllSchema.ts';
+export {
+  funcionariosControllerFindOnePathParamsSchema,
+  funcionariosControllerFindOne200Schema,
+  funcionariosControllerFindOneQueryResponseSchema,
+} from './zod/funcionariosControllerFindOneSchema.ts';
+export {
+  funcionariosControllerRemovePathParamsSchema,
+  funcionariosControllerRemove200Schema,
+  funcionariosControllerRemoveMutationResponseSchema,
+} from './zod/funcionariosControllerRemoveSchema.ts';
+export {
+  funcionariosControllerUpdatePathParamsSchema,
+  funcionariosControllerUpdate200Schema,
+  funcionariosControllerUpdateMutationRequestSchema,
+  funcionariosControllerUpdateMutationResponseSchema,
+} from './zod/funcionariosControllerUpdateSchema.ts';
+export { getFuncionarioResponseDtoSchema } from './zod/getFuncionarioResponseDtoSchema.ts';
+export {
+  healthControllerGetHealth200Schema,
+  healthControllerGetHealthQueryResponseSchema,
+} from './zod/healthControllerGetHealthSchema.ts';
+export { updateFuncionarioDtoSchema } from './zod/updateFuncionarioDtoSchema.ts';
