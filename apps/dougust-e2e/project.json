@@ -11,7 +11,7 @@
         "jestConfig": "apps/dougust-e2e/jest.config.ts",
         "passWithNoTests": true
       },
-      "dependsOn": ["dougust:build", "dougust:serve"]
+      "dependsOn": ["database:seed", "dougust:build", "dougust:serve"]
     }
   }
 }

@@ -32,16 +32,6 @@
         "build"
       ]
     },
-    "generate-clients": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "kubb generate",
-        "cwd": "apps/dougust"
-      },
-      "dependsOn": [
-        "generate-open-api-specs"
-      ]
-    },
     "prune-lockfile": {
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
@@ -72,6 +62,17 @@
         "copy-workspace-modules"
       ],
       "executor": "nx:noop"
+    },
+    "dev": {
+      "continuous": true,
+      "executor": "@nx/js:node",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "buildTarget": "dougust:build:development",
+        "runBuildTargetDependencies": false
+      }
     },
     "serve": {
       "continuous": true,
