@@ -27,27 +27,21 @@
             }
           }
         },
-        "tags": ["Funcionarios"]
+        "tags": [
+          "Funcionarios"
+        ]
       },
       "get": {
         "operationId": "FuncionariosController_findAll",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetFuncionarioResponseDto"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
-        "tags": ["Funcionarios"]
+        "tags": [
+          "Funcionarios"
+        ]
       }
     },
     "/funcionarios/{id}": {
@@ -75,7 +69,9 @@
             }
           }
         },
-        "tags": ["Funcionarios"]
+        "tags": [
+          "Funcionarios"
+        ]
       },
       "patch": {
         "operationId": "FuncionariosController_update",
@@ -111,7 +107,9 @@
             }
           }
         },
-        "tags": ["Funcionarios"]
+        "tags": [
+          "Funcionarios"
+        ]
       },
       "delete": {
         "operationId": "FuncionariosController_remove",
@@ -130,7 +128,9 @@
             "description": ""
           }
         },
-        "tags": ["Funcionarios"]
+        "tags": [
+          "Funcionarios"
+        ]
       }
     },
     "/health": {
@@ -142,7 +142,9 @@
             "description": ""
           }
         },
-        "tags": ["Health"]
+        "tags": [
+          "Health"
+        ]
       }
     }
   },
@@ -192,7 +194,10 @@
             "maxLength": 11
           }
         },
-        "required": ["cpf", "email"]
+        "required": [
+          "cpf",
+          "email"
+        ]
       },
       "FuncionarioDto": {
         "type": "object",
@@ -200,36 +205,16 @@
           "id": {
             "type": "string"
           },
-          "createdAt": {
-            "format": "date-time",
+          "nome": {
             "type": "string"
           },
-          "updatedAt": {
-            "format": "date-time",
+          "social": {
             "type": "string"
           },
-          "projetos": {
-            "type": "object"
-          }
-        },
-        "required": ["id", "createdAt", "updatedAt", "projetos"]
-      },
-      "CadastroDto": {
-        "type": "object",
-        "properties": {
-          "id": {
+          "cpf": {
             "type": "string"
           },
-          "nomeRazao": {
-            "type": "string"
-          },
-          "socialFantasia": {
-            "type": "string"
-          },
-          "cpfCnpj": {
-            "type": "string"
-          },
-          "nascimentoRegistro": {
+          "nascimento": {
             "type": "string"
           },
           "phone": {
@@ -252,10 +237,10 @@
         },
         "required": [
           "id",
-          "nomeRazao",
-          "socialFantasia",
-          "cpfCnpj",
-          "nascimentoRegistro",
+          "nome",
+          "social",
+          "cpf",
+          "nascimento",
           "phone",
           "email",
           "rg",
@@ -268,12 +253,11 @@
         "properties": {
           "funcionario": {
             "$ref": "#/components/schemas/FuncionarioDto"
-          },
-          "cadastro": {
-            "$ref": "#/components/schemas/CadastroDto"
           }
         },
-        "required": ["funcionario", "cadastro"]
+        "required": [
+          "funcionario"
+        ]
       },
       "UpdateFuncionarioDto": {
         "type": "object",

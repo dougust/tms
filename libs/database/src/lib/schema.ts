@@ -1,12 +1,8 @@
-import { cadastros, projetos, funcionarios, diariaObras, frequencia, projetosRelations, users } from './tenant';
+import {  users } from './tenant';
 
 export * from './enums';
 export { tenant } from './core-tables';
 
+
+//TODO: we will get this sorted later, the idea is to have migrations with __tenant where we replace this placeholder with an actual schema
 export const usersTpl = users('__tenant');
-export const cadastrosTpl = cadastros('__tenant');
-export const projetosTpl = projetos('__tenant');
-export const funcionariosTpl = funcionarios('__tenant');
-export const atividadesObrasTpl = diariaObras('__tenant');
-export const frequenciaTpl = frequencia('__tenant');
-export const projetosRelationsTpl = projetosRelations('__tenant');

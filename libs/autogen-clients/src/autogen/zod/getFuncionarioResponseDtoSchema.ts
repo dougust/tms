@@ -3,15 +3,11 @@
  * Do not edit manually.
  */
 
-import { cadastroDtoSchema } from './cadastroDtoSchema.ts';
 import { funcionarioDtoSchema } from './funcionarioDtoSchema.ts';
 import { z } from 'zod/v4';
 
 export const getFuncionarioResponseDtoSchema = z.object({
   get funcionario() {
     return funcionarioDtoSchema;
-  },
-  get cadastro() {
-    return cadastroDtoSchema;
   },
 });

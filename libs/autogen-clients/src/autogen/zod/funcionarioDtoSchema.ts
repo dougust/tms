@@ -7,7 +7,13 @@ import { z } from 'zod/v4';
 
 export const funcionarioDtoSchema = z.object({
   id: z.string(),
+  nome: z.string(),
+  social: z.string(),
+  cpf: z.string(),
+  nascimento: z.string(),
+  phone: z.string(),
+  email: z.string(),
+  rg: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  projetos: z.object({}),
 });

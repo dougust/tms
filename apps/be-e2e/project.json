@@ -11,7 +11,7 @@
         "jestConfig": "apps/be-e2e/jest.config.ts",
         "passWithNoTests": true
       },
-      "dependsOn": ["database:seed", "dougust:build", "dougust:serve"]
+      "dependsOn": ["database:seed", "be:build", "be:serve"]
     }
   }
 }

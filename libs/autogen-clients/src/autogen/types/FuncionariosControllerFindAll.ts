@@ -3,9 +3,7 @@
  * Do not edit manually.
  */
 
-import type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto.ts';
-
-export type FuncionariosControllerFindAll200 = GetFuncionarioResponseDto[];
+export type FuncionariosControllerFindAll200 = any;
 
 export type FuncionariosControllerFindAllQueryResponse =
   FuncionariosControllerFindAll200;

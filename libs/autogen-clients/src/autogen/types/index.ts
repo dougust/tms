@@ -1,4 +1,3 @@
-export type { CadastroDto } from './CadastroDto.ts';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
 export type { FuncionarioDto } from './FuncionarioDto.ts';
 export type {
