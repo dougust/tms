@@ -19,8 +19,12 @@ export default defineConfig(() => {
       pluginTs(),
       pluginReactQuery({
         suspense: false,
+        group: {
+          type: 'tag',
+          name: ({group}) => `${group}`
+        },
         client: {
-          importPath: '../../client',
+          importPath: '../../../client',
         },
       }),
     ],
