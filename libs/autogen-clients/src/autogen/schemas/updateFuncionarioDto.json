@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "nome": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "social": { "type": "string", "minLength": 0, "maxLength": 100 },
+    "cpf": { "type": "string", "minLength": 1, "maxLength": 15 },
+    "nascimento": { "type": "string" },
+    "phone": { "type": "string", "minLength": 0, "maxLength": 20 },
+    "email": { "type": "string", "format": "email" },
+    "rg": { "type": "string", "minLength": 0, "maxLength": 11 }
+  },
+  "x-readme-ref-name": "UpdateFuncionarioDto"
+}

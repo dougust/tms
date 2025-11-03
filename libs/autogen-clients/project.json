@@ -7,14 +7,28 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/autogen-clients",
         "tsConfig": "libs/autogen-clients/tsconfig.lib.json",
         "packageJson": "libs/autogen-clients/package.json",
         "main": "libs/autogen-clients/src/index.ts",
-        "assets": ["libs/autogen-clients/*.md"]
+        "assets": [
+          "libs/autogen-clients/*.md"
+        ]
       }
+    },
+    "regenerate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "kubb generate",
+        "cwd": "apps/dougust"
+      },
+      "dependsOn": [
+        "dougust:generate-open-api-specs"
+      ]
     }
   }
 }

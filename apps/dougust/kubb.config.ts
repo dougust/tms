@@ -2,6 +2,7 @@ import { defineConfig } from '@kubb/core';
 import { pluginOas } from '@kubb/plugin-oas';
 import { pluginReactQuery } from '@kubb/plugin-react-query';
 import { pluginTs } from '@kubb/plugin-ts';
+import { pluginZod } from '@kubb/plugin-zod';
 
 export default defineConfig(() => {
   return {
@@ -17,10 +18,15 @@ export default defineConfig(() => {
     plugins: [
       pluginOas({ validate: false }),
       pluginTs(),
+      pluginZod(),
       pluginReactQuery({
         suspense: false,
+        group: {
+          type: 'tag',
+          name: ({ group }) => `${group}`,
+        },
         client: {
-          importPath: '../../client',
+          importPath: '../../../client',
         },
       }),
     ],

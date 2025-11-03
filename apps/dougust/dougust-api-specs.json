@@ -1,54 +1,62 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/pessoas-juridicas": {
+    "/funcionarios": {
       "post": {
-        "operationId": "PessoasJuridicasController_create",
+        "operationId": "FuncionariosController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePessoaJuridicaDto"
+                "$ref": "#/components/schemas/CreateFuncionarioDto"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "PessoasJuridicas"
+          "Funcionarios"
         ]
       },
       "get": {
-        "operationId": "PessoasJuridicasController_findAll",
-        "parameters": [
-          {
-            "name": "businessId",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "FuncionariosController_findAll",
+        "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetFuncionarioResponseDto"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
-          "PessoasJuridicas"
+          "Funcionarios"
         ]
       }
     },
-    "/pessoas-juridicas/{id}": {
+    "/funcionarios/{id}": {
       "get": {
-        "operationId": "PessoasJuridicasController_findOne",
+        "operationId": "FuncionariosController_findOne",
         "parameters": [
           {
             "name": "id",
@@ -57,27 +65,26 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "businessId",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFuncionarioResponseDto"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "PessoasJuridicas"
+          "Funcionarios"
         ]
       },
       "patch": {
-        "operationId": "PessoasJuridicasController_update",
+        "operationId": "FuncionariosController_update",
         "parameters": [
           {
             "name": "id",
@@ -93,35 +100,34 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePessoaJuridicaDto"
+                "$ref": "#/components/schemas/UpdateFuncionarioDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "tags": [
-          "PessoasJuridicas"
+          "Funcionarios"
         ]
       },
       "delete": {
-        "operationId": "PessoasJuridicasController_remove",
+        "operationId": "FuncionariosController_remove",
         "parameters": [
           {
             "name": "id",
             "required": true,
             "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "businessId",
-            "required": true,
-            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -133,7 +139,7 @@
           }
         },
         "tags": [
-          "PessoasJuridicas"
+          "Funcionarios"
         ]
       }
     },
@@ -162,65 +168,170 @@
   "servers": [],
   "components": {
     "schemas": {
-      "CreatePessoaJuridicaDto": {
+      "CreateFuncionarioDto": {
         "type": "object",
         "properties": {
-          "businessId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "cnpj": {
+          "nome": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 50
+            "maxLength": 100
           },
-          "accessTokenEncrypted": {
+          "social": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 100
+          },
+          "cpf": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 15
+          },
+          "nascimento": {
             "type": "string"
           },
-          "webhookVerifyToken": {
+          "phone": {
             "type": "string",
-            "minLength": 1,
-            "maxLength": 255
-          },
-          "nomeFantasia": {
-            "type": "string",
-            "nullable": true,
             "minLength": 0,
-            "maxLength": 255
+            "maxLength": 20
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "rg": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 11
           }
         },
         "required": [
-          "businessId",
-          "cnpj",
-          "accessTokenEncrypted",
-          "webhookVerifyToken"
+          "cpf",
+          "email"
         ]
       },
-      "UpdatePessoaJuridicaDto": {
+      "FuncionarioDto": {
         "type": "object",
         "properties": {
-          "businessId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "cnpj": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 50
-          },
-          "accessTokenEncrypted": {
+          "id": {
             "type": "string"
           },
-          "webhookVerifyToken": {
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "projetos": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "projetos"
+        ]
+      },
+      "CadastroDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "nomeRazao": {
+            "type": "string"
+          },
+          "socialFantasia": {
+            "type": "string"
+          },
+          "cpfCnpj": {
+            "type": "string"
+          },
+          "nascimentoRegistro": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "rg": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nomeRazao",
+          "socialFantasia",
+          "cpfCnpj",
+          "nascimentoRegistro",
+          "phone",
+          "email",
+          "rg",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "GetFuncionarioResponseDto": {
+        "type": "object",
+        "properties": {
+          "funcionario": {
+            "$ref": "#/components/schemas/FuncionarioDto"
+          },
+          "cadastro": {
+            "$ref": "#/components/schemas/CadastroDto"
+          }
+        },
+        "required": [
+          "funcionario",
+          "cadastro"
+        ]
+      },
+      "UpdateFuncionarioDto": {
+        "type": "object",
+        "properties": {
+          "nome": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 255
+            "maxLength": 100
           },
-          "nomeFantasia": {
+          "social": {
             "type": "string",
-            "nullable": true,
             "minLength": 0,
-            "maxLength": 255
+            "maxLength": 100
+          },
+          "cpf": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 15
+          },
+          "nascimento": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 20
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "rg": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 11
           }
         }
       }
