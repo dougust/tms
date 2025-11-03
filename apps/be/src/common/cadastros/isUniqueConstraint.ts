@@ -45,7 +45,9 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
 // Derive a union type of selector functions exported from the schema
 // A selector is any exported function that takes a tenantId (string) and returns a table-like object
 type SchemaSelectors = {
-  [K in keyof typeof schema]: (typeof schema)[K] extends (tenantId: string) => any
+  [K in keyof typeof schema]: (typeof schema)[K] extends (
+    tenantId: string
+  ) => any
     ? (typeof schema)[K]
     : never;
 }[keyof typeof schema];
