@@ -1,7 +1,7 @@
 {
-  "name": "dougust",
+  "name": "be",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/dougust/src",
+  "sourceRoot": "apps/be/src",
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -9,68 +9,53 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "webpack-cli build",
-        "args": [
-          "--node-env=production"
-        ],
-        "cwd": "apps/dougust"
+        "args": ["--node-env=production"],
+        "cwd": "apps/be"
       },
       "configurations": {
         "development": {
-          "args": [
-            "--node-env=development"
-          ]
+          "args": ["--node-env=development"]
         }
       }
     },
     "generate-open-api-specs": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node ../../dist/apps/dougust/main.js --gen-openapi",
-        "cwd": "apps/dougust"
+        "command": "node ../../dist/apps/be/main.js --gen-openapi",
+        "cwd": "apps/be"
       },
-      "dependsOn": [
-        "build"
-      ]
+      "dependsOn": ["build"]
     },
     "prune-lockfile": {
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
       "outputs": [
-        "{workspaceRoot}/dist/apps/dougust/package.json",
-        "{workspaceRoot}/dist/apps/dougust/package-lock.json"
+        "{workspaceRoot}/dist/apps/be/package.json",
+        "{workspaceRoot}/dist/apps/be/package-lock.json"
       ],
       "options": {
         "buildTarget": "build"
       }
     },
     "copy-workspace-modules": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "cache": true,
-      "outputs": [
-        "{workspaceRoot}/dist/apps/dougust/workspace_modules"
-      ],
+      "outputs": ["{workspaceRoot}/dist/apps/be/workspace_modules"],
       "executor": "@nx/js:copy-workspace-modules",
       "options": {
         "buildTarget": "build"
       }
     },
     "prune": {
-      "dependsOn": [
-        "prune-lockfile",
-        "copy-workspace-modules"
-      ],
+      "dependsOn": ["prune-lockfile", "copy-workspace-modules"],
       "executor": "nx:noop"
     },
     "dev": {
       "continuous": true,
       "executor": "@nx/js:node",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "buildTarget": "dougust:build:development",
+        "buildTarget": "be:build:development",
         "runBuildTargetDependencies": false
       }
     },
@@ -78,19 +63,17 @@
       "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "buildTarget": "dougust:build",
+        "buildTarget": "be:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "dougust:build:development"
+          "buildTarget": "be:build:development"
         },
         "production": {
-          "buildTarget": "dougust:build:production"
+          "buildTarget": "be:build:production"
         }
       }
     },
