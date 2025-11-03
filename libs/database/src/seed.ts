@@ -1,23 +1,28 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { reset, seed } from 'drizzle-seed';
-import * as schema from './lib/schema.dev';
+import {
+  funcionariosTpl,
+  cadastrosTpl,
+  cadastrosRelationsTpl,
+} from './lib/schema.dev';
+
+const schema = { funcionariosTpl, cadastrosTpl, cadastrosRelationsTpl };
 
 async function main() {
   const db = drizzle(process.env['DATABASE_URL']);
 
-  await reset(db, {
-    funcionarios: schema.funcionariosTpl,
-    cadastros: schema.cadastrosTpl,
-  });
-  await seed(db, {
-    funcionarios: schema.funcionariosTpl,
-    cadastros: schema.cadastrosTpl,
-    cadastrosRelations: schema.cadastrosRelationsTpl,
-  }).refine((f) => ({
-    funcionarios: {
-      count: 2,
+  await reset(db, schema);
+  await seed(db, schema).refine((f) => ({
+    cadastrosTpl: {
+      count: 20,
       with: {
-        cadastros: 1,
+        funcionariosTpl: 1
+      },
+      columns: {
+        nomeRazao: f.fullName(),
+        socialFantasia: f.valuesFromArray({ values: [''] }),
+        cpfCnpj: f.phoneNumber({ template: '###.###.###-##' }),
+        phone: f.phoneNumber({ template: '(47) ##### ####' }),
       },
     },
   }));
