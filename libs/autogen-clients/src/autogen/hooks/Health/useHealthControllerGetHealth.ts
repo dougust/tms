@@ -3,9 +3,9 @@
  * Do not edit manually.
  */
 
-import fetch from '../../client';
-import type { RequestConfig, ResponseErrorConfig } from '../../client';
-import type { HealthControllerGetHealthQueryResponse } from '../types/HealthControllerGetHealth.ts';
+import fetch from '../../../client';
+import type { RequestConfig, ResponseErrorConfig } from '../../../client';
+import type { HealthControllerGetHealthQueryResponse } from '../../types/HealthControllerGetHealth.ts';
 import type {
   QueryKey,
   QueryClient,

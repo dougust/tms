@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "properties": {
+    "funcionario": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "createdAt": { "format": "date-time", "type": "string" },
+        "updatedAt": { "format": "date-time", "type": "string" },
+        "projetos": { "type": "object" }
+      },
+      "required": ["id", "createdAt", "updatedAt", "projetos"],
+      "x-readme-ref-name": "FuncionarioDto"
+    },
+    "cadastro": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nomeRazao": { "type": "string" },
+        "socialFantasia": { "type": "string" },
+        "cpfCnpj": { "type": "string" },
+        "nascimentoRegistro": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "rg": { "type": "string" },
+        "createdAt": { "format": "date-time", "type": "string" },
+        "updatedAt": { "format": "date-time", "type": "string" }
+      },
+      "required": [
+        "id",
+        "nomeRazao",
+        "socialFantasia",
+        "cpfCnpj",
+        "nascimentoRegistro",
+        "phone",
+        "email",
+        "rg",
+        "createdAt",
+        "updatedAt"
+      ],
+      "x-readme-ref-name": "CadastroDto"
+    }
+  },
+  "required": ["funcionario", "cadastro"],
+  "x-readme-ref-name": "GetFuncionarioResponseDto"
+}
