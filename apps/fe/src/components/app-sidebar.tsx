@@ -45,9 +45,9 @@ const mainNavItems = [
 
 const dataNavItems = [
   {
-    title: 'Users',
+    title: 'Funcionarios',
     icon: Users,
-    href: '/dashboard/users',
+    href: '/dashboard/funcionarios',
   },
   {
     title: 'Documents',
