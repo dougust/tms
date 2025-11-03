@@ -1,9 +1,4 @@
-import {
-  ConflictException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
 import { cadastros, funcionarios } from '@dougust/database';
@@ -89,32 +84,6 @@ export class FuncionariosService {
   }
 
   async update(id: string, dto: UpdateFuncionarioDto) {
-    // Check if CPF is being updated and already exists for another cadastro
-    if (dto.cpf !== undefined) {
-      const existingByCpf = await this.db
-        .select()
-        .from(this.cadastrosTable)
-        .where(eq(this.cadastrosTable.cpfCnpj, dto.cpf))
-        .limit(1);
-
-      if (existingByCpf.length > 0 && existingByCpf[0].id !== id) {
-        throw new ConflictException('CPF ja cadastrado');
-      }
-    }
-
-    // Check if email is being updated and already exists for another cadastro
-    if (dto.email !== undefined) {
-      const existingByEmail = await this.db
-        .select()
-        .from(this.cadastrosTable)
-        .where(eq(this.cadastrosTable.email, dto.email))
-        .limit(1);
-
-      if (existingByEmail.length > 0 && existingByEmail[0].id !== id) {
-        throw new ConflictException('Email already exists');
-      }
-    }
-
     return await this.db.transaction(async (tx) => {
       // Update cadastro if any cadastro fields are provided
       if (
@@ -175,23 +144,5 @@ export class FuncionariosService {
     const [deleted] = await this.db.delete(this.table).where(where).returning();
     if (!deleted) throw new NotFoundException('Funcionario not found');
     return deleted;
-  }
-
-  async findByCpf(cpf: string) {
-    const where = eq(this.cadastrosTable.cpfCnpj, cpf);
-
-    const result = await this.db
-      .select({
-        funcionario: this.table,
-        cadastro: this.cadastrosTable,
-      })
-      .from(this.table)
-      .leftJoin(this.cadastrosTable, eq(this.table.id, this.cadastrosTable.id))
-      .where(where)
-      .limit(1);
-
-    const entity = result[0];
-    if (!entity) throw new NotFoundException('Funcionario not found');
-    return entity;
   }
 }
