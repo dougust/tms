@@ -7,3 +7,5 @@ export * from './separator';
 export * from './sheet';
 export * from './skeleton';
 export * from './tooltip';
+export * from './table';
+export * from './data-table';
