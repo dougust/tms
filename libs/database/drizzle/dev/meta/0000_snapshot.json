@@ -1,5 +1,5 @@
 {
-  "id": "38d9add0-b497-47a9-b1f8-6160c3770b2b",
+  "id": "8004c1c8-b886-4230-a590-2ef8e3eb3b1a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -11,7 +11,7 @@
         "atividade_obra_id": {
           "name": "atividade_obra_id",
           "type": "uuid",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "projeto_id": {
@@ -71,8 +71,8 @@
         }
       },
       "foreignKeys": {
-        "atividades_obras_projeto_id_projetos_projeto_id_fk": {
-          "name": "atividades_obras_projeto_id_projetos_projeto_id_fk",
+        "fk_atividades_obras_projeto": {
+          "name": "fk_atividades_obras_projeto",
           "tableFrom": "atividades_obras",
           "tableTo": "projetos",
           "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
@@ -86,7 +86,14 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "pk_atividade_obra": {
+          "name": "pk_atividade_obra",
+          "columns": [
+            "atividade_obra_id"
+          ]
+        }
+      },
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
@@ -99,8 +106,8 @@
         "cadastro_id": {
           "name": "cadastro_id",
           "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
+          "primaryKey": false,
+          "notNull": false,
           "default": "gen_random_uuid()"
         },
         "nome_razao": {
@@ -162,7 +169,14 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "pk_cadastros": {
+          "name": "pk_cadastros",
+          "columns": [
+            "cadastro_id"
+          ]
+        }
+      },
       "uniqueConstraints": {
         "cadastros_cpf_cnpj_unique": {
           "name": "cadastros_cpf_cnpj_unique",
@@ -257,8 +271,8 @@
         }
       },
       "foreignKeys": {
-        "frequencia_atividade_obra_id_atividades_obras_atividade_obra_id_fk": {
-          "name": "frequencia_atividade_obra_id_atividades_obras_atividade_obra_id_fk",
+        "fk_atividades_obras": {
+          "name": "fk_atividades_obras",
           "tableFrom": "frequencia",
           "tableTo": "atividades_obras",
           "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
@@ -271,8 +285,8 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "frequencia_funcionario_id_funcionarios_funcionario_id_fk": {
-          "name": "frequencia_funcionario_id_funcionarios_funcionario_id_fk",
+        "fk_frequencia_funcionario": {
+          "name": "fk_frequencia_funcionario",
           "tableFrom": "frequencia",
           "tableTo": "funcionarios",
           "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
@@ -306,7 +320,7 @@
         "funcionario_id": {
           "name": "funcionario_id",
           "type": "uuid",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "projetos": {
@@ -332,8 +346,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "funcionarios_funcionario_id_cadastros_cadastro_id_fk": {
-          "name": "funcionarios_funcionario_id_cadastros_cadastro_id_fk",
+        "fk_funcionario_cadastro": {
+          "name": "fk_funcionario_cadastro",
           "tableFrom": "funcionarios",
           "tableTo": "cadastros",
           "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
@@ -348,7 +362,15 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "funcionarios_funcionario_id_unique": {
+          "name": "funcionarios_funcionario_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "funcionario_id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -360,8 +382,8 @@
         "projeto_id": {
           "name": "projeto_id",
           "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
+          "primaryKey": false,
+          "notNull": false,
           "default": "gen_random_uuid()"
         },
         "nome": {
@@ -387,7 +409,14 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "pk_projetos": {
+          "name": "pk_projetos",
+          "columns": [
+            "projeto_id"
+          ]
+        }
+      },
       "uniqueConstraints": {
         "projetos_nome_unique": {
           "name": "projetos_nome_unique",
@@ -550,8 +579,8 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
+          "primaryKey": false,
+          "notNull": false,
           "default": "gen_random_uuid()"
         },
         "password_hash": {
@@ -616,8 +645,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "users_login_cadastros_email_fk": {
-          "name": "users_login_cadastros_email_fk",
+        "fk_user_login": {
+          "name": "fk_user_login",
           "tableFrom": "users",
           "tableTo": "cadastros",
           "schemaTo": "c0dab083-af8d-46ab-6f31-3849aa772d68",
@@ -631,7 +660,14 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "pk_users": {
+          "name": "pk_users",
+          "columns": [
+            "id"
+          ]
+        }
+      },
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
