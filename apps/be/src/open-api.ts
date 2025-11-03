@@ -14,7 +14,7 @@ export const generateOpenApiSpecs = async <T>(
   const document = SwaggerModule.createDocument(app, config);
   const outPath = join(
     __dirname,
-    '../../../apps/dougust/dougust-api-specs.json'
+    '../../../apps/be/open-api-specs.json'
   );
   await writeFile(outPath, JSON.stringify(document, null, 2), 'utf8');
   await app.close();

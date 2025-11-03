@@ -1,4 +1,3 @@
-export { cadastroDtoSchema } from './cadastroDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
 export { funcionarioDtoSchema } from './funcionarioDtoSchema.ts';
 export {

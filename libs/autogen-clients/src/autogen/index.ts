@@ -4,7 +4,6 @@ export type { FuncionariosControllerFindOneQueryKey } from './hooks/Funcionarios
 export type { FuncionariosControllerRemoveMutationKey } from './hooks/Funcionarios/useFuncionariosControllerRemove.ts';
 export type { FuncionariosControllerUpdateMutationKey } from './hooks/Funcionarios/useFuncionariosControllerUpdate.ts';
 export type { HealthControllerGetHealthQueryKey } from './hooks/Health/useHealthControllerGetHealth.ts';
-export type { CadastroDto } from './types/CadastroDto.ts';
 export type { CreateFuncionarioDto } from './types/CreateFuncionarioDto.ts';
 export type { FuncionarioDto } from './types/FuncionarioDto.ts';
 export type {
@@ -80,7 +79,6 @@ export {
   healthControllerGetHealthQueryOptions,
   useHealthControllerGetHealth,
 } from './hooks/Health/useHealthControllerGetHealth.ts';
-export { cadastroDtoSchema } from './zod/cadastroDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';
 export { funcionarioDtoSchema } from './zod/funcionarioDtoSchema.ts';
 export {

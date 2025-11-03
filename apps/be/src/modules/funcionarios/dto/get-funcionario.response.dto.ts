@@ -1,39 +1,25 @@
-import { ICadastro, IFuncionario } from '@dougust/database';
+import { IFuncionario } from '@dougust/database';
 import { IsString } from 'class-validator';
 
 export class GetFuncionarioResponseDto {
   funcionario: FuncionarioDto;
-  cadastro: CadastroDto;
 }
 
-class FuncionarioDto implements IFuncionario {
+export class FuncionarioDto implements IFuncionario {
   @IsString()
   id: string;
 
   @IsString()
-  createdAt: Date;
+  nome: string;
 
   @IsString()
-  updatedAt: Date;
-
-  projetos: unknown;
-}
-
-class CadastroDto implements ICadastro {
-  @IsString()
-  id: string;
+  social: string;
 
   @IsString()
-  nomeRazao: string;
+  cpf: string;
 
   @IsString()
-  socialFantasia: string;
-
-  @IsString()
-  cpfCnpj: string;
-
-  @IsString()
-  nascimentoRegistro: string;
+  nascimento: string;
 
   @IsString()
   phone: string;

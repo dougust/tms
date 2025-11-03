@@ -10,7 +10,10 @@ import {
 import { FuncionariosService } from './funcionarios.service';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
-import { GetFuncionarioResponseDto } from './dto/get-funcionario.response.dto';
+import {
+  FuncionarioDto,
+  GetFuncionarioResponseDto,
+} from './dto/get-funcionario.response.dto';
 import { CreateFuncionarioResultDto } from './dto/create-funcionario.result.dto';
 
 @Controller('funcionarios')
@@ -25,7 +28,7 @@ export class FuncionariosController {
   }
 
   @Get()
-  findAll(): Promise<GetFuncionarioResponseDto[]> {
+  findAll(): Promise<FuncionarioDto[]> {
     return this.service.findAll();
   }
 

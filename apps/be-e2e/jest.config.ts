@@ -14,5 +14,5 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/dougust-e2e',
+  coverageDirectory: '../../coverage/be-e2e',
 };

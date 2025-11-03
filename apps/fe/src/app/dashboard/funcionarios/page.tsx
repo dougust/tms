@@ -93,7 +93,7 @@ export default function FuncionariosPage() {
           <DataTable
             columns={columns}
             data={data}
-            onRemoveClick={(row) => removeEmployee(row.funcionario.id)}
+            onRemoveClick={(row) => removeEmployee(row.id)}
           />
         )}
       </div>

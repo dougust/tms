@@ -3,7 +3,6 @@
  * Do not edit manually.
  */
 
-import type { CadastroDto } from './CadastroDto.ts';
 import type { FuncionarioDto } from './FuncionarioDto.ts';
 
 export type GetFuncionarioResponseDto = {
@@ -11,8 +10,4 @@ export type GetFuncionarioResponseDto = {
    * @type object
    */
   funcionario: FuncionarioDto;
-  /**
-   * @type object
-   */
-  cadastro: CadastroDto;
 };

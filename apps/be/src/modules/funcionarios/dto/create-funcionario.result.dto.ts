@@ -1,5 +1,5 @@
-import { ICadastro, IFuncionario } from '@dougust/database';
+import { IFuncionario } from '@dougust/database';
 
-export interface CreateFuncionarioResultDto extends IFuncionario {
-  cadastro: ICadastro;
+export interface CreateFuncionarioResultDto {
+  funcionario: IFuncionario;
 }

@@ -8,7 +8,7 @@ export default defineConfig(() => {
   return {
     root: '.',
     input: {
-      path: './dougust-api-specs.json',
+      path: './open-api-specs.json',
     },
     output: {
       path: '../../libs/autogen-clients/src/autogen',

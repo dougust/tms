@@ -24,10 +24,10 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "kubb generate",
-        "cwd": "apps/dougust"
+        "cwd": "apps/be"
       },
       "dependsOn": [
-        "dougust:generate-open-api-specs"
+        "be:generate-open-api-specs"
       ]
     }
   }

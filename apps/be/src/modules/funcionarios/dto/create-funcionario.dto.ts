@@ -6,10 +6,9 @@ import {
   Length,
 } from 'class-validator';
 import { IsUnique } from '../../../common/cadastros/isUniqueConstraint';
-import { cadastros } from '@dougust/database';
+import { funcionarios } from '@dougust/database';
 
 export class CreateFuncionarioDto {
-  // Cadastro fields
   @IsOptional()
   @IsString()
   @Length(1, 100)
@@ -21,7 +20,7 @@ export class CreateFuncionarioDto {
   social?: string;
 
   @IsString()
-  @IsUnique(cadastros, 'cpfCnpj', { message: 'CPF ja cadastrado' })
+  @IsUnique(funcionarios, 'cpf', { message: 'CPF ja cadastrado' })
   @Length(1, 15)
   cpf!: string;
 
@@ -35,7 +34,7 @@ export class CreateFuncionarioDto {
   phone?: string;
 
   @IsEmail()
-  @IsUnique(cadastros, 'email', { message: 'Email ja cadastrado' })
+  @IsUnique(funcionarios, 'email', { message: 'Email ja cadastrado' })
   email!: string;
 
   @IsOptional()

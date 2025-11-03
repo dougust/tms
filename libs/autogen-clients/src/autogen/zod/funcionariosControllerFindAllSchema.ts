@@ -3,12 +3,11 @@
  * Do not edit manually.
  */
 
-import { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema.ts';
+import { funcionarioDtoSchema } from './funcionarioDtoSchema.ts';
 import { z } from 'zod/v4';
 
-export const funcionariosControllerFindAll200Schema = z.array(
-  getFuncionarioResponseDtoSchema
-);
+export const funcionariosControllerFindAll200Schema =
+  z.array(funcionarioDtoSchema);
 
 export const funcionariosControllerFindAllQueryResponseSchema =
   funcionariosControllerFindAll200Schema;

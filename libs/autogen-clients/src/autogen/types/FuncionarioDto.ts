@@ -9,6 +9,34 @@ export type FuncionarioDto = {
    */
   id: string;
   /**
+   * @type string
+   */
+  nome: string;
+  /**
+   * @type string
+   */
+  social: string;
+  /**
+   * @type string
+   */
+  cpf: string;
+  /**
+   * @type string
+   */
+  nascimento: string;
+  /**
+   * @type string
+   */
+  phone: string;
+  /**
+   * @type string
+   */
+  email: string;
+  /**
+   * @type string
+   */
+  rg: string;
+  /**
    * @type string, date-time
    */
   createdAt: string;
@@ -16,8 +44,4 @@ export type FuncionarioDto = {
    * @type string, date-time
    */
   updatedAt: string;
-  /**
-   * @type object
-   */
-  projetos: object;
 };
