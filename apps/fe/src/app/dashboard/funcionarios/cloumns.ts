@@ -1,23 +1,23 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { GetFuncionarioResponseDto } from '@dougust/clients';
+import { FuncionarioDto } from '@dougust/clients';
 
-export const columns: ColumnDef<GetFuncionarioResponseDto>[] = [
+export const columns: ColumnDef<FuncionarioDto>[] = [
   {
-    accessorKey: 'cadastro.nomeRazao',
+    accessorKey: 'nome',
     header: 'Nome',
   },
   {
-    accessorKey: 'cadastro.cpfCnpj',
+    accessorKey: 'cpf',
     header: 'CPF',
   },
   {
-    accessorKey: 'cadastro.email',
+    accessorKey: 'email',
     header: 'Email',
   },
   {
-    accessorKey: 'cadastro.phone',
+    accessorKey: 'phone',
     header: 'Telefone',
   },
 ];

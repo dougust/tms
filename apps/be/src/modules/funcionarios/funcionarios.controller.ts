@@ -15,7 +15,6 @@ import {
   GetFuncionarioResponseDto,
 } from './dto/get-funcionario.response.dto';
 import { CreateFuncionarioResultDto } from './dto/create-funcionario.result.dto';
-import { PaginatedResponse } from '../../common/types';
 
 @Controller('funcionarios')
 export class FuncionariosController {
@@ -29,7 +28,7 @@ export class FuncionariosController {
   }
 
   @Get()
-  findAll(): Promise<PaginatedResponse<FuncionarioDto>> {
+  findAll(): Promise<FuncionarioDto[]> {
     return this.service.findAll();
   }
 

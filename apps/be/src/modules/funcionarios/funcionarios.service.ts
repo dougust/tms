@@ -39,10 +39,8 @@ export class FuncionariosService {
     });
   }
 
-  async findAll(): Promise<PaginatedResponse<IFuncionario>> {
-    const data = await this.db.select().from(this.table);
-
-    return { data, total: data.length, hasMore: false };
+  async findAll() {
+    return await this.db.select().from(this.table);
   }
 
   async findOne(id: string) {

@@ -36,7 +36,17 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FuncionarioDto"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
