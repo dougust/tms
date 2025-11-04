@@ -291,6 +291,66 @@
           "Health"
         ]
       }
+    },
+    "/diarias": {
+      "get": {
+        "operationId": "DiariasController_findInRange",
+        "parameters": [
+          {
+            "name": "from",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diarias"
+        ]
+      },
+      "patch": {
+        "operationId": "DiariasController_updateDiaria",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDiariaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Diarias"
+        ]
+      }
     }
   },
   "info": {
@@ -483,6 +543,29 @@
             "type": "string"
           }
         }
+      },
+      "UpdateDiariaDto": {
+        "type": "object",
+        "properties": {
+          "funcionarioId": {
+            "type": "string"
+          },
+          "projetoId": {
+            "type": "string"
+          },
+          "dia": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "funcionarioId",
+          "projetoId",
+          "dia",
+          "tipo"
+        ]
       }
     }
   }

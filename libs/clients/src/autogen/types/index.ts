@@ -1,5 +1,17 @@
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './CreateProjetoDto.ts';
+export type {
+  DiariasControllerFindInRangeQueryParams,
+  DiariasControllerFindInRange200,
+  DiariasControllerFindInRangeQueryResponse,
+  DiariasControllerFindInRangeQuery,
+} from './DiariasControllerFindInRange.ts';
+export type {
+  DiariasControllerUpdateDiaria200,
+  DiariasControllerUpdateDiariaMutationRequest,
+  DiariasControllerUpdateDiariaMutationResponse,
+  DiariasControllerUpdateDiariaMutation,
+} from './DiariasControllerUpdateDiaria.ts';
 export type { FuncionarioDto } from './FuncionarioDto.ts';
 export type {
   FuncionariosControllerCreate201,
@@ -67,5 +79,6 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './ProjetosControllerUpdate.ts';
+export type { UpdateDiariaDto } from './UpdateDiariaDto.ts';
 export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto.ts';
 export type { UpdateProjetoDto } from './UpdateProjetoDto.ts';

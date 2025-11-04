@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppQuery } from '@dougust/clients';
+import { useAppQuery, useDiariasControllerUpdateDiaria } from '@dougust/clients';
 import { DiariasCalendar, ListPageLayout } from '../../../components';
 import { Briefcase, ChevronLeft, ChevronRight } from 'lucide-react';
 import { IDiariaFuncionarioResultDto } from '@dougust/types';
@@ -9,6 +9,8 @@ import { Button } from '@dougust/ui';
 import { addDays, startOfWeekMonday, toISODate } from '../../../lib';
 
 export default function DiariasPage() {
+
+  const update  = useDiariasControllerUpdateDiaria();
   // Initialize to current week's Monday
   const [fromDate, setFromDate] = React.useState(() =>
     startOfWeekMonday(new Date())

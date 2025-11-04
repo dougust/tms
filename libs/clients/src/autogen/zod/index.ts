@@ -1,5 +1,15 @@
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './createProjetoDtoSchema.ts';
+export {
+  diariasControllerFindInRangeQueryParamsSchema,
+  diariasControllerFindInRange200Schema,
+  diariasControllerFindInRangeQueryResponseSchema,
+} from './diariasControllerFindInRangeSchema.ts';
+export {
+  diariasControllerUpdateDiaria200Schema,
+  diariasControllerUpdateDiariaMutationRequestSchema,
+  diariasControllerUpdateDiariaMutationResponseSchema,
+} from './diariasControllerUpdateDiariaSchema.ts';
 export { funcionarioDtoSchema } from './funcionarioDtoSchema.ts';
 export {
   funcionariosControllerCreate201Schema,
@@ -56,5 +66,6 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './projetosControllerUpdateSchema.ts';
+export { updateDiariaDtoSchema } from './updateDiariaDtoSchema.ts';
 export { updateFuncionarioDtoSchema } from './updateFuncionarioDtoSchema.ts';
 export { updateProjetoDtoSchema } from './updateProjetoDtoSchema.ts';

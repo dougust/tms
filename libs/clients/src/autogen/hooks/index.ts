@@ -1,3 +1,5 @@
+export type { DiariasControllerFindInRangeQueryKey } from './Diarias/useDiariasControllerFindInRange.ts';
+export type { DiariasControllerUpdateDiariaMutationKey } from './Diarias/useDiariasControllerUpdateDiaria.ts';
 export type { FuncionariosControllerCreateMutationKey } from './Funcionarios/useFuncionariosControllerCreate.ts';
 export type { FuncionariosControllerFindAllQueryKey } from './Funcionarios/useFuncionariosControllerFindAll.ts';
 export type { FuncionariosControllerFindOneQueryKey } from './Funcionarios/useFuncionariosControllerFindOne.ts';
@@ -9,6 +11,18 @@ export type { ProjetosControllerFindAllQueryKey } from './Projetos/useProjetosCo
 export type { ProjetosControllerFindOneQueryKey } from './Projetos/useProjetosControllerFindOne.ts';
 export type { ProjetosControllerRemoveMutationKey } from './Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './Projetos/useProjetosControllerUpdate.ts';
+export {
+  diariasControllerFindInRangeQueryKey,
+  diariasControllerFindInRange,
+  diariasControllerFindInRangeQueryOptions,
+  useDiariasControllerFindInRange,
+} from './Diarias/useDiariasControllerFindInRange.ts';
+export {
+  diariasControllerUpdateDiariaMutationKey,
+  diariasControllerUpdateDiaria,
+  diariasControllerUpdateDiariaMutationOptions,
+  useDiariasControllerUpdateDiaria,
+} from './Diarias/useDiariasControllerUpdateDiaria.ts';
 export {
   funcionariosControllerCreateMutationKey,
   funcionariosControllerCreate,
