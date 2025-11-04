@@ -1,12 +1,6 @@
 import React, { useMemo } from 'react';
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from '@dougust/ui';
+import { DataTable } from '@dougust/ui';
+import type { ColumnDef } from '@tanstack/react-table';
 
 export type CalendarRow = {
   id: string;
@@ -60,6 +54,27 @@ export const CalendarDiarias: React.FC<CalendarDiariasProps> = ({
     return list;
   }, [startIso, endIso]);
 
+  const columns: ColumnDef<CalendarRow, unknown>[] = useMemo(() => {
+    const cols: ColumnDef<CalendarRow, unknown>[] = [];
+    cols.push({
+      id: 'label',
+      header: () => <span>{firstColumnLabel}</span>,
+      cell: ({ row }) => <div className="font-medium">{row.original.label}</div>,
+    });
+    for (const date of days) {
+      cols.push({
+        id: date,
+        header: () => <span className="text-xs font-medium">{formatDay(date)}</span>,
+        cell: ({ row }) => (
+          <div className="text-center text-xs min-w-[60px]">
+            {row.original.cells[date] ?? ''}
+          </div>
+        ),
+      });
+    }
+    return cols;
+  }, [days, firstColumnLabel]);
+
   return (
     <div className="mt-4">
       {error ? (
@@ -67,54 +82,13 @@ export const CalendarDiarias: React.FC<CalendarDiariasProps> = ({
           Erro ao carregar: {String((error as any)?.message || error)}
         </div>
       ) : null}
-      <Table className="min-w-max border-collapse">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="sticky left-0 z-10 bg-white border px-2 py-1 text-left">
-              {firstColumnLabel}
-            </TableHead>
-            {days.map((date) => (
-              <TableHead
-                key={date}
-                className="border px-2 py-1 text-xs font-medium whitespace-nowrap"
-              >
-                {formatDay(date)}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading ? (
-            <TableRow>
-              <TableCell className="border px-2 py-2" colSpan={1 + days.length}>
-                Carregando...
-              </TableCell>
-            </TableRow>
-          ) : rows.length === 0 ? (
-            <TableRow>
-              <TableCell className="border px-2 py-2" colSpan={1 + days.length}>
-                Nenhum registro encontrado.
-              </TableCell>
-            </TableRow>
-          ) : (
-            rows.map((r) => (
-              <TableRow key={r.id}>
-                <TableCell className="sticky left-0 z-10 bg-white border px-2 py-1 font-medium whitespace-nowrap">
-                  {r.label}
-                </TableCell>
-                {days.map((date) => (
-                  <TableCell
-                    key={date}
-                    className="border px-2 py-1 text-center text-xs align-middle min-w-[60px]"
-                  >
-                    {r.cells[date] ?? ''}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+      {loading ? (
+        <div className="flex items-center justify-center p-12">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+      ) : (
+        <DataTable columns={columns} data={rows} />
+      )}
     </div>
   );
 };

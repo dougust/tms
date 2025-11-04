@@ -6,6 +6,7 @@ import { Briefcase, ChevronLeft, ChevronRight } from 'lucide-react';
 import { IDiariaFuncionarioResultDto } from '@dougust/types';
 import React from 'react';
 import { Button } from '@dougust/ui';
+import { DataTableDemo } from '@dougust/fe/components/example-data-table';
 
 function toISODate(d: Date) {
   const dd = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -14,7 +15,7 @@ function toISODate(d: Date) {
 
 function startOfWeekMonday(d: Date) {
   const day = d.getDay(); // 0=Sun,1=Mon,...
-  const diff = (day === 0 ? -6 : 1 - day); // move back to Monday
+  const diff = day === 0 ? -6 : 1 - day; // move back to Monday
   const monday = new Date(d);
   monday.setDate(d.getDate() + diff);
   monday.setHours(0, 0, 0, 0);
@@ -29,7 +30,9 @@ function addDays(d: Date, days: number) {
 
 export default function DiariasPage() {
   // Initialize to current week's Monday
-  const [weekStart, setWeekStart] = React.useState(() => startOfWeekMonday(new Date()));
+  const [weekStart, setWeekStart] = React.useState(() =>
+    startOfWeekMonday(new Date())
+  );
   const weekEnd = React.useMemo(() => addDays(weekStart, 6), [weekStart]);
 
   const start = toISODate(weekStart);
@@ -47,9 +50,10 @@ export default function DiariasPage() {
     return funcionarios.map((f) => {
       const cells: Record<string, React.ReactNode | undefined> = {};
       for (const d of f.diarias || []) {
-        const key = typeof d.dia === 'string'
-          ? d.dia
-          : new Date(d.dia as any).toISOString().slice(0, 10);
+        const key =
+          typeof d.dia === 'string'
+            ? d.dia
+            : new Date(d.dia as any).toISOString().slice(0, 10);
         // show tipo in the cell
         cells[key] = (d as any).tipo;
       }
@@ -104,13 +108,7 @@ export default function DiariasPage() {
         </div>
         <div className="text-sm text-muted-foreground">{weekLabel}</div>
       </div>
-      <CalendarDiarias
-        rows={rows}
-        start={start}
-        end={end}
-        loading={isLoading}
-        error={error}
-      />
+      <DataTableDemo />
     </ListPageLayout>
   );
 }
