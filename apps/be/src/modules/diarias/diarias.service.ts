@@ -8,7 +8,7 @@ import {
   IDiariaFuncionarioDto,
   IDiariaFuncionarioResultDto,
 } from '@dougust/types';
-import { UpdateDiariaDto } from '../funcionarios/dto/update-diaria.dto';
+import { CreateDiariaDto } from './dto/create-diaria.dto';
 import { FuncionariosService } from '../funcionarios/funcionarios.service';
 import { ProjetosService } from '../projetos/projetos.service';
 
@@ -29,27 +29,16 @@ export class DiariasService {
     return schema.diarias(this.userContext.businessId);
   }
 
-  get diariasToFuncionarios() {
-    return schema.diariasToFuncionarios(this.userContext.businessId);
-  }
-
   async findInRange(
     query: RangeQueryDto
   ): Promise<IDiariaFuncionarioResultDto> {
     const [funcionarios, diarias] = await Promise.all([
       this.db.select().from(this.funcionarions),
       this.db
-        .select({
-          entity: this.diarias,
-          rel: this.diariasToFuncionarios,
-        })
+        .select()
         .from(this.diarias)
         .where(
           and(gt(this.diarias.dia, query.from), lt(this.diarias.dia, query.to))
-        )
-        .leftJoin(
-          this.diariasToFuncionarios,
-          eq(this.diariasToFuncionarios.diariasId, this.diarias.id)
         ),
     ]);
 
@@ -60,17 +49,12 @@ export class DiariasService {
       }, {});
 
     for (const diaria of diarias) {
-      const funcionario = funcionarioDict[diaria.rel.funcionarioId];
+      const funcionario = funcionarioDict[diaria.funcionarioId];
 
-      if (diaria.entity.dia in funcionario.diarias) {
-        funcionario.diarias[diaria.entity.dia].push({
-          ...diaria.entity,
-          ...diaria.rel,
-        });
+      if (diaria.dia in funcionario.diarias) {
+        funcionario.diarias[diaria.dia].push(diaria);
       } else {
-        funcionario.diarias[diaria.entity.dia] = [
-          { ...diaria.entity, ...diaria.rel },
-        ];
+        funcionario.diarias[diaria.dia] = [diaria];
       }
     }
 
@@ -79,7 +63,14 @@ export class DiariasService {
     };
   }
 
-  async updateDiaria(data: UpdateDiariaDto) {
+  async getDiaria(data: CreateDiariaDto) {
+    const [funcionario, projeto] = await Promise.all([
+      this.funcionariosService.findOne(data.funcionarioId),
+      this.projetosService.findOne(data.projetoId),
+    ]);
+  }
+
+  async create(data: CreateDiariaDto) {
     const [funcionario, projeto] = await Promise.all([
       this.funcionariosService.findOne(data.funcionarioId),
       this.projetosService.findOne(data.projetoId),
@@ -93,47 +84,27 @@ export class DiariasService {
       throw new Error('Projeto not found');
     }
 
-    let [diaria] = await this.db
-      .select()
-      .from(this.diarias)
-      .where(
-        and(
-          eq(this.diarias.dia, data.dia),
-          eq(this.diarias.projetoId, data.projetoId)
-        )
-      )
-      .limit(1);
-
-    if (!diaria) {
-      const [created] = await this.db
-        .insert(this.diarias)
-        .values({
-          projetoId: data.projetoId,
-          dia: data.dia,
-        })
-        .onConflictDoNothing()
-        .returning();
-
-      diaria = created;
-    }
-
-    return this.db
-      .insert(this.diariasToFuncionarios)
+    const [created] = await this.db
+      .insert(this.diarias)
       .values({
         funcionarioId: data.funcionarioId,
-        diariasId: diaria.id,
-        tipo: data.tipo,
-      })
-      .onConflictDoUpdate({
-        target: [
-          this.diariasToFuncionarios.funcionarioId,
-          this.diariasToFuncionarios.diariasId,
-        ],
-        set: {
-          tipo: data.tipo,
-          updatedAt: new Date(),
-        },
+        projetoId: data.projetoId,
+        dia: data.dia,
       })
       .returning();
+
+    return created;
+  }
+
+  async update(id: string, data: CreateDiariaDto) {
+    const [diaria] = await this.db
+      .update(this.diarias)
+      .set({
+        projetoId: data.projetoId,
+      })
+      .where(eq(this.diarias.id, id))
+      .returning();
+
+    return diaria;
   }
 }

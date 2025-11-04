@@ -1,12 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
-import { funcionarios, IFuncionario } from '@dougust/database';
+import { funcionarios } from '@dougust/database';
 import { eq } from 'drizzle-orm';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
 import { UserContextService } from '../../common/user-context/user-context.service';
-import { PaginatedResponse } from '../../common/types';
 
 @Injectable()
 export class FuncionariosService {
@@ -20,23 +19,21 @@ export class FuncionariosService {
   }
 
   async create(dto: CreateFuncionarioDto) {
-    return await this.db.transaction(async (tx) => {
-      // Then create the funcionario linked to the cadastro
-      const [funcionario] = await tx
-        .insert(this.table)
-        .values({
-          nome: dto.nome ?? null,
-          social: dto.social ?? null,
-          cpf: dto.cpf,
-          nascimento: dto.nascimento ?? null,
-          phone: dto.phone ?? null,
-          email: dto.email,
-          rg: dto.rg ?? null,
-        })
-        .returning();
+    const [funcionario] = await this.db
+      .insert(this.table)
+      .values({
+        nome: dto.nome ?? null,
+        social: dto.social ?? null,
+        cpf: dto.cpf,
+        nascimento: dto.nascimento ?? null,
+        phone: dto.phone ?? null,
+        email: dto.email,
+        projetoId: dto.projetoId,
+        rg: dto.rg ?? null,
+      })
+      .returning();
 
-      return { funcionario };
-    });
+    return { funcionario };
   }
 
   async findAll() {

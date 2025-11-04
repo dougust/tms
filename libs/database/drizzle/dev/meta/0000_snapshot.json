@@ -1,32 +1,43 @@
 {
-  "id": "93772bfe-e991-410a-baab-8ff3d672fa1f",
+  "id": "78bbc06e-75da-4aaf-9cf0-1317b4eb8ece",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "dg_0001.rel_diarias_funcionarios": {
-      "name": "rel_diarias_funcionarios",
+    "dg_0001.cad_diarias": {
+      "name": "cad_diarias",
       "schema": "dg_0001",
       "columns": {
+        "diarias_id": {
+          "name": "diarias_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "dia": {
+          "name": "dia",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
         "funcionario_id": {
           "name": "funcionario_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "diarias_id": {
-          "name": "diarias_id",
+        "projeto_id": {
+          "name": "projeto_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "tipo": {
-          "name": "tipo",
-          "type": "tipo_diaria",
-          "typeSchema": "public",
+        "tipo_diaria_id": {
+          "name": "tipo_diaria_id",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'presente'"
+          "notNull": false
         },
         "observacoes": {
           "name": "observacoes",
@@ -51,117 +62,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "fk_diarias_funcionarios_diarias": {
-          "name": "fk_diarias_funcionarios_diarias",
-          "tableFrom": "rel_diarias_funcionarios",
-          "tableTo": "cad_diarias",
-          "schemaTo": "dg_0001",
-          "columnsFrom": [
-            "diarias_id"
-          ],
-          "columnsTo": [
-            "diarias_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "fk_diarias_funcionarios_funcionarios": {
-          "name": "fk_diarias_funcionarios_funcionarios",
-          "tableFrom": "rel_diarias_funcionarios",
-          "tableTo": "cad_funcionarios",
-          "schemaTo": "dg_0001",
-          "columnsFrom": [
-            "funcionario_id"
-          ],
-          "columnsTo": [
-            "funcionario_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "pk_diarias_funcionarios": {
-          "name": "pk_diarias_funcionarios",
-          "columns": [
-            "funcionario_id",
-            "diarias_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "dg_0001.cad_diarias": {
-      "name": "cad_diarias",
-      "schema": "dg_0001",
-      "columns": {
-        "diarias_id": {
-          "name": "diarias_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "projeto_id": {
-          "name": "projeto_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "dia": {
-          "name": "dia",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "observacoes": {
-          "name": "observacoes",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "uq_diarias_projetos_dia": {
-          "name": "uq_diarias_projetos_dia",
-          "columns": [
-            {
-              "expression": "projeto_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "dia",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
         "fk_diarias_projetos": {
           "name": "fk_diarias_projetos",
           "tableFrom": "cad_diarias",
@@ -172,6 +72,34 @@
           ],
           "columnsTo": [
             "projeto_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_diarias_funcionarios": {
+          "name": "fk_diarias_funcionarios",
+          "tableFrom": "cad_diarias",
+          "tableTo": "cad_funcionarios",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "funcionario_id"
+          ],
+          "columnsTo": [
+            "funcionario_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_diarias_tipo_diaria": {
+          "name": "fk_diarias_tipo_diaria",
+          "tableFrom": "cad_diarias",
+          "tableTo": "cad_tipo_diarias",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "tipo_diaria_id"
+          ],
+          "columnsTo": [
+            "tipos_diaria_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -335,6 +263,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "projeto_id": {
+          "name": "projeto_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -351,7 +285,22 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "fk_funcionarios_projetos": {
+          "name": "fk_funcionarios_projetos",
+          "tableFrom": "cad_funcionarios",
+          "tableTo": "cad_projetos",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "projeto_id"
+          ],
+          "columnsTo": [
+            "projeto_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {
         "pk_funcionrio": {
           "name": "pk_funcionrio",
@@ -605,6 +554,53 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "dg_0001.cad_tipo_diarias": {
+      "name": "cad_tipo_diarias",
+      "schema": "dg_0001",
+      "columns": {
+        "tipos_diaria_id": {
+          "name": "tipos_diaria_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "gen_random_uuid()"
+        },
+        "nome": {
+          "name": "nome",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "pk_tipos_diaria": {
+          "name": "pk_tipos_diaria",
+          "columns": [
+            "tipos_diaria_id"
+          ]
+        }
+      },
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},

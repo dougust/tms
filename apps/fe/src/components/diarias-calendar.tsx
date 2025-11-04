@@ -89,10 +89,9 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
             });
           };
 
-          const content = diaria?.length ? diaria[0].tipo : '';
+          const content = diaria?.length ? diaria[0].projetoId : '';
           return (
             <Button
-              variant="ghost"
               size="sm"
               className={`capitalize ${
                 diaria?.length ? '' : 'cursor-pointer hover:bg-muted/40'
