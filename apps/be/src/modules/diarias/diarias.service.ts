@@ -35,7 +35,7 @@ export class DiariasService {
       this.db.select().from(this.funcionarions),
       this.db
         .select({
-          diaria: this.diarias,
+          entity: this.diarias,
           rel: this.diariasToFuncionarios,
         })
         .from(this.diarias)
@@ -50,13 +50,23 @@ export class DiariasService {
 
     const funcionarioDict: Record<string, IDiariaFuncionarioDto> =
       funcionarios.reduce((acc, funcionario) => {
-        acc[funcionario.id] = { ...funcionario, diarias: [] };
+        acc[funcionario.id] = { ...funcionario, diarias: {} };
         return acc;
       }, {});
 
     for (const diaria of diarias) {
       const funcionario = funcionarioDict[diaria.rel.funcionarioId];
-      funcionario.diarias.push({ ...diaria.diaria, ...diaria.rel });
+
+      if (diaria.entity.dia in funcionario.diarias) {
+        funcionario.diarias[diaria.entity.dia].push({
+          ...diaria.entity,
+          ...diaria.rel,
+        });
+      } else {
+        funcionario.diarias[diaria.entity.dia] = [
+          { ...diaria.entity, ...diaria.rel },
+        ];
+      }
     }
 
     return {

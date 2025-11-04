@@ -7,7 +7,7 @@ import {
 export interface IDiariaDto extends IDiaria, IDiariaFuncionarioRel {}
 
 export interface IDiariaFuncionarioDto extends IFuncionario {
-  diarias: IDiariaDto[];
+  diarias: Record<string, IDiariaDto[]>;
 }
 
 export interface IDiariaFuncionarioResultDto {

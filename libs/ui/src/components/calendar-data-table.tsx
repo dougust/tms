@@ -1,15 +1,11 @@
 'use client';
 
 import {
-  CellContext,
   ColumnDef,
-  DisplayColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
-  Row,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -21,49 +17,23 @@ import {
   TableHeader,
   TableRow,
 } from './table';
-import { Button } from './button';
-import { Trash2 } from 'lucide-react';
 import * as React from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onRemoveClick?: (rowData: TData) => void;
 }
 
-export function DataTable<TData, TValue>({
+export function CalendarDataTable<TData, TValue>({
   columns,
   data,
-  onRemoveClick,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const actionsColumn: DisplayColumnDef<TData, TValue> = React.useMemo(
-    () => ({
-      id: 'actions',
-      header: 'Actions',
-      cell: ({ row }: CellContext<TData, TValue>) => (
-        <div className="flex space-x-2">
-          {onRemoveClick && (
-            <Button
-              variant="destructive"
-              size="icon"
-              onClick={() => onRemoveClick(row.original)}
-            >
-              <Trash2 className="h-1 w-1" />
-            </Button>
-          )}
-        </div>
-      ),
-    }),
-    []
-  );
-
   const table = useReactTable({
     data,
-    columns: [...columns, actionsColumn],
+    columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
@@ -123,30 +93,6 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
       </div>
     </div>
   );

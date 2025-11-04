@@ -1,80 +1,39 @@
 'use client';
 
 import { useAppQuery } from '@dougust/clients';
-import { ListPageLayout, CalendarDiarias } from '../../../components';
+import { DiariasCalendar, ListPageLayout } from '../../../components';
 import { Briefcase, ChevronLeft, ChevronRight } from 'lucide-react';
 import { IDiariaFuncionarioResultDto } from '@dougust/types';
 import React from 'react';
 import { Button } from '@dougust/ui';
-import { DataTableDemo } from '@dougust/fe/components/example-data-table';
-
-function toISODate(d: Date) {
-  const dd = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  return dd.toISOString().slice(0, 10);
-}
-
-function startOfWeekMonday(d: Date) {
-  const day = d.getDay(); // 0=Sun,1=Mon,...
-  const diff = day === 0 ? -6 : 1 - day; // move back to Monday
-  const monday = new Date(d);
-  monday.setDate(d.getDate() + diff);
-  monday.setHours(0, 0, 0, 0);
-  return monday;
-}
-
-function addDays(d: Date, days: number) {
-  const nd = new Date(d);
-  nd.setDate(nd.getDate() + days);
-  return nd;
-}
+import { addDays, startOfWeekMonday, toISODate } from '../../../lib';
 
 export default function DiariasPage() {
   // Initialize to current week's Monday
-  const [weekStart, setWeekStart] = React.useState(() =>
+  const [fromDate, setFromDate] = React.useState(() =>
     startOfWeekMonday(new Date())
   );
-  const weekEnd = React.useMemo(() => addDays(weekStart, 6), [weekStart]);
-
-  const start = toISODate(weekStart);
-  const end = toISODate(weekEnd);
+  const [daysCount, setDaysCount] = React.useState(7);
+  const toDate = React.useMemo(() => addDays(fromDate, daysCount), [fromDate]);
 
   const { data, isLoading, error, refetch } =
     useAppQuery<IDiariaFuncionarioResultDto>({
-      queryKey: [`diarias?from=${start}&to=${end}`],
+      queryKey: [`diarias?from=${toISODate(fromDate)}&to=${toISODate(toDate)}`],
     });
 
   const funcionarios = data?.funcionarios || [];
-
-  // Adapt API data to UI-agnostic calendar rows
-  const rows = React.useMemo(() => {
-    return funcionarios.map((f) => {
-      const cells: Record<string, React.ReactNode | undefined> = {};
-      for (const d of f.diarias || []) {
-        const key =
-          typeof d.dia === 'string'
-            ? d.dia
-            : new Date(d.dia as any).toISOString().slice(0, 10);
-        // show tipo in the cell
-        cells[key] = (d as any).tipo;
-      }
-      const label = f.nome || f.social || f.email;
-      return { id: f.id, label, cells };
-    });
-  }, [funcionarios]);
-
-  const daysCount = 7;
 
   const weekLabel = React.useMemo(() => {
     const fmt = (iso: string) => {
       const [y, m, d] = iso.split('-');
       return `${d}/${m}`;
     };
-    return `${fmt(start)} - ${fmt(end)}`;
-  }, [start, end]);
+    return `${fmt(toISODate(fromDate))} - ${fmt(toISODate(toDate))}`;
+  }, [fromDate, toDate]);
 
-  const goPrevWeek = () => setWeekStart((d) => addDays(d, -7));
-  const goNextWeek = () => setWeekStart((d) => addDays(d, 7));
-  const goThisWeek = () => setWeekStart(startOfWeekMonday(new Date()));
+  const goPrevWeek = () => setFromDate((d) => addDays(d, -7));
+  const goNextWeek = () => setFromDate((d) => addDays(d, 7));
+  const goThisWeek = () => setFromDate(startOfWeekMonday(new Date()));
 
   return (
     <ListPageLayout
@@ -108,7 +67,12 @@ export default function DiariasPage() {
         </div>
         <div className="text-sm text-muted-foreground">{weekLabel}</div>
       </div>
-      <DataTableDemo />
+
+      <DiariasCalendar
+        funcionarios={funcionarios}
+        fromDate={fromDate}
+        range={daysCount}
+      />
     </ListPageLayout>
   );
 }
