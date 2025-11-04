@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto.ts';
+
 export type FuncionariosControllerFindOnePathParams = {
   /**
    * @type string
@@ -10,7 +12,7 @@ export type FuncionariosControllerFindOnePathParams = {
   id: string;
 };
 
-export type FuncionariosControllerFindOne200 = any;
+export type FuncionariosControllerFindOne200 = GetFuncionarioResponseDto;
 
 export type FuncionariosControllerFindOneQueryResponse =
   FuncionariosControllerFindOne200;

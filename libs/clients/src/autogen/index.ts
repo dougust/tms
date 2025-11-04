@@ -11,6 +11,7 @@ export type { ProjetosControllerRemoveMutationKey } from './hooks/Projetos/usePr
 export type { ProjetosControllerUpdateMutationKey } from './hooks/Projetos/useProjetosControllerUpdate.ts';
 export type { CreateFuncionarioDto } from './types/CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './types/CreateProjetoDto.ts';
+export type { FuncionarioDto } from './types/FuncionarioDto.ts';
 export type {
   FuncionariosControllerCreate201,
   FuncionariosControllerCreateMutationRequest,
@@ -41,6 +42,7 @@ export type {
   FuncionariosControllerUpdateMutationResponse,
   FuncionariosControllerUpdateMutation,
 } from './types/FuncionariosControllerUpdate.ts';
+export type { GetFuncionarioResponseDto } from './types/GetFuncionarioResponseDto.ts';
 export type {
   HealthControllerGetHealth200,
   HealthControllerGetHealthQueryResponse,
@@ -146,6 +148,7 @@ export {
 } from './hooks/Projetos/useProjetosControllerUpdate.ts';
 export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './zod/createProjetoDtoSchema.ts';
+export { funcionarioDtoSchema } from './zod/funcionarioDtoSchema.ts';
 export {
   funcionariosControllerCreate201Schema,
   funcionariosControllerCreateMutationRequestSchema,
@@ -171,6 +174,7 @@ export {
   funcionariosControllerUpdateMutationRequestSchema,
   funcionariosControllerUpdateMutationResponseSchema,
 } from './zod/funcionariosControllerUpdateSchema.ts';
+export { getFuncionarioResponseDtoSchema } from './zod/getFuncionarioResponseDtoSchema.ts';
 export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,

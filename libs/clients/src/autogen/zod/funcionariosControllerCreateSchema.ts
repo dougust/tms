@@ -6,7 +6,7 @@
 import { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
 import { z } from 'zod/v4';
 
-export const funcionariosControllerCreate201Schema = z.any();
+export const funcionariosControllerCreate201Schema = z.object({});
 
 export const funcionariosControllerCreateMutationRequestSchema =
   createFuncionarioDtoSchema;

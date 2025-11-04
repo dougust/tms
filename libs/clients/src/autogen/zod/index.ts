@@ -1,5 +1,6 @@
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './createProjetoDtoSchema.ts';
+export { funcionarioDtoSchema } from './funcionarioDtoSchema.ts';
 export {
   funcionariosControllerCreate201Schema,
   funcionariosControllerCreateMutationRequestSchema,
@@ -25,6 +26,7 @@ export {
   funcionariosControllerUpdateMutationRequestSchema,
   funcionariosControllerUpdateMutationResponseSchema,
 } from './funcionariosControllerUpdateSchema.ts';
+export { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema.ts';
 export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,

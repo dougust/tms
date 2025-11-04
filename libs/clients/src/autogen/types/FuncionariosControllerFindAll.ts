@@ -3,7 +3,9 @@
  * Do not edit manually.
  */
 
-export type FuncionariosControllerFindAll200 = any;
+import type { FuncionarioDto } from './FuncionarioDto.ts';
+
+export type FuncionariosControllerFindAll200 = FuncionarioDto[];
 
 export type FuncionariosControllerFindAllQueryResponse =
   FuncionariosControllerFindAll200;
