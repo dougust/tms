@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "empresa_id": { "type": "string" },
+    "nome": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "inicio": { "type": "string" },
+    "fim": { "type": "string" }
+  },
+  "required": ["nome", "inicio", "fim"],
+  "x-readme-ref-name": "CreateProjetoDto"
+}

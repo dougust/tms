@@ -11,7 +11,7 @@ export default defineConfig(() => {
       path: './open-api-specs.json',
     },
     output: {
-      path: '../../libs/autogen-clients/src/autogen',
+      path: '../../libs/clients/src/autogen',
       clean: true,
       format: 'prettier',
     },
@@ -24,9 +24,6 @@ export default defineConfig(() => {
         group: {
           type: 'tag',
           name: ({ group }) => `${group}`,
-        },
-        client: {
-          importPath: '../../../client',
         },
       }),
     ],

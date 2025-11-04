@@ -1,0 +1,30 @@
+{
+  "name": "clients",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/clients/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/clients",
+        "tsConfig": "libs/clients/tsconfig.lib.json",
+        "packageJson": "libs/clients/package.json",
+        "main": "libs/clients/src/index.ts",
+        "assets": ["libs/clients/*.md"]
+      }
+    },
+    "regenerate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "kubb generate",
+        "cwd": "apps/be"
+      },
+      "dependsOn": [
+        "be:generate-open-api-specs"
+      ]
+    }
+  }
+}
