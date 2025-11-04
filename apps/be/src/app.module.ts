@@ -5,11 +5,13 @@ import { UserContextModule } from './common/user-context/user-context.module';
 import { UserContextMiddleware } from './common/user-context/user-context.middleware';
 import { HealthModule } from './modules/health/health.module';
 import { DatabaseUtilsModule } from './common/cadastros/database-utils.module';
+import { ProjetosModule } from './modules/projetos/projetos.module';
 
 @Module({
   imports: [
     DrizzleModule,
     FuncionariosModule,
+    ProjetosModule,
     UserContextModule,
     HealthModule,
     DatabaseUtilsModule,
