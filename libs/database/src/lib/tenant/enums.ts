@@ -1,7 +1,10 @@
 import { pgEnum } from 'drizzle-orm/pg-core';
 
-export const tipoDeDiariaEnum = pgEnum('tipo_diaria', [
+
+export const diariaLabel = [
   'presente',
   'faltou',
   'doente',
-]);
+] as const;
+
+export const diariaLabelPg = pgEnum('tipo_diaria', diariaLabel);

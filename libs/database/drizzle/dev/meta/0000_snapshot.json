@@ -1,5 +1,5 @@
 {
-  "id": "9f50a4e6-ec5d-4461-ac71-6db4ac9e5503",
+  "id": "93772bfe-e991-410a-baab-8ff3d672fa1f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -102,7 +102,8 @@
           "name": "diarias_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "projeto_id": {
           "name": "projeto_id",

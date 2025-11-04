@@ -12,7 +12,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { userRoleEnum } from '../enums';
 import { relations } from 'drizzle-orm';
-import { tipoDeDiariaEnum } from './enums';
+import { diariaLabelPg } from './enums';
 
 export const users = (tenantId: string) =>
   pgSchema(tenantId).table(
@@ -129,7 +129,7 @@ export const diarias = (tenantId: string) =>
   pgSchema(tenantId).table(
     'cad_diarias',
     {
-      id: uuid('diarias_id').notNull(),
+      id: uuid('diarias_id').notNull().defaultRandom(),
       projetoId: uuid('projeto_id').notNull(),
       dia: date('dia').notNull(),
       observacoes: varchar('observacoes', { length: 100 }),
@@ -160,7 +160,7 @@ export const diariasToFuncionarios = (tenantId: string) =>
     {
       funcionarioId: uuid('funcionario_id').notNull(),
       diariasId: uuid('diarias_id').notNull(),
-      tipo: tipoDeDiariaEnum('tipo').notNull().default('presente'),
+      tipo: diariaLabelPg('tipo').notNull().default('presente'),
       observacoes: varchar('observacoes', { length: 100 }),
       createdAt: timestamp('created_at').defaultNow(),
       updatedAt: timestamp('updated_at').defaultNow(),

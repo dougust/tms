@@ -1,4 +1,5 @@
 import { IsDateString, IsOptional, IsString } from 'class-validator';
+import { IDiariaLabel } from '@dougust/database';
 
 export class UpdateDiariaDto {
   @IsString()
@@ -12,5 +13,5 @@ export class UpdateDiariaDto {
 
   @IsOptional()
   @IsString()
-  tipo: string;
+  tipo: IDiariaLabel;
 }

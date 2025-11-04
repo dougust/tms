@@ -14,7 +14,7 @@ CREATE TABLE "dg_0001"."rel_diarias_funcionarios" (
 );
 --> statement-breakpoint
 CREATE TABLE "dg_0001"."cad_diarias" (
-	"diarias_id" uuid NOT NULL,
+	"diarias_id" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"projeto_id" uuid NOT NULL,
 	"dia" date NOT NULL,
 	"observacoes" varchar(100),

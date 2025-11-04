@@ -9,13 +9,16 @@ import {
   IDiariaFuncionarioResultDto,
 } from '@dougust/types';
 import { UpdateDiariaDto } from '../funcionarios/dto/update-diaria.dto';
-import { date } from 'zod';
+import { FuncionariosService } from '../funcionarios/funcionarios.service';
+import { ProjetosService } from '../projetos/projetos.service';
 
 @Injectable()
 export class DiariasService {
   constructor(
     @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService
+    @Inject() private readonly userContext: UserContextService,
+    private readonly funcionariosService: FuncionariosService,
+    private readonly projetosService: ProjetosService
   ) {}
 
   get funcionarions() {
@@ -77,24 +80,49 @@ export class DiariasService {
   }
 
   async updateDiaria(data: UpdateDiariaDto) {
-    const diaria = await this.db
-      .insert(this.diarias)
-      .values({
-        projetoId: data.projetoId,
-        dia: new Date(data.dia),
-      })
-      .onConflictDoUpdate({
-        target: [this.diarias.projetoId],
-        set: {
-          updatedAt: new Date(),
-        },
-      });
+    const [funcionario, projeto] = await Promise.all([
+      this.funcionariosService.findOne(data.funcionarioId),
+      this.projetosService.findOne(data.projetoId),
+    ]);
 
-    await this.db
+    if (!funcionario) {
+      throw new Error('Funcionario not found');
+    }
+
+    if (!projeto) {
+      throw new Error('Projeto not found');
+    }
+
+    let [diaria] = await this.db
+      .select()
+      .from(this.diarias)
+      .where(
+        and(
+          eq(this.diarias.dia, data.dia),
+          eq(this.diarias.projetoId, data.projetoId)
+        )
+      )
+      .limit(1);
+
+    if (!diaria) {
+      const [created] = await this.db
+        .insert(this.diarias)
+        .values({
+          projetoId: data.projetoId,
+          dia: data.dia,
+        })
+        .onConflictDoNothing()
+        .returning();
+
+      diaria = created;
+    }
+
+    return this.db
       .insert(this.diariasToFuncionarios)
       .values({
         funcionarioId: data.funcionarioId,
-        diariasId: diaria[0].id,
+        diariasId: diaria.id,
+        tipo: data.tipo,
       })
       .onConflictDoUpdate({
         target: [
@@ -102,8 +130,10 @@ export class DiariasService {
           this.diariasToFuncionarios.diariasId,
         ],
         set: {
+          tipo: data.tipo,
           updatedAt: new Date(),
         },
-      });
+      })
+      .returning();
   }
 }
