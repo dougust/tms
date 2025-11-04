@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { IDiariaFuncionarioDto } from '@dougust/types';
 import {
   Table,
   TableHeader,
@@ -9,12 +8,20 @@ import {
   TableCell,
 } from '@dougust/ui';
 
+export type CalendarRow = {
+  id: string;
+  label: React.ReactNode;
+  // Map of ISO date (YYYY-MM-DD) to cell content
+  cells: Record<string, React.ReactNode | undefined>;
+};
+
 export type CalendarDiariasProps = {
-  funcionarios: IDiariaFuncionarioDto[];
+  rows: CalendarRow[];
   start: string | Date;
   end: string | Date;
   loading?: boolean;
   error?: unknown;
+  firstColumnLabel?: React.ReactNode;
 };
 
 const toISODate = (d: string | Date): string => {
@@ -28,11 +35,12 @@ const formatDay = (iso: string) => {
 };
 
 export const CalendarDiarias: React.FC<CalendarDiariasProps> = ({
-  funcionarios,
+  rows,
   start,
   end,
   loading,
   error,
+  firstColumnLabel = 'Funcionário',
 }) => {
   const startIso = toISODate(start);
   const endIso = toISODate(end);
@@ -63,7 +71,7 @@ export const CalendarDiarias: React.FC<CalendarDiariasProps> = ({
         <TableHeader>
           <TableRow>
             <TableHead className="sticky left-0 z-10 bg-white border px-2 py-1 text-left">
-              Funcionário
+              {firstColumnLabel}
             </TableHead>
             {days.map((date) => (
               <TableHead
@@ -82,37 +90,28 @@ export const CalendarDiarias: React.FC<CalendarDiariasProps> = ({
                 Carregando...
               </TableCell>
             </TableRow>
-          ) : funcionarios.length === 0 ? (
+          ) : rows.length === 0 ? (
             <TableRow>
               <TableCell className="border px-2 py-2" colSpan={1 + days.length}>
                 Nenhum registro encontrado.
               </TableCell>
             </TableRow>
           ) : (
-            funcionarios.map((f) => {
-              const byDate = new Map<string, string | undefined>();
-              for (const d of f.diarias || []) {
-                const key = typeof d.dia === 'string'
-                  ? d.dia
-                  : new Date(d.dia as any).toISOString().slice(0, 10);
-                byDate.set(key, (d as any).tipo);
-              }
-              return (
-                <TableRow key={f.id}>
-                  <TableCell className="sticky left-0 z-10 bg-white border px-2 py-1 font-medium whitespace-nowrap">
-                    {f.nome || f.social || f.email}
+            rows.map((r) => (
+              <TableRow key={r.id}>
+                <TableCell className="sticky left-0 z-10 bg-white border px-2 py-1 font-medium whitespace-nowrap">
+                  {r.label}
+                </TableCell>
+                {days.map((date) => (
+                  <TableCell
+                    key={date}
+                    className="border px-2 py-1 text-center text-xs align-middle min-w-[60px]"
+                  >
+                    {r.cells[date] ?? ''}
                   </TableCell>
-                  {days.map((date) => (
-                    <TableCell
-                      key={date}
-                      className="border px-2 py-1 text-center text-xs align-middle min-w-[60px]"
-                    >
-                      {byDate.get(date) || ''}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              );
-            })
+                ))}
+              </TableRow>
+            ))
           )}
         </TableBody>
       </Table>

@@ -42,6 +42,22 @@ export default function DiariasPage() {
 
   const funcionarios = data?.funcionarios || [];
 
+  // Adapt API data to UI-agnostic calendar rows
+  const rows = React.useMemo(() => {
+    return funcionarios.map((f) => {
+      const cells: Record<string, React.ReactNode | undefined> = {};
+      for (const d of f.diarias || []) {
+        const key = typeof d.dia === 'string'
+          ? d.dia
+          : new Date(d.dia as any).toISOString().slice(0, 10);
+        // show tipo in the cell
+        cells[key] = (d as any).tipo;
+      }
+      const label = f.nome || f.social || f.email;
+      return { id: f.id, label, cells };
+    });
+  }, [funcionarios]);
+
   const daysCount = 7;
 
   const weekLabel = React.useMemo(() => {
@@ -89,7 +105,7 @@ export default function DiariasPage() {
         <div className="text-sm text-muted-foreground">{weekLabel}</div>
       </div>
       <CalendarDiarias
-        funcionarios={funcionarios}
+        rows={rows}
         start={start}
         end={end}
         loading={isLoading}
