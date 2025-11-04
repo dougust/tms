@@ -2,14 +2,25 @@ CREATE SCHEMA "dg_0001";
 --> statement-breakpoint
 CREATE TYPE "public"."subscription_tier" AS ENUM('trial', 'starter', 'professional', 'enterprise');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('owner', 'admin', 'agent', 'viewer');--> statement-breakpoint
-CREATE TABLE "dg_0001"."rel_atividades_obras" (
-	"diaria_obra_id" uuid NOT NULL,
-	"projeto_id" uuid NOT NULL,
-	"data" timestamp NOT NULL,
+CREATE TYPE "public"."tipo_diaria" AS ENUM('presente', 'faltou', 'doente');--> statement-breakpoint
+CREATE TABLE "dg_0001"."rel_diarias_funcionarios" (
+	"funcionario_id" uuid NOT NULL,
+	"diarias_id" uuid NOT NULL,
+	"tipo" "tipo_diaria" DEFAULT 'presente' NOT NULL,
 	"observacoes" varchar(100),
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
-	CONSTRAINT "pk_atividade_obra" PRIMARY KEY("diaria_obra_id")
+	CONSTRAINT "pk_diarias_funcionarios" PRIMARY KEY("funcionario_id","diarias_id")
+);
+--> statement-breakpoint
+CREATE TABLE "dg_0001"."cad_diarias" (
+	"diarias_id" uuid NOT NULL,
+	"projeto_id" uuid NOT NULL,
+	"dia" date NOT NULL,
+	"observacoes" varchar(100),
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "pk_diarias" PRIMARY KEY("diarias_id")
 );
 --> statement-breakpoint
 CREATE TABLE "dg_0001"."cad_empresas" (
@@ -25,17 +36,6 @@ CREATE TABLE "dg_0001"."cad_empresas" (
 	CONSTRAINT "pk_empresa" PRIMARY KEY("empresa_id"),
 	CONSTRAINT "cad_empresas_cnpj_unique" UNIQUE("cnpj"),
 	CONSTRAINT "cad_empresas_email_unique" UNIQUE("email")
-);
---> statement-breakpoint
-CREATE TABLE "dg_0001"."rel_frequencia" (
-	"frequencia_id" uuid DEFAULT gen_random_uuid(),
-	"diaria_obra_id" uuid NOT NULL,
-	"funcionario_id" uuid NOT NULL,
-	"presente" boolean NOT NULL,
-	"observacoes" varchar(100),
-	"created_at" timestamp DEFAULT now(),
-	"updated_at" timestamp DEFAULT now(),
-	CONSTRAINT "pk_frequencia" PRIMARY KEY("frequencia_id")
 );
 --> statement-breakpoint
 CREATE TABLE "dg_0001"."cad_funcionarios" (
@@ -58,10 +58,11 @@ CREATE TABLE "dg_0001"."cad_projetos" (
 	"projeto_id" uuid DEFAULT gen_random_uuid(),
 	"empresa_id" uuid,
 	"nome" varchar(100),
+	"inicio" date NOT NULL,
+	"fim" date NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
 	CONSTRAINT "pk_projetos" PRIMARY KEY("projeto_id"),
-	CONSTRAINT "cad_projetos_empresa_id_unique" UNIQUE("empresa_id"),
 	CONSTRAINT "cad_projetos_nome_unique" UNIQUE("nome")
 );
 --> statement-breakpoint
@@ -102,10 +103,9 @@ CREATE TABLE "dg_0001"."cad_users" (
 	CONSTRAINT "pk_users" PRIMARY KEY("id")
 );
 --> statement-breakpoint
-ALTER TABLE "dg_0001"."rel_atividades_obras" ADD CONSTRAINT "fk_atividades_obras_projeto" FOREIGN KEY ("projeto_id") REFERENCES "dg_0001"."cad_projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "dg_0001"."rel_frequencia" ADD CONSTRAINT "fk_atividades_obras" FOREIGN KEY ("diaria_obra_id") REFERENCES "dg_0001"."rel_atividades_obras"("diaria_obra_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "dg_0001"."rel_frequencia" ADD CONSTRAINT "fk_frequencia_funcionario" FOREIGN KEY ("funcionario_id") REFERENCES "dg_0001"."cad_funcionarios"("funcionario_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dg_0001"."rel_diarias_funcionarios" ADD CONSTRAINT "fk_diarias_funcionarios_diarias" FOREIGN KEY ("diarias_id") REFERENCES "dg_0001"."cad_diarias"("diarias_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dg_0001"."rel_diarias_funcionarios" ADD CONSTRAINT "fk_diarias_funcionarios_funcionarios" FOREIGN KEY ("funcionario_id") REFERENCES "dg_0001"."cad_funcionarios"("funcionario_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_projetos" FOREIGN KEY ("projeto_id") REFERENCES "dg_0001"."cad_projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_projetos" ADD CONSTRAINT "fk_projeto_empresa" FOREIGN KEY ("empresa_id") REFERENCES "dg_0001"."cad_empresas"("empresa_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_users" ADD CONSTRAINT "fk_user_login" FOREIGN KEY ("login") REFERENCES "dg_0001"."cad_empresas"("email") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_atividades_obras_projeto_data" ON "dg_0001"."rel_atividades_obras" USING btree ("projeto_id","data");--> statement-breakpoint
-CREATE UNIQUE INDEX "uq_frequencia_atividade_funcionario" ON "dg_0001"."rel_frequencia" USING btree ("diaria_obra_id","funcionario_id");
+CREATE UNIQUE INDEX "uq_diarias_projetos_dia" ON "dg_0001"."cad_diarias" USING btree ("projeto_id","dia");
