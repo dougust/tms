@@ -1,0 +1,48 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { ProjetosService } from './projetos.service';
+import { CreateProjetoDto } from './dto/create-projeto.dto';
+import { UpdateProjetoDto } from './dto/update-projeto.dto';
+import { CreateProjetoResultDto } from './dto/create-projeto.result.dto';
+import { IProjeto } from '@dougust/database';
+import { IProjetoListDto } from '@dougust/types';
+
+@Controller('projetos')
+export class ProjetosController {
+  constructor(private readonly service: ProjetosService) {}
+
+  @Post()
+  create(@Body() dto: CreateProjetoDto): Promise<CreateProjetoResultDto> {
+    return this.service.create(dto);
+  }
+
+  @Get()
+  findAll(): Promise<IProjetoListDto[]> {
+    return this.service.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<IProjeto> {
+    return this.service.findOne(id);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateProjetoDto
+  ): Promise<CreateProjetoResultDto> {
+    return this.service.update(id, dto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.service.remove(id);
+  }
+}

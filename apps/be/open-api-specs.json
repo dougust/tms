@@ -17,7 +17,14 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -29,7 +36,17 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FuncionarioDto"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -52,7 +69,14 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetFuncionarioResponseDto"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -83,7 +107,14 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -311,6 +342,66 @@
         "required": [
           "cpf",
           "email"
+        ]
+      },
+      "FuncionarioDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "social": {
+            "type": "string"
+          },
+          "cpf": {
+            "type": "string"
+          },
+          "nascimento": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "rg": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "social",
+          "cpf",
+          "nascimento",
+          "phone",
+          "email",
+          "rg",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "GetFuncionarioResponseDto": {
+        "type": "object",
+        "properties": {
+          "funcionario": {
+            "$ref": "#/components/schemas/FuncionarioDto"
+          }
+        },
+        "required": [
+          "funcionario"
         ]
       },
       "UpdateFuncionarioDto": {

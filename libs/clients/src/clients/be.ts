@@ -1,4 +1,4 @@
-import { axiosInstance } from './axios';
+import fetch from '@kubb/plugin-client/clients/axios';
 
 type Options<T = unknown> = RequestInit & {
   silent?: boolean;
@@ -22,11 +22,10 @@ export const sendClientRequest = async <T = any, D = unknown>(
   options: Options<D> = {}
 ): Promise<T> => {
   try {
-    const response = await axiosInstance.request<T>({
+    const response = await fetch<T>({
       url,
       method: options.method,
-      data: options.data as any,
-      headers: options.headers as any,
+      data: options.data,
     });
 
     return response.data as T;

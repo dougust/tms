@@ -22,6 +22,7 @@ import {
   BarChart3,
   Calendar,
   Mail,
+  Briefcase,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -48,6 +49,11 @@ const dataNavItems = [
     title: 'Funcionarios',
     icon: Users,
     href: '/dashboard/funcionarios',
+  },
+  {
+    title: 'Projetos',
+    icon: Briefcase,
+    href: '/dashboard/projetos',
   },
   {
     title: 'Documents',
