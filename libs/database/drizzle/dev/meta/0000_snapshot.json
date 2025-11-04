@@ -1,15 +1,105 @@
 {
-  "id": "a5160c3c-b657-4ec0-9ddb-798f9a9b8bd6",
+  "id": "9f50a4e6-ec5d-4461-ac71-6db4ac9e5503",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "dg_0001.rel_atividades_obras": {
-      "name": "rel_atividades_obras",
+    "dg_0001.rel_diarias_funcionarios": {
+      "name": "rel_diarias_funcionarios",
       "schema": "dg_0001",
       "columns": {
-        "diaria_obra_id": {
-          "name": "diaria_obra_id",
+        "funcionario_id": {
+          "name": "funcionario_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "diarias_id": {
+          "name": "diarias_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tipo": {
+          "name": "tipo",
+          "type": "tipo_diaria",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'presente'"
+        },
+        "observacoes": {
+          "name": "observacoes",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_diarias_funcionarios_diarias": {
+          "name": "fk_diarias_funcionarios_diarias",
+          "tableFrom": "rel_diarias_funcionarios",
+          "tableTo": "cad_diarias",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "diarias_id"
+          ],
+          "columnsTo": [
+            "diarias_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_diarias_funcionarios_funcionarios": {
+          "name": "fk_diarias_funcionarios_funcionarios",
+          "tableFrom": "rel_diarias_funcionarios",
+          "tableTo": "cad_funcionarios",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "funcionario_id"
+          ],
+          "columnsTo": [
+            "funcionario_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_diarias_funcionarios": {
+          "name": "pk_diarias_funcionarios",
+          "columns": [
+            "funcionario_id",
+            "diarias_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "dg_0001.cad_diarias": {
+      "name": "cad_diarias",
+      "schema": "dg_0001",
+      "columns": {
+        "diarias_id": {
+          "name": "diarias_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -20,9 +110,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "data": {
-          "name": "data",
-          "type": "timestamp",
+        "dia": {
+          "name": "dia",
+          "type": "date",
           "primaryKey": false,
           "notNull": true
         },
@@ -48,8 +138,8 @@
         }
       },
       "indexes": {
-        "uq_atividades_obras_projeto_data": {
-          "name": "uq_atividades_obras_projeto_data",
+        "uq_diarias_projetos_dia": {
+          "name": "uq_diarias_projetos_dia",
           "columns": [
             {
               "expression": "projeto_id",
@@ -58,7 +148,7 @@
               "nulls": "last"
             },
             {
-              "expression": "data",
+              "expression": "dia",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -71,9 +161,9 @@
         }
       },
       "foreignKeys": {
-        "fk_atividades_obras_projeto": {
-          "name": "fk_atividades_obras_projeto",
-          "tableFrom": "rel_atividades_obras",
+        "fk_diarias_projetos": {
+          "name": "fk_diarias_projetos",
+          "tableFrom": "cad_diarias",
           "tableTo": "cad_projetos",
           "schemaTo": "dg_0001",
           "columnsFrom": [
@@ -87,10 +177,10 @@
         }
       },
       "compositePrimaryKeys": {
-        "pk_atividade_obra": {
-          "name": "pk_atividade_obra",
+        "pk_diarias": {
+          "name": "pk_diarias",
           "columns": [
-            "diaria_obra_id"
+            "diarias_id"
           ]
         }
       },
@@ -187,122 +277,6 @@
           ]
         }
       },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "dg_0001.rel_frequencia": {
-      "name": "rel_frequencia",
-      "schema": "dg_0001",
-      "columns": {
-        "frequencia_id": {
-          "name": "frequencia_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "gen_random_uuid()"
-        },
-        "diaria_obra_id": {
-          "name": "diaria_obra_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "funcionario_id": {
-          "name": "funcionario_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "presente": {
-          "name": "presente",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "observacoes": {
-          "name": "observacoes",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "uq_frequencia_atividade_funcionario": {
-          "name": "uq_frequencia_atividade_funcionario",
-          "columns": [
-            {
-              "expression": "diaria_obra_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "funcionario_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "fk_atividades_obras": {
-          "name": "fk_atividades_obras",
-          "tableFrom": "rel_frequencia",
-          "tableTo": "rel_atividades_obras",
-          "schemaTo": "dg_0001",
-          "columnsFrom": [
-            "diaria_obra_id"
-          ],
-          "columnsTo": [
-            "diaria_obra_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "fk_frequencia_funcionario": {
-          "name": "fk_frequencia_funcionario",
-          "tableFrom": "rel_frequencia",
-          "tableTo": "cad_funcionarios",
-          "schemaTo": "dg_0001",
-          "columnsFrom": [
-            "funcionario_id"
-          ],
-          "columnsTo": [
-            "funcionario_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "pk_frequencia": {
-          "name": "pk_frequencia",
-          "columns": [
-            "frequencia_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -428,6 +402,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "inicio": {
+          "name": "inicio",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fim": {
+          "name": "fim",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -469,13 +455,6 @@
         }
       },
       "uniqueConstraints": {
-        "cad_projetos_empresa_id_unique": {
-          "name": "cad_projetos_empresa_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "empresa_id"
-          ]
-        },
         "cad_projetos_nome_unique": {
           "name": "cad_projetos_nome_unique",
           "nullsNotDistinct": false,
@@ -751,6 +730,15 @@
         "admin",
         "agent",
         "viewer"
+      ]
+    },
+    "public.tipo_diaria": {
+      "name": "tipo_diaria",
+      "schema": "public",
+      "values": [
+        "presente",
+        "faltou",
+        "doente"
       ]
     }
   },
