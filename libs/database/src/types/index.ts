@@ -1,6 +1,16 @@
 import { InferSelectModel } from 'drizzle-orm';
-import { empresas, funcionarios, projetos } from '../lib/tenant';
+import {
+  diarias,
+  diariasToFuncionarios,
+  empresas,
+  funcionarios,
+  projetos,
+} from '../lib/tenant';
 
 export type IEmpresa = InferSelectModel<ReturnType<typeof empresas>>;
 export type IFuncionario = InferSelectModel<ReturnType<typeof funcionarios>>;
 export type IProjeto = InferSelectModel<ReturnType<typeof projetos>>;
+export type IDiaria = InferSelectModel<ReturnType<typeof diarias>>;
+export type IDiariaFuncionarioRel = InferSelectModel<
+  ReturnType<typeof diariasToFuncionarios>
+>;

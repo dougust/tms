@@ -23,6 +23,7 @@ import {
   Calendar,
   Mail,
   Briefcase,
+  CalendarPlus,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -56,19 +57,9 @@ const dataNavItems = [
     href: '/dashboard/projetos',
   },
   {
-    title: 'Documents',
-    icon: FileText,
-    href: '/dashboard/documents',
-  },
-  {
-    title: 'Calendar',
+    title: 'Diarias',
     icon: Calendar,
-    href: '/dashboard/calendar',
-  },
-  {
-    title: 'Messages',
-    icon: Mail,
-    href: '/dashboard/messages',
+    href: '/dashboard/diarias',
   },
 ];
 
