@@ -9,6 +9,7 @@ import {
   IDiariaFuncionarioResultDto,
 } from '@dougust/types';
 import { UpdateDiariaDto } from '../funcionarios/dto/update-diaria.dto';
+import { date } from 'zod';
 
 @Injectable()
 export class DiariasService {
@@ -76,7 +77,33 @@ export class DiariasService {
   }
 
   async updateDiaria(data: UpdateDiariaDto) {
+    const diaria = await this.db
+      .insert(this.diarias)
+      .values({
+        projetoId: data.projetoId,
+        dia: new Date(data.dia),
+      })
+      .onConflictDoUpdate({
+        target: [this.diarias.projetoId],
+        set: {
+          updatedAt: new Date(),
+        },
+      });
 
-    return diariaFuncionario;
+    await this.db
+      .insert(this.diariasToFuncionarios)
+      .values({
+        funcionarioId: data.funcionarioId,
+        diariasId: diaria[0].id,
+      })
+      .onConflictDoUpdate({
+        target: [
+          this.diariasToFuncionarios.funcionarioId,
+          this.diariasToFuncionarios.diariasId,
+        ],
+        set: {
+          updatedAt: new Date(),
+        },
+      });
   }
 }
