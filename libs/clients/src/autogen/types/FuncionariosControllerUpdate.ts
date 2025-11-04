@@ -12,7 +12,7 @@ export type FuncionariosControllerUpdatePathParams = {
   id: string;
 };
 
-export type FuncionariosControllerUpdate200 = any;
+export type FuncionariosControllerUpdate200 = object;
 
 export type FuncionariosControllerUpdateMutationRequest = UpdateFuncionarioDto;
 

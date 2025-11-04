@@ -10,7 +10,7 @@ export const funcionariosControllerUpdatePathParamsSchema = z.object({
   id: z.string(),
 });
 
-export const funcionariosControllerUpdate200Schema = z.any();
+export const funcionariosControllerUpdate200Schema = z.object({});
 
 export const funcionariosControllerUpdateMutationRequestSchema =
   updateFuncionarioDtoSchema;

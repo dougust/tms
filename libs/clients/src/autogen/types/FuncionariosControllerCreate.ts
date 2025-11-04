@@ -5,7 +5,7 @@
 
 import type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
 
-export type FuncionariosControllerCreate201 = any;
+export type FuncionariosControllerCreate201 = object;
 
 export type FuncionariosControllerCreateMutationRequest = CreateFuncionarioDto;
 

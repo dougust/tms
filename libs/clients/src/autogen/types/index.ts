@@ -1,5 +1,6 @@
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './CreateProjetoDto.ts';
+export type { FuncionarioDto } from './FuncionarioDto.ts';
 export type {
   FuncionariosControllerCreate201,
   FuncionariosControllerCreateMutationRequest,
@@ -30,6 +31,7 @@ export type {
   FuncionariosControllerUpdateMutationResponse,
   FuncionariosControllerUpdateMutation,
 } from './FuncionariosControllerUpdate.ts';
+export type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto.ts';
 export type {
   HealthControllerGetHealth200,
   HealthControllerGetHealthQueryResponse,
