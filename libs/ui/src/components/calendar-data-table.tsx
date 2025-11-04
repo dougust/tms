@@ -51,7 +51,7 @@ export function CalendarDataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="bg-muted text-muted-foreground">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -71,14 +71,22 @@ export function CalendarDataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+                  {row.getVisibleCells().map((cell, ci) => {
+                    const isFirstCol = ci === 0;
+                    const bodyBgClass = isFirstCol
+                      ? 'bg-secondary/60'
+                      : ci % 2 === 0
+                      ? 'bg-secondary/90'
+                      : 'bg-secondary/10';
+                    return (
+                      <TableCell key={cell.id} className={bodyBgClass}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               ))
             ) : (
