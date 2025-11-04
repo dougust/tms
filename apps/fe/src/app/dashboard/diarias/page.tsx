@@ -10,7 +10,6 @@ import { addDays, startOfWeekMonday, toISODate } from '../../../lib';
 
 export default function DiariasPage() {
 
-  const update  = useDiariasControllerUpdateDiaria();
   // Initialize to current week's Monday
   const [fromDate, setFromDate] = React.useState(() =>
     startOfWeekMonday(new Date())
