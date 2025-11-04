@@ -1,5 +1,32 @@
+export { createEmpresaDtoSchema } from './createEmpresaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './createProjetoDtoSchema.ts';
+export { empresaDtoSchema } from './empresaDtoSchema.ts';
+export {
+  empresasControllerCreate201Schema,
+  empresasControllerCreateMutationRequestSchema,
+  empresasControllerCreateMutationResponseSchema,
+} from './empresasControllerCreateSchema.ts';
+export {
+  empresasControllerFindAll200Schema,
+  empresasControllerFindAllQueryResponseSchema,
+} from './empresasControllerFindAllSchema.ts';
+export {
+  empresasControllerFindOnePathParamsSchema,
+  empresasControllerFindOne200Schema,
+  empresasControllerFindOneQueryResponseSchema,
+} from './empresasControllerFindOneSchema.ts';
+export {
+  empresasControllerRemovePathParamsSchema,
+  empresasControllerRemove200Schema,
+  empresasControllerRemoveMutationResponseSchema,
+} from './empresasControllerRemoveSchema.ts';
+export {
+  empresasControllerUpdatePathParamsSchema,
+  empresasControllerUpdate200Schema,
+  empresasControllerUpdateMutationRequestSchema,
+  empresasControllerUpdateMutationResponseSchema,
+} from './empresasControllerUpdateSchema.ts';
 export { funcionarioDtoSchema } from './funcionarioDtoSchema.ts';
 export {
   funcionariosControllerCreate201Schema,
@@ -26,6 +53,7 @@ export {
   funcionariosControllerUpdateMutationRequestSchema,
   funcionariosControllerUpdateMutationResponseSchema,
 } from './funcionariosControllerUpdateSchema.ts';
+export { getEmpresaResponseDtoSchema } from './getEmpresaResponseDtoSchema.ts';
 export { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema.ts';
 export {
   healthControllerGetHealth200Schema,
@@ -56,5 +84,6 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './projetosControllerUpdateSchema.ts';
+export { updateEmpresaDtoSchema } from './updateEmpresaDtoSchema.ts';
 export { updateFuncionarioDtoSchema } from './updateFuncionarioDtoSchema.ts';
 export { updateProjetoDtoSchema } from './updateProjetoDtoSchema.ts';

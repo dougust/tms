@@ -6,6 +6,7 @@ import { UserContextMiddleware } from './common/user-context/user-context.middle
 import { HealthModule } from './modules/health/health.module';
 import { DatabaseUtilsModule } from './common/cadastros/database-utils.module';
 import { ProjetosModule } from './modules/projetos/projetos.module';
+import { EmpresasModule } from './modules/empresas/empresas.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ProjetosModule } from './modules/projetos/projetos.module';
     UserContextModule,
     HealthModule,
     DatabaseUtilsModule,
+    EmpresasModule,
   ],
   controllers: [],
   providers: [],
