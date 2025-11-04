@@ -76,31 +76,6 @@ export class DiariasService {
   }
 
   async updateDiaria(data: UpdateDiariaDto) {
-    const functionario = await this.db
-      .select()
-      .from(this.funcionarions)
-      .where(eq(this.funcionarions.id, data.funcionarioId));
-
-    if (!functionario) {
-      throw new Error('Funcionario not found');
-    }
-
-    const diaria = await this.db
-      .insert(this.diarias)
-      .values({
-        projetoId: data.projetoId,
-        dia: data.dia,
-      })
-      .onConflictDoNothing()
-      .returning();
-
-    const diariaFuncionario = await this.db
-      .insert(this.diariasToFuncionarios)
-      .values({
-        funcionarioId: data.funcionarioId,
-        diariasId: diaria[0].id,
-        tipo: data.tipo,
-      });
 
     return diariaFuncionario;
   }
