@@ -17,14 +17,7 @@
         },
         "responses": {
           "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -36,17 +29,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FuncionarioDto"
-                  }
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -69,14 +52,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetFuncionarioResponseDto"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -107,14 +83,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -140,6 +109,141 @@
         },
         "tags": [
           "Funcionarios"
+        ]
+      }
+    },
+    "/projetos": {
+      "post": {
+        "operationId": "ProjetosController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjetoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Projetos"
+        ]
+      },
+      "get": {
+        "operationId": "ProjetosController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Projetos"
+        ]
+      }
+    },
+    "/projetos/{id}": {
+      "get": {
+        "operationId": "ProjetosController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Projetos"
+        ]
+      },
+      "patch": {
+        "operationId": "ProjetosController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjetoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Projetos"
+        ]
+      },
+      "delete": {
+        "operationId": "ProjetosController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Projetos"
         ]
       }
     },
@@ -209,66 +313,6 @@
           "email"
         ]
       },
-      "FuncionarioDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "nome": {
-            "type": "string"
-          },
-          "social": {
-            "type": "string"
-          },
-          "cpf": {
-            "type": "string"
-          },
-          "nascimento": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "rg": {
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "nome",
-          "social",
-          "cpf",
-          "nascimento",
-          "phone",
-          "email",
-          "rg",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "GetFuncionarioResponseDto": {
-        "type": "object",
-        "properties": {
-          "funcionario": {
-            "$ref": "#/components/schemas/FuncionarioDto"
-          }
-        },
-        "required": [
-          "funcionario"
-        ]
-      },
       "UpdateFuncionarioDto": {
         "type": "object",
         "properties": {
@@ -303,6 +347,49 @@
             "type": "string",
             "minLength": 0,
             "maxLength": 11
+          }
+        }
+      },
+      "CreateProjetoDto": {
+        "type": "object",
+        "properties": {
+          "empresa_id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "inicio": {
+            "type": "string"
+          },
+          "fim": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nome",
+          "inicio",
+          "fim"
+        ]
+      },
+      "UpdateProjetoDto": {
+        "type": "object",
+        "properties": {
+          "empresa_id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "inicio": {
+            "type": "string"
+          },
+          "fim": {
+            "type": "string"
           }
         }
       }

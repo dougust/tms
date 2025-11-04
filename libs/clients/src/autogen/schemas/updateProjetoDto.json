@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "empresa_id": { "type": "string" },
+    "nome": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "inicio": { "type": "string" },
+    "fim": { "type": "string" }
+  },
+  "x-readme-ref-name": "UpdateProjetoDto"
+}
