@@ -14,62 +14,70 @@ import type {
   QueryObserverOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
-import type { HealthControllerGetHealthQueryResponse } from '../../types/HealthControllerGetHealth.ts';
+import type {
+  EmpresasControllerFindOneQueryResponse,
+  EmpresasControllerFindOnePathParams,
+} from '../../types/EmpresasControllerFindOne.ts';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
-export const healthControllerGetHealthQueryKey = () =>
-  [{ url: '/health' }] as const;
+export const empresasControllerFindOneQueryKey = (
+  id: EmpresasControllerFindOnePathParams['id']
+) => [{ url: '/empresas/:id', params: { id: id } }] as const;
 
-export type HealthControllerGetHealthQueryKey = ReturnType<
-  typeof healthControllerGetHealthQueryKey
+export type EmpresasControllerFindOneQueryKey = ReturnType<
+  typeof empresasControllerFindOneQueryKey
 >;
 
 /**
- * {@link /health}
+ * {@link /empresas/:id}
  */
-export async function healthControllerGetHealth(
+export async function empresasControllerFindOne(
+  id: EmpresasControllerFindOnePathParams['id'],
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
   const { client: request = fetch, ...requestConfig } = config;
 
   const res = await request<
-    HealthControllerGetHealthQueryResponse,
+    EmpresasControllerFindOneQueryResponse,
     ResponseErrorConfig<Error>,
     unknown
-  >({ method: 'GET', url: `/health`, ...requestConfig });
+  >({ method: 'GET', url: `/empresas/${id}`, ...requestConfig });
   return res.data;
 }
 
-export function healthControllerGetHealthQueryOptions(
+export function empresasControllerFindOneQueryOptions(
+  id: EmpresasControllerFindOnePathParams['id'],
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
-  const queryKey = healthControllerGetHealthQueryKey();
+  const queryKey = empresasControllerFindOneQueryKey(id);
   return queryOptions<
-    HealthControllerGetHealthQueryResponse,
+    EmpresasControllerFindOneQueryResponse,
     ResponseErrorConfig<Error>,
-    HealthControllerGetHealthQueryResponse,
+    EmpresasControllerFindOneQueryResponse,
     typeof queryKey
   >({
+    enabled: !!id,
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal;
-      return healthControllerGetHealth(config);
+      return empresasControllerFindOne(id, config);
     },
   });
 }
 
 /**
- * {@link /health}
+ * {@link /empresas/:id}
  */
-export function useHealthControllerGetHealth<
-  TData = HealthControllerGetHealthQueryResponse,
-  TQueryData = HealthControllerGetHealthQueryResponse,
-  TQueryKey extends QueryKey = HealthControllerGetHealthQueryKey
+export function useEmpresasControllerFindOne<
+  TData = EmpresasControllerFindOneQueryResponse,
+  TQueryData = EmpresasControllerFindOneQueryResponse,
+  TQueryKey extends QueryKey = EmpresasControllerFindOneQueryKey
 >(
+  id: EmpresasControllerFindOnePathParams['id'],
   options: {
     query?: Partial<
       QueryObserverOptions<
-        HealthControllerGetHealthQueryResponse,
+        EmpresasControllerFindOneQueryResponse,
         ResponseErrorConfig<Error>,
         TData,
         TQueryData,
@@ -82,11 +90,11 @@ export function useHealthControllerGetHealth<
   const { query: queryConfig = {}, client: config = {} } = options ?? {};
   const { client: queryClient, ...queryOptions } = queryConfig;
   const queryKey =
-    queryOptions?.queryKey ?? healthControllerGetHealthQueryKey();
+    queryOptions?.queryKey ?? empresasControllerFindOneQueryKey(id);
 
   const query = useQuery(
     {
-      ...healthControllerGetHealthQueryOptions(config),
+      ...empresasControllerFindOneQueryOptions(id, config),
       queryKey,
       ...queryOptions,
     } as unknown as QueryObserverOptions,

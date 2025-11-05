@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "razao": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "fantasia": { "type": "string", "minLength": 0, "maxLength": 100 },
+    "cnpj": { "type": "string", "minLength": 1, "maxLength": 15 },
+    "registro": { "type": "string" },
+    "phone": { "type": "string", "minLength": 0, "maxLength": 20 },
+    "email": { "type": "string", "format": "email" }
+  },
+  "required": ["cnpj", "email"],
+  "x-readme-ref-name": "CreateEmpresaDto"
+}

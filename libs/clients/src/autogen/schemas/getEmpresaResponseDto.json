@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "empresa": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "razao": { "type": "string" },
+        "fantasia": { "type": "string" },
+        "cnpj": { "type": "string" },
+        "registro": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "createdAt": { "format": "date-time", "type": "string" },
+        "updatedAt": { "format": "date-time", "type": "string" }
+      },
+      "required": [
+        "id",
+        "razao",
+        "fantasia",
+        "cnpj",
+        "registro",
+        "phone",
+        "email",
+        "createdAt",
+        "updatedAt"
+      ],
+      "x-readme-ref-name": "EmpresaDto"
+    }
+  },
+  "required": ["empresa"],
+  "x-readme-ref-name": "GetEmpresaResponseDto"
+}

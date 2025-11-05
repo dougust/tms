@@ -1,5 +1,37 @@
+export type { CreateEmpresaDto } from './CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './CreateProjetoDto.ts';
+export type { EmpresaDto } from './EmpresaDto.ts';
+export type {
+  EmpresasControllerCreate201,
+  EmpresasControllerCreateMutationRequest,
+  EmpresasControllerCreateMutationResponse,
+  EmpresasControllerCreateMutation,
+} from './EmpresasControllerCreate.ts';
+export type {
+  EmpresasControllerFindAll200,
+  EmpresasControllerFindAllQueryResponse,
+  EmpresasControllerFindAllQuery,
+} from './EmpresasControllerFindAll.ts';
+export type {
+  EmpresasControllerFindOnePathParams,
+  EmpresasControllerFindOne200,
+  EmpresasControllerFindOneQueryResponse,
+  EmpresasControllerFindOneQuery,
+} from './EmpresasControllerFindOne.ts';
+export type {
+  EmpresasControllerRemovePathParams,
+  EmpresasControllerRemove200,
+  EmpresasControllerRemoveMutationResponse,
+  EmpresasControllerRemoveMutation,
+} from './EmpresasControllerRemove.ts';
+export type {
+  EmpresasControllerUpdatePathParams,
+  EmpresasControllerUpdate200,
+  EmpresasControllerUpdateMutationRequest,
+  EmpresasControllerUpdateMutationResponse,
+  EmpresasControllerUpdateMutation,
+} from './EmpresasControllerUpdate.ts';
 export type { FuncionarioDto } from './FuncionarioDto.ts';
 export type {
   FuncionariosControllerCreate201,
@@ -31,6 +63,7 @@ export type {
   FuncionariosControllerUpdateMutationResponse,
   FuncionariosControllerUpdateMutation,
 } from './FuncionariosControllerUpdate.ts';
+export type { GetEmpresaResponseDto } from './GetEmpresaResponseDto.ts';
 export type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto.ts';
 export type {
   HealthControllerGetHealth200,
@@ -67,5 +100,6 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './ProjetosControllerUpdate.ts';
+export type { UpdateEmpresaDto } from './UpdateEmpresaDto.ts';
 export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto.ts';
 export type { UpdateProjetoDto } from './UpdateProjetoDto.ts';

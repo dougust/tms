@@ -1,3 +1,8 @@
+export type { EmpresasControllerCreateMutationKey } from './Empresas/useEmpresasControllerCreate.ts';
+export type { EmpresasControllerFindAllQueryKey } from './Empresas/useEmpresasControllerFindAll.ts';
+export type { EmpresasControllerFindOneQueryKey } from './Empresas/useEmpresasControllerFindOne.ts';
+export type { EmpresasControllerRemoveMutationKey } from './Empresas/useEmpresasControllerRemove.ts';
+export type { EmpresasControllerUpdateMutationKey } from './Empresas/useEmpresasControllerUpdate.ts';
 export type { FuncionariosControllerCreateMutationKey } from './Funcionarios/useFuncionariosControllerCreate.ts';
 export type { FuncionariosControllerFindAllQueryKey } from './Funcionarios/useFuncionariosControllerFindAll.ts';
 export type { FuncionariosControllerFindOneQueryKey } from './Funcionarios/useFuncionariosControllerFindOne.ts';
@@ -9,6 +14,36 @@ export type { ProjetosControllerFindAllQueryKey } from './Projetos/useProjetosCo
 export type { ProjetosControllerFindOneQueryKey } from './Projetos/useProjetosControllerFindOne.ts';
 export type { ProjetosControllerRemoveMutationKey } from './Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './Projetos/useProjetosControllerUpdate.ts';
+export {
+  empresasControllerCreateMutationKey,
+  empresasControllerCreate,
+  empresasControllerCreateMutationOptions,
+  useEmpresasControllerCreate,
+} from './Empresas/useEmpresasControllerCreate.ts';
+export {
+  empresasControllerFindAllQueryKey,
+  empresasControllerFindAll,
+  empresasControllerFindAllQueryOptions,
+  useEmpresasControllerFindAll,
+} from './Empresas/useEmpresasControllerFindAll.ts';
+export {
+  empresasControllerFindOneQueryKey,
+  empresasControllerFindOne,
+  empresasControllerFindOneQueryOptions,
+  useEmpresasControllerFindOne,
+} from './Empresas/useEmpresasControllerFindOne.ts';
+export {
+  empresasControllerRemoveMutationKey,
+  empresasControllerRemove,
+  empresasControllerRemoveMutationOptions,
+  useEmpresasControllerRemove,
+} from './Empresas/useEmpresasControllerRemove.ts';
+export {
+  empresasControllerUpdateMutationKey,
+  empresasControllerUpdate,
+  empresasControllerUpdateMutationOptions,
+  useEmpresasControllerUpdate,
+} from './Empresas/useEmpresasControllerUpdate.ts';
 export {
   funcionariosControllerCreateMutationKey,
   funcionariosControllerCreate,
