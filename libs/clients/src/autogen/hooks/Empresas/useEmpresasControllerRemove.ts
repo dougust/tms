@@ -14,61 +14,61 @@ import type {
   QueryClient,
 } from '@tanstack/react-query';
 import type {
-  FuncionariosControllerRemoveMutationResponse,
-  FuncionariosControllerRemovePathParams,
-} from '../../types/FuncionariosControllerRemove.ts';
+  EmpresasControllerRemoveMutationResponse,
+  EmpresasControllerRemovePathParams,
+} from '../../types/EmpresasControllerRemove.ts';
 import { mutationOptions, useMutation } from '@tanstack/react-query';
 
-export const funcionariosControllerRemoveMutationKey = () =>
-  [{ url: '/funcionarios/:id' }] as const;
+export const empresasControllerRemoveMutationKey = () =>
+  [{ url: '/empresas/:id' }] as const;
 
-export type FuncionariosControllerRemoveMutationKey = ReturnType<
-  typeof funcionariosControllerRemoveMutationKey
+export type EmpresasControllerRemoveMutationKey = ReturnType<
+  typeof empresasControllerRemoveMutationKey
 >;
 
 /**
- * {@link /funcionarios/:id}
+ * {@link /empresas/:id}
  */
-export async function funcionariosControllerRemove(
-  id: FuncionariosControllerRemovePathParams['id'],
+export async function empresasControllerRemove(
+  id: EmpresasControllerRemovePathParams['id'],
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
   const { client: request = fetch, ...requestConfig } = config;
 
   const res = await request<
-    FuncionariosControllerRemoveMutationResponse,
+    EmpresasControllerRemoveMutationResponse,
     ResponseErrorConfig<Error>,
     unknown
-  >({ method: 'DELETE', url: `/funcionarios/${id}`, ...requestConfig });
+  >({ method: 'DELETE', url: `/empresas/${id}`, ...requestConfig });
   return res.data;
 }
 
-export function funcionariosControllerRemoveMutationOptions(
+export function empresasControllerRemoveMutationOptions(
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
-  const mutationKey = funcionariosControllerRemoveMutationKey();
+  const mutationKey = empresasControllerRemoveMutationKey();
   return mutationOptions<
-    FuncionariosControllerRemoveMutationResponse,
+    EmpresasControllerRemoveMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: FuncionariosControllerRemovePathParams['id'] },
+    { id: EmpresasControllerRemovePathParams['id'] },
     typeof mutationKey
   >({
     mutationKey,
     mutationFn: async ({ id }) => {
-      return funcionariosControllerRemove(id, config);
+      return empresasControllerRemove(id, config);
     },
   });
 }
 
 /**
- * {@link /funcionarios/:id}
+ * {@link /empresas/:id}
  */
-export function useFuncionariosControllerRemove<TContext>(
+export function useEmpresasControllerRemove<TContext>(
   options: {
     mutation?: UseMutationOptions<
-      FuncionariosControllerRemoveMutationResponse,
+      EmpresasControllerRemoveMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: FuncionariosControllerRemovePathParams['id'] },
+      { id: EmpresasControllerRemovePathParams['id'] },
       TContext
     > & { client?: QueryClient };
     client?: Partial<RequestConfig> & { client?: typeof fetch };
@@ -77,21 +77,21 @@ export function useFuncionariosControllerRemove<TContext>(
   const { mutation = {}, client: config = {} } = options ?? {};
   const { client: queryClient, ...mutationOptions } = mutation;
   const mutationKey =
-    mutationOptions.mutationKey ?? funcionariosControllerRemoveMutationKey();
+    mutationOptions.mutationKey ?? empresasControllerRemoveMutationKey();
 
-  const baseOptions = funcionariosControllerRemoveMutationOptions(
+  const baseOptions = empresasControllerRemoveMutationOptions(
     config
   ) as UseMutationOptions<
-    FuncionariosControllerRemoveMutationResponse,
+    EmpresasControllerRemoveMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: FuncionariosControllerRemovePathParams['id'] },
+    { id: EmpresasControllerRemovePathParams['id'] },
     TContext
   >;
 
   return useMutation<
-    FuncionariosControllerRemoveMutationResponse,
+    EmpresasControllerRemoveMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: FuncionariosControllerRemovePathParams['id'] },
+    { id: EmpresasControllerRemovePathParams['id'] },
     TContext
   >(
     {
@@ -101,9 +101,9 @@ export function useFuncionariosControllerRemove<TContext>(
     },
     queryClient
   ) as UseMutationResult<
-    FuncionariosControllerRemoveMutationResponse,
+    EmpresasControllerRemoveMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: FuncionariosControllerRemovePathParams['id'] },
+    { id: EmpresasControllerRemovePathParams['id'] },
     TContext
   >;
 }

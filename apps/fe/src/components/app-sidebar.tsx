@@ -23,6 +23,7 @@ import {
   Calendar,
   Mail,
   Briefcase,
+  Building2,
   CalendarPlus,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -50,6 +51,11 @@ const dataNavItems = [
     title: 'Funcionarios',
     icon: Users,
     href: '/dashboard/funcionarios',
+  },
+  {
+    title: 'Empresas',
+    icon: Building2,
+    href: '/dashboard/empresas',
   },
   {
     title: 'Projetos',
