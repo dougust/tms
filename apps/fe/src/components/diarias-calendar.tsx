@@ -28,8 +28,8 @@ const PROJECT_ID = '532278ee-30b0-4599-7c5e-78bb13d8e63f';
 export function DiariasCalendar(props: DiariasCalendarProps) {
   const { funcionarios, diarias, projetos, range } = props;
 
-  const createMutation = useCreateDiaria(range)
-  const updateMutation = useUpdateDiaria(range)
+  const createMutation = useCreateDiaria(range);
+  const updateMutation = useUpdateDiaria(range);
 
   const onCreateClick = async (data: CreateDiariaDto) => {
     createMutation.mutate({ data });
@@ -40,13 +40,20 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     [projetos]
   );
 
-  const diariasPorFuncionario = React.useMemo(
+  const diariasPorFuncionario: Map<
+    string,
+    Map<string, DiariaDto>
+  > = React.useMemo(
     () =>
       diarias.reduce((acc, diaria) => {
-        if (!acc[diaria.funcionarioId]) acc[diaria.funcionarioId] = {};
-        acc[diaria.funcionarioId][diaria.dia] = diaria;
+        if (
+          acc.has(diaria.funcionarioId) ||
+          acc.set(diaria.funcionarioId, new Map())
+        ) {
+          acc.get(diaria.funcionarioId)?.set(diaria.dia, diaria);
+        }
         return acc;
-      }, {} as Record<string, Record<string, DiariaDto>>),
+      }, new Map<string, Map<string, DiariaDto>>()),
     [diarias]
   );
 
@@ -94,8 +101,8 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         cell: ({ row }) => {
           const funcionarioId = row.original.id;
           const projetoId = row.original.projetoId;
-          const diarias = diariasPorFuncionario?.[funcionarioId];
-          const diaria = diarias?.[dia];
+          const diarias = diariasPorFuncionario.get(funcionarioId);
+          const diaria = diarias?.get(dia);
           const projetDiaria = diaria && projetosRecord[diaria.projetoId].nome;
 
           return (
