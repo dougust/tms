@@ -1,16 +1,14 @@
 'use client';
 
-import { useAppQuery } from '@dougust/clients';
+import { ProjetoDto, useProjetosControllerFindAll } from '@dougust/clients';
 import { DataTable } from '@dougust/ui';
 import { columns } from './cloumns';
 import { ErrorPanel, ListPageLayout } from '../../../components';
 import { Briefcase } from 'lucide-react';
-import { IProjetoListDto } from '@dougust/types';
 
 export default function ProjetosPage() {
-  const { data, isLoading, error, refetch } = useAppQuery<IProjetoListDto[]>({
-    queryKey: ['projetos'],
-  });
+  const { data, isLoading, error, refetch } =
+    useProjetosControllerFindAll<ProjetoDto[]>();
 
   return (
     <ListPageLayout
