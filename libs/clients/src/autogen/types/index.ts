@@ -125,3 +125,9 @@ export type {
 export type { UpdateEmpresaDto } from './UpdateEmpresaDto.ts';
 export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto.ts';
 export type { UpdateProjetoDto } from './UpdateProjetoDto.ts';
+export type { TipoDiariaDto } from './TipoDiariaDto.ts';
+export type {
+  TiposDiariaControllerFindAll200,
+  TiposDiariaControllerFindAllQueryResponse,
+  TiposDiariaControllerFindAllQuery,
+} from './TiposDiariaControllerFindAll.ts';

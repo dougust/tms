@@ -17,6 +17,7 @@ export type { ProjetosControllerFindAllQueryKey } from './Projetos/useProjetosCo
 export type { ProjetosControllerFindOneQueryKey } from './Projetos/useProjetosControllerFindOne.ts';
 export type { ProjetosControllerRemoveMutationKey } from './Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './Projetos/useProjetosControllerUpdate.ts';
+export type { TiposDiariaControllerFindAllQueryKey } from './TiposDiaria/useTiposDiariaControllerFindAll.ts';
 export {
   diariasControllerCreateMutationKey,
   diariasControllerCreate,
@@ -131,3 +132,9 @@ export {
   projetosControllerUpdateMutationOptions,
   useProjetosControllerUpdate,
 } from './Projetos/useProjetosControllerUpdate.ts';
+export {
+  tiposDiariaControllerFindAllQueryKey,
+  tiposDiariaControllerFindAll,
+  tiposDiariaControllerFindAllQueryOptions,
+  useTiposDiariaControllerFindAll,
+} from './TiposDiaria/useTiposDiariaControllerFindAll.ts';

@@ -8,6 +8,7 @@ import { DatabaseUtilsModule } from './common/cadastros/database-utils.module';
 import { ProjetosModule } from './modules/projetos/projetos.module';
 import { EmpresasModule } from './modules/empresas/empresas.module';
 import { DiariasModule } from './modules/diarias/diarias.module';
+import { TiposDiariaModule } from './modules/tipos-diaria/tipos-diaria.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { DiariasModule } from './modules/diarias/diarias.module';
     DatabaseUtilsModule,
     EmpresasModule,
     DiariasModule,
+    TiposDiariaModule,
   ],
   controllers: [],
   providers: [],
