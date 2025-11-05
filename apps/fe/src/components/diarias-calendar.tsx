@@ -99,10 +99,12 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         accessorKey: dia,
         header: dia,
         cell: ({ row }) => {
-          const funcionarioId = row.original.id;
-          const projetoId = row.original.projetoId;
-          const diarias = diariasPorFuncionario.get(funcionarioId);
-          const diaria = diarias?.get(dia);
+          if (new Date(dia) > new Date()) {
+            return <div className="text-muted-foreground "></div>;
+          }
+
+          const { id: funcionarioId, projetoId } = row.original;
+          const diaria = diariasPorFuncionario.get(funcionarioId)?.get(dia);
           const projetDiaria = diaria && projetosRecord[diaria.projetoId].nome;
 
           return (

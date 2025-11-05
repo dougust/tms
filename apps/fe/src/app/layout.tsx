@@ -1,4 +1,3 @@
-import './global.css';
 import { Providers } from '../components';
 import '@dougust/ui/styles/globals.css';
 
