@@ -6,4 +6,5 @@ export * from './list-page-layout';
 export * from './stat-card';
 export * from './error-panel';
 export * from './diarias-calendar';
+export * from './diarias-date-selector';
 export * from './providers';

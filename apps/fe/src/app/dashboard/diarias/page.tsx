@@ -1,59 +1,81 @@
 'use client';
 
-import { DiariasCalendar, ListPageLayout } from '../../../components';
-import { Briefcase, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  DiariasCalendar,
+  DiariasDateSelector,
+  ListPageLayout,
+} from '../../../components';
 import React from 'react';
-import { Button } from '@dougust/ui';
-import { addDays, startOfWeekMonday, toISODate } from '../../../lib';
-import { useDiariasQuery } from './useDiariasQuery';
-import { DiariaDto, useFuncionariosControllerFindAll } from '@dougust/clients';
+import {
+  addDays,
+  reduceToRecord,
+  startOfWeekMonday,
+  toISODate,
+} from '../../../lib';
+import {
+  useDiariasControllerFindInRange,
+  useFuncionariosControllerFindAll,
+  useProjetosControllerFindAll,
+} from '@dougust/clients';
+
+const daysCount = 7;
 
 export default function DiariasPage() {
   const [fromDate, setFromDate] = React.useState(() =>
     startOfWeekMonday(new Date())
   );
-  const [daysCount, setDaysCount] = React.useState(7);
   const toDate = React.useMemo(() => addDays(fromDate, daysCount), [fromDate]);
 
-  const { data, isLoading } = useFuncionariosControllerFindAll();
+  const {
+    data: employees,
+    isPending: isEmployeesPending,
+    isError: isEmployeesError,
+  } = useFuncionariosControllerFindAll();
 
-  const weekLabel = React.useMemo(() => {
-    const fmt = (iso: string) => {
-      const [y, m, d] = iso.split('-');
-      return `${d}/${m}`;
-    };
-    return `${fmt(toISODate(fromDate))} - ${fmt(toISODate(toDate))}`;
-  }, [fromDate, toDate]);
+  const {
+    data: projects,
+    isPending: isProjectsPending,
+    isError: isProjectsError,
+  } = useProjetosControllerFindAll({
+    query: {
+      select: reduceToRecord,
+    },
+  });
 
-  const goPrevWeek = () => setFromDate((d) => addDays(d, -7));
-  const goNextWeek = () => setFromDate((d) => addDays(d, 7));
-  const goThisWeek = () => setFromDate(startOfWeekMonday(new Date()));
+  const {
+    data: diarias,
+    isPending: isDiariasPending,
+    isError: isDiariasError,
+  } = useDiariasControllerFindInRange({
+    from: toISODate(fromDate),
+    to: toISODate(toDate),
+  });
+
+  const isError = isEmployeesError || isProjectsError || isDiariasError;
+  const isPending = isEmployeesPending || isProjectsPending || isDiariasPending;
 
   return (
     <ListPageLayout
       title="Diárias"
-      description={`Visão de calendário semanal (${weekLabel}).`}
+      description={`Visão de calendário semanal.`}
     >
-      <div className="flex items-center justify-between gap-2 mb-2">
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={goPrevWeek}>
-            <ChevronLeft className="h-4 w-4" /> Semana anterior
-          </Button>
-          <Button variant="outline" size="sm" onClick={goThisWeek}>
-            Esta semana
-          </Button>
-          <Button variant="outline" size="sm" onClick={goNextWeek}>
-            Próxima semana <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-        <div className="text-sm text-muted-foreground">{weekLabel}</div>
-      </div>
-
-      <DiariasCalendar
-        funcionarios={data || []}
+      <DiariasDateSelector
         fromDate={fromDate}
-        range={daysCount}
+        toDate={toDate}
+        onDateChange={setFromDate}
       />
+
+      {isPending ? (
+        <></>
+      ) : isError ? (
+        <></>
+      ) : (
+        <DiariasCalendar
+          funcionarios={employees}
+          fromDate={fromDate}
+          range={daysCount}
+        />
+      )}
     </ListPageLayout>
   );
 }

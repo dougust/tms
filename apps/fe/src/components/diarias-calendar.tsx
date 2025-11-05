@@ -70,7 +70,14 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         accessorKey: date,
         header: date,
         cell: ({ row }) => {
-          return <Button size="sm">empty</Button>;
+
+          return (
+            <Button
+              size="sm"
+            >
+              empty
+            </Button>
+          );
         },
       });
     }

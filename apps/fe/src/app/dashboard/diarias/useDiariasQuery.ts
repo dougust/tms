@@ -28,38 +28,21 @@ export const useDiariasQuery = (from: string, to: string) => {
     }
   );
 
-  const isLoading = React.useMemo(
-    () =>
-      employeesQuery.isLoading ||
-      projectsQuery.isLoading ||
-      diariasQuery.isLoading,
-    [employeesQuery.isLoading, projectsQuery.isLoading, diariasQuery.isLoading]
+  const isPending =
+    employeesQuery.isPending ||
+    projectsQuery.isPending ||
+    diariasQuery.isPending;
+  const isError =
+    employeesQuery.isError || projectsQuery.isError || diariasQuery.isError;
+
+  return React.useMemo(
+    () => ({
+      employees: employeesQuery.data,
+      projects: projectsQuery.data,
+      diarias: diariasQuery.data,
+      isPending,
+      isError,
+    }),
+    [employeesQuery, projectsQuery, diariasQuery]
   );
-
-  const refetch = React.useCallback(() => {
-    employeesQuery.refetch();
-    projectsQuery.refetch();
-    diariasQuery.refetch();
-  }, [employeesQuery, projectsQuery, diariasQuery]);
-
-  return React.useMemo(() => {
-    if (
-      projectsQuery.isSuccess &&
-      employeesQuery.isSuccess &&
-      diariasQuery.isSuccess
-    ) {
-      const funcionarios = employeesQuery.data;
-      const projetos = projectsQuery.data;
-      const diarias = diariasQuery.data;
-
-      return {
-        funcionarios,
-        projetos,
-        diarias,
-        refetch,
-      };
-    }
-
-    return undefined;
-  }, [employeesQuery, projectsQuery, diariasQuery]);
 };
