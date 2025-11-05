@@ -1,6 +1,11 @@
 export type { DiariasControllerCreateMutationKey } from './hooks/Diarias/useDiariasControllerCreate.ts';
 export type { DiariasControllerFindInRangeQueryKey } from './hooks/Diarias/useDiariasControllerFindInRange.ts';
 export type { DiariasControllerUpdateMutationKey } from './hooks/Diarias/useDiariasControllerUpdate.ts';
+export type { EmpresasControllerCreateMutationKey } from './hooks/Empresas/useEmpresasControllerCreate.ts';
+export type { EmpresasControllerFindAllQueryKey } from './hooks/Empresas/useEmpresasControllerFindAll.ts';
+export type { EmpresasControllerFindOneQueryKey } from './hooks/Empresas/useEmpresasControllerFindOne.ts';
+export type { EmpresasControllerRemoveMutationKey } from './hooks/Empresas/useEmpresasControllerRemove.ts';
+export type { EmpresasControllerUpdateMutationKey } from './hooks/Empresas/useEmpresasControllerUpdate.ts';
 export type { FuncionariosControllerCreateMutationKey } from './hooks/Funcionarios/useFuncionariosControllerCreate.ts';
 export type { FuncionariosControllerFindAllQueryKey } from './hooks/Funcionarios/useFuncionariosControllerFindAll.ts';
 export type { FuncionariosControllerFindOneQueryKey } from './hooks/Funcionarios/useFuncionariosControllerFindOne.ts';
@@ -13,6 +18,7 @@ export type { ProjetosControllerFindOneQueryKey } from './hooks/Projetos/useProj
 export type { ProjetosControllerRemoveMutationKey } from './hooks/Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './hooks/Projetos/useProjetosControllerUpdate.ts';
 export type { CreateDiariaDto } from './types/CreateDiariaDto.ts';
+export type { CreateEmpresaDto } from './types/CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './types/CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './types/CreateProjetoDto.ts';
 export type { DiariaDto } from './types/DiariaDto.ts';
@@ -35,6 +41,37 @@ export type {
   DiariasControllerUpdateMutationResponse,
   DiariasControllerUpdateMutation,
 } from './types/DiariasControllerUpdate.ts';
+export type { EmpresaDto } from './types/EmpresaDto.ts';
+export type {
+  EmpresasControllerCreate201,
+  EmpresasControllerCreateMutationRequest,
+  EmpresasControllerCreateMutationResponse,
+  EmpresasControllerCreateMutation,
+} from './types/EmpresasControllerCreate.ts';
+export type {
+  EmpresasControllerFindAll200,
+  EmpresasControllerFindAllQueryResponse,
+  EmpresasControllerFindAllQuery,
+} from './types/EmpresasControllerFindAll.ts';
+export type {
+  EmpresasControllerFindOnePathParams,
+  EmpresasControllerFindOne200,
+  EmpresasControllerFindOneQueryResponse,
+  EmpresasControllerFindOneQuery,
+} from './types/EmpresasControllerFindOne.ts';
+export type {
+  EmpresasControllerRemovePathParams,
+  EmpresasControllerRemove200,
+  EmpresasControllerRemoveMutationResponse,
+  EmpresasControllerRemoveMutation,
+} from './types/EmpresasControllerRemove.ts';
+export type {
+  EmpresasControllerUpdatePathParams,
+  EmpresasControllerUpdate200,
+  EmpresasControllerUpdateMutationRequest,
+  EmpresasControllerUpdateMutationResponse,
+  EmpresasControllerUpdateMutation,
+} from './types/EmpresasControllerUpdate.ts';
 export type { FuncionarioDto } from './types/FuncionarioDto.ts';
 export type {
   FuncionariosControllerCreate201,
@@ -66,6 +103,7 @@ export type {
   FuncionariosControllerUpdateMutationResponse,
   FuncionariosControllerUpdateMutation,
 } from './types/FuncionariosControllerUpdate.ts';
+export type { GetEmpresaResponseDto } from './types/GetEmpresaResponseDto.ts';
 export type { GetFuncionarioResponseDto } from './types/GetFuncionarioResponseDto.ts';
 export type {
   HealthControllerGetHealth200,
@@ -103,6 +141,7 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './types/ProjetosControllerUpdate.ts';
+export type { UpdateEmpresaDto } from './types/UpdateEmpresaDto.ts';
 export type { UpdateFuncionarioDto } from './types/UpdateFuncionarioDto.ts';
 export type { UpdateProjetoDto } from './types/UpdateProjetoDto.ts';
 export {
@@ -123,6 +162,36 @@ export {
   diariasControllerUpdateMutationOptions,
   useDiariasControllerUpdate,
 } from './hooks/Diarias/useDiariasControllerUpdate.ts';
+export {
+  empresasControllerCreateMutationKey,
+  empresasControllerCreate,
+  empresasControllerCreateMutationOptions,
+  useEmpresasControllerCreate,
+} from './hooks/Empresas/useEmpresasControllerCreate.ts';
+export {
+  empresasControllerFindAllQueryKey,
+  empresasControllerFindAll,
+  empresasControllerFindAllQueryOptions,
+  useEmpresasControllerFindAll,
+} from './hooks/Empresas/useEmpresasControllerFindAll.ts';
+export {
+  empresasControllerFindOneQueryKey,
+  empresasControllerFindOne,
+  empresasControllerFindOneQueryOptions,
+  useEmpresasControllerFindOne,
+} from './hooks/Empresas/useEmpresasControllerFindOne.ts';
+export {
+  empresasControllerRemoveMutationKey,
+  empresasControllerRemove,
+  empresasControllerRemoveMutationOptions,
+  useEmpresasControllerRemove,
+} from './hooks/Empresas/useEmpresasControllerRemove.ts';
+export {
+  empresasControllerUpdateMutationKey,
+  empresasControllerUpdate,
+  empresasControllerUpdateMutationOptions,
+  useEmpresasControllerUpdate,
+} from './hooks/Empresas/useEmpresasControllerUpdate.ts';
 export {
   funcionariosControllerCreateMutationKey,
   funcionariosControllerCreate,
@@ -190,6 +259,7 @@ export {
   useProjetosControllerUpdate,
 } from './hooks/Projetos/useProjetosControllerUpdate.ts';
 export { createDiariaDtoSchema } from './zod/createDiariaDtoSchema.ts';
+export { createEmpresaDtoSchema } from './zod/createEmpresaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './zod/createProjetoDtoSchema.ts';
 export { diariaDtoSchema } from './zod/diariaDtoSchema.ts';
@@ -209,6 +279,32 @@ export {
   diariasControllerUpdateMutationRequestSchema,
   diariasControllerUpdateMutationResponseSchema,
 } from './zod/diariasControllerUpdateSchema.ts';
+export { empresaDtoSchema } from './zod/empresaDtoSchema.ts';
+export {
+  empresasControllerCreate201Schema,
+  empresasControllerCreateMutationRequestSchema,
+  empresasControllerCreateMutationResponseSchema,
+} from './zod/empresasControllerCreateSchema.ts';
+export {
+  empresasControllerFindAll200Schema,
+  empresasControllerFindAllQueryResponseSchema,
+} from './zod/empresasControllerFindAllSchema.ts';
+export {
+  empresasControllerFindOnePathParamsSchema,
+  empresasControllerFindOne200Schema,
+  empresasControllerFindOneQueryResponseSchema,
+} from './zod/empresasControllerFindOneSchema.ts';
+export {
+  empresasControllerRemovePathParamsSchema,
+  empresasControllerRemove200Schema,
+  empresasControllerRemoveMutationResponseSchema,
+} from './zod/empresasControllerRemoveSchema.ts';
+export {
+  empresasControllerUpdatePathParamsSchema,
+  empresasControllerUpdate200Schema,
+  empresasControllerUpdateMutationRequestSchema,
+  empresasControllerUpdateMutationResponseSchema,
+} from './zod/empresasControllerUpdateSchema.ts';
 export { funcionarioDtoSchema } from './zod/funcionarioDtoSchema.ts';
 export {
   funcionariosControllerCreate201Schema,
@@ -235,6 +331,7 @@ export {
   funcionariosControllerUpdateMutationRequestSchema,
   funcionariosControllerUpdateMutationResponseSchema,
 } from './zod/funcionariosControllerUpdateSchema.ts';
+export { getEmpresaResponseDtoSchema } from './zod/getEmpresaResponseDtoSchema.ts';
 export { getFuncionarioResponseDtoSchema } from './zod/getFuncionarioResponseDtoSchema.ts';
 export {
   healthControllerGetHealth200Schema,
@@ -266,5 +363,6 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './zod/projetosControllerUpdateSchema.ts';
+export { updateEmpresaDtoSchema } from './zod/updateEmpresaDtoSchema.ts';
 export { updateFuncionarioDtoSchema } from './zod/updateFuncionarioDtoSchema.ts';
 export { updateProjetoDtoSchema } from './zod/updateProjetoDtoSchema.ts';

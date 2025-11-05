@@ -299,6 +299,148 @@
         ]
       }
     },
+    "/empresas": {
+      "post": {
+        "operationId": "EmpresasController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEmpresaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Empresas"
+        ]
+      },
+      "get": {
+        "operationId": "EmpresasController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EmpresaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Empresas"
+        ]
+      }
+    },
+    "/empresas/{id}": {
+      "get": {
+        "operationId": "EmpresasController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEmpresaResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Empresas"
+        ]
+      },
+      "patch": {
+        "operationId": "EmpresasController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmpresaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Empresas"
+        ]
+      },
+      "delete": {
+        "operationId": "EmpresasController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Empresas"
+        ]
+      }
+    },
     "/diarias": {
       "get": {
         "operationId": "DiariasController_findInRange",
@@ -646,6 +788,130 @@
           },
           "fim": {
             "type": "string"
+          }
+        }
+      },
+      "CreateEmpresaDto": {
+        "type": "object",
+        "properties": {
+          "razao": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "fantasia": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 100
+          },
+          "cnpj": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 15
+          },
+          "registro": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 20
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "required": [
+          "cnpj",
+          "email"
+        ]
+      },
+      "EmpresaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "razao": {
+            "type": "string"
+          },
+          "fantasia": {
+            "type": "string"
+          },
+          "cnpj": {
+            "type": "string"
+          },
+          "registro": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "razao",
+          "fantasia",
+          "cnpj",
+          "registro",
+          "phone",
+          "email",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "GetEmpresaResponseDto": {
+        "type": "object",
+        "properties": {
+          "empresa": {
+            "$ref": "#/components/schemas/EmpresaDto"
+          }
+        },
+        "required": [
+          "empresa"
+        ]
+      },
+      "UpdateEmpresaDto": {
+        "type": "object",
+        "properties": {
+          "razao": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "fantasia": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 100
+          },
+          "cnpj": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 15
+          },
+          "registro": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 20
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
           }
         }
       },
