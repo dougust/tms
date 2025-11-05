@@ -37,6 +37,10 @@ export type CreateFuncionarioDto = {
    */
   email: string;
   /**
+   * @type string
+   */
+  projetoId: string;
+  /**
    * @minLength 0
    * @maxLength 11
    * @type string | undefined

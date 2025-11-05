@@ -319,7 +319,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DiariaEntity"
+                  }
                 }
               }
             }
@@ -329,22 +332,69 @@
           "Diarias"
         ]
       },
-      "patch": {
-        "operationId": "DiariasController_updateDiaria",
+      "post": {
+        "operationId": "DiariasController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateDiariaDto"
+                "$ref": "#/components/schemas/CreateDiariaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiariaEntity"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diarias"
+        ]
+      }
+    },
+    "/diarias/{id}": {
+      "patch": {
+        "operationId": "DiariasController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDiariaDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiariaEntity"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -393,6 +443,9 @@
             "type": "string",
             "format": "email"
           },
+          "projetoId": {
+            "type": "string"
+          },
           "rg": {
             "type": "string",
             "minLength": 0,
@@ -401,7 +454,8 @@
         },
         "required": [
           "cpf",
-          "email"
+          "email",
+          "projetoId"
         ]
       },
       "FuncionarioDto": {
@@ -431,6 +485,9 @@
           "rg": {
             "type": "string"
           },
+          "projetoId": {
+            "type": "string"
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -449,6 +506,7 @@
           "phone",
           "email",
           "rg",
+          "projetoId",
           "createdAt",
           "updatedAt"
         ]
@@ -493,6 +551,9 @@
           "email": {
             "type": "string",
             "format": "email"
+          },
+          "projetoId": {
+            "type": "string"
           },
           "rg": {
             "type": "string",
@@ -544,27 +605,27 @@
           }
         }
       },
-      "UpdateDiariaDto": {
+      "DiariaEntity": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateDiariaDto": {
         "type": "object",
         "properties": {
-          "funcionarioId": {
+          "projetoId": {
             "type": "string"
           },
-          "projetoId": {
+          "funcionarioId": {
             "type": "string"
           },
           "dia": {
             "type": "string"
-          },
-          "tipo": {
-            "type": "object"
           }
         },
         "required": [
-          "funcionarioId",
           "projetoId",
-          "dia",
-          "tipo"
+          "funcionarioId",
+          "dia"
         ]
       }
     }

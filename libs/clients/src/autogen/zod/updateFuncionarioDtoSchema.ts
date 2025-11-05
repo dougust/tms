@@ -12,5 +12,6 @@ export const updateFuncionarioDtoSchema = z.object({
   nascimento: z.optional(z.string()),
   phone: z.optional(z.string().min(0).max(20)),
   email: z.optional(z.email()),
+  projetoId: z.optional(z.string()),
   rg: z.optional(z.string().min(0).max(11)),
 });

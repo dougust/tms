@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { DiariaEntity } from './DiariaEntity.ts';
+
 export type DiariasControllerFindInRangeQueryParams = {
   /**
    * @type string
@@ -14,7 +16,7 @@ export type DiariasControllerFindInRangeQueryParams = {
   to: string;
 };
 
-export type DiariasControllerFindInRange200 = object;
+export type DiariasControllerFindInRange200 = DiariaEntity[];
 
 export type DiariasControllerFindInRangeQueryResponse =
   DiariasControllerFindInRange200;

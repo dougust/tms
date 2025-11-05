@@ -1,5 +1,6 @@
+export type { DiariasControllerCreateMutationKey } from './hooks/Diarias/useDiariasControllerCreate.ts';
 export type { DiariasControllerFindInRangeQueryKey } from './hooks/Diarias/useDiariasControllerFindInRange.ts';
-export type { DiariasControllerUpdateDiariaMutationKey } from './hooks/Diarias/useDiariasControllerUpdateDiaria.ts';
+export type { DiariasControllerUpdateMutationKey } from './hooks/Diarias/useDiariasControllerUpdate.ts';
 export type { FuncionariosControllerCreateMutationKey } from './hooks/Funcionarios/useFuncionariosControllerCreate.ts';
 export type { FuncionariosControllerFindAllQueryKey } from './hooks/Funcionarios/useFuncionariosControllerFindAll.ts';
 export type { FuncionariosControllerFindOneQueryKey } from './hooks/Funcionarios/useFuncionariosControllerFindOne.ts';
@@ -11,8 +12,16 @@ export type { ProjetosControllerFindAllQueryKey } from './hooks/Projetos/useProj
 export type { ProjetosControllerFindOneQueryKey } from './hooks/Projetos/useProjetosControllerFindOne.ts';
 export type { ProjetosControllerRemoveMutationKey } from './hooks/Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './hooks/Projetos/useProjetosControllerUpdate.ts';
+export type { CreateDiariaDto } from './types/CreateDiariaDto.ts';
 export type { CreateFuncionarioDto } from './types/CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './types/CreateProjetoDto.ts';
+export type { DiariaEntity } from './types/DiariaEntity.ts';
+export type {
+  DiariasControllerCreate201,
+  DiariasControllerCreateMutationRequest,
+  DiariasControllerCreateMutationResponse,
+  DiariasControllerCreateMutation,
+} from './types/DiariasControllerCreate.ts';
 export type {
   DiariasControllerFindInRangeQueryParams,
   DiariasControllerFindInRange200,
@@ -20,11 +29,12 @@ export type {
   DiariasControllerFindInRangeQuery,
 } from './types/DiariasControllerFindInRange.ts';
 export type {
-  DiariasControllerUpdateDiaria200,
-  DiariasControllerUpdateDiariaMutationRequest,
-  DiariasControllerUpdateDiariaMutationResponse,
-  DiariasControllerUpdateDiariaMutation,
-} from './types/DiariasControllerUpdateDiaria.ts';
+  DiariasControllerUpdatePathParams,
+  DiariasControllerUpdate200,
+  DiariasControllerUpdateMutationRequest,
+  DiariasControllerUpdateMutationResponse,
+  DiariasControllerUpdateMutation,
+} from './types/DiariasControllerUpdate.ts';
 export type { FuncionarioDto } from './types/FuncionarioDto.ts';
 export type {
   FuncionariosControllerCreate201,
@@ -92,9 +102,14 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './types/ProjetosControllerUpdate.ts';
-export type { UpdateDiariaDto } from './types/UpdateDiariaDto.ts';
 export type { UpdateFuncionarioDto } from './types/UpdateFuncionarioDto.ts';
 export type { UpdateProjetoDto } from './types/UpdateProjetoDto.ts';
+export {
+  diariasControllerCreateMutationKey,
+  diariasControllerCreate,
+  diariasControllerCreateMutationOptions,
+  useDiariasControllerCreate,
+} from './hooks/Diarias/useDiariasControllerCreate.ts';
 export {
   diariasControllerFindInRangeQueryKey,
   diariasControllerFindInRange,
@@ -102,11 +117,11 @@ export {
   useDiariasControllerFindInRange,
 } from './hooks/Diarias/useDiariasControllerFindInRange.ts';
 export {
-  diariasControllerUpdateDiariaMutationKey,
-  diariasControllerUpdateDiaria,
-  diariasControllerUpdateDiariaMutationOptions,
-  useDiariasControllerUpdateDiaria,
-} from './hooks/Diarias/useDiariasControllerUpdateDiaria.ts';
+  diariasControllerUpdateMutationKey,
+  diariasControllerUpdate,
+  diariasControllerUpdateMutationOptions,
+  useDiariasControllerUpdate,
+} from './hooks/Diarias/useDiariasControllerUpdate.ts';
 export {
   funcionariosControllerCreateMutationKey,
   funcionariosControllerCreate,
@@ -173,18 +188,26 @@ export {
   projetosControllerUpdateMutationOptions,
   useProjetosControllerUpdate,
 } from './hooks/Projetos/useProjetosControllerUpdate.ts';
+export { createDiariaDtoSchema } from './zod/createDiariaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './zod/createProjetoDtoSchema.ts';
+export { diariaEntitySchema } from './zod/diariaEntitySchema.ts';
+export {
+  diariasControllerCreate201Schema,
+  diariasControllerCreateMutationRequestSchema,
+  diariasControllerCreateMutationResponseSchema,
+} from './zod/diariasControllerCreateSchema.ts';
 export {
   diariasControllerFindInRangeQueryParamsSchema,
   diariasControllerFindInRange200Schema,
   diariasControllerFindInRangeQueryResponseSchema,
 } from './zod/diariasControllerFindInRangeSchema.ts';
 export {
-  diariasControllerUpdateDiaria200Schema,
-  diariasControllerUpdateDiariaMutationRequestSchema,
-  diariasControllerUpdateDiariaMutationResponseSchema,
-} from './zod/diariasControllerUpdateDiariaSchema.ts';
+  diariasControllerUpdatePathParamsSchema,
+  diariasControllerUpdate200Schema,
+  diariasControllerUpdateMutationRequestSchema,
+  diariasControllerUpdateMutationResponseSchema,
+} from './zod/diariasControllerUpdateSchema.ts';
 export { funcionarioDtoSchema } from './zod/funcionarioDtoSchema.ts';
 export {
   funcionariosControllerCreate201Schema,
@@ -241,6 +264,5 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './zod/projetosControllerUpdateSchema.ts';
-export { updateDiariaDtoSchema } from './zod/updateDiariaDtoSchema.ts';
 export { updateFuncionarioDtoSchema } from './zod/updateFuncionarioDtoSchema.ts';
 export { updateProjetoDtoSchema } from './zod/updateProjetoDtoSchema.ts';

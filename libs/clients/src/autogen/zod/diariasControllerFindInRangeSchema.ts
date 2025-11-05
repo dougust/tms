@@ -3,6 +3,7 @@
  * Do not edit manually.
  */
 
+import { diariaEntitySchema } from './diariaEntitySchema.ts';
 import { z } from 'zod/v4';
 
 export const diariasControllerFindInRangeQueryParamsSchema = z.object({
@@ -10,7 +11,8 @@ export const diariasControllerFindInRangeQueryParamsSchema = z.object({
   to: z.string(),
 });
 
-export const diariasControllerFindInRange200Schema = z.object({});
+export const diariasControllerFindInRange200Schema =
+  z.array(diariaEntitySchema);
 
 export const diariasControllerFindInRangeQueryResponseSchema =
   diariasControllerFindInRange200Schema;

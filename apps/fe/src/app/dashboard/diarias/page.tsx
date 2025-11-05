@@ -1,6 +1,10 @@
 'use client';
 
-import { useAppQuery, useDiariasControllerUpdateDiaria } from '@dougust/clients';
+import {
+  type FuncionarioDto,
+  useAppQuery,
+  useFuncionariosControllerFindAll,
+} from '@dougust/clients';
 import { DiariasCalendar, ListPageLayout } from '../../../components';
 import { Briefcase, ChevronLeft, ChevronRight } from 'lucide-react';
 import { IDiariaFuncionarioResultDto } from '@dougust/types';
@@ -9,6 +13,21 @@ import { Button } from '@dougust/ui';
 import { addDays, startOfWeekMonday, toISODate } from '../../../lib';
 
 export default function DiariasPage() {
+  const funcionariosQuery = useFuncionariosControllerFindAll({
+    query: {
+      select: (funcionarios): Record<string, FuncionarioDto> =>
+        funcionarios.reduce((acc, funcionario) => {
+          if (funcionario.id) {
+            acc[funcionario.id] = funcionario;
+          }
+          return acc;
+        }, {} as Record<string, FuncionarioDto>),
+    },
+  });
+
+  React.useMemo(() => {
+    console.log('funcionariosQuery.data', funcionariosQuery.data);
+  }, [funcionariosQuery.data]);
 
   // Initialize to current week's Monday
   const [fromDate, setFromDate] = React.useState(() =>

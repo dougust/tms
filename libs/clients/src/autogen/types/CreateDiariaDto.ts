@@ -3,11 +3,7 @@
  * Do not edit manually.
  */
 
-export type UpdateDiariaDto = {
-  /**
-   * @type string
-   */
-  funcionarioId: string;
+export type CreateDiariaDto = {
   /**
    * @type string
    */
@@ -15,9 +11,9 @@ export type UpdateDiariaDto = {
   /**
    * @type string
    */
-  dia: string;
+  funcionarioId: string;
   /**
-   * @type object
+   * @type string
    */
-  tipo: object;
+  dia: string;
 };

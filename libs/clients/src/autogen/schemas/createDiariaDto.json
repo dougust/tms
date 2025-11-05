@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "projetoId": { "type": "string" },
+    "funcionarioId": { "type": "string" },
+    "dia": { "type": "string" }
+  },
+  "required": ["projetoId", "funcionarioId", "dia"],
+  "x-readme-ref-name": "CreateDiariaDto"
+}

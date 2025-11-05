@@ -1,5 +1,6 @@
+export type { DiariasControllerCreateMutationKey } from './Diarias/useDiariasControllerCreate.ts';
 export type { DiariasControllerFindInRangeQueryKey } from './Diarias/useDiariasControllerFindInRange.ts';
-export type { DiariasControllerUpdateDiariaMutationKey } from './Diarias/useDiariasControllerUpdateDiaria.ts';
+export type { DiariasControllerUpdateMutationKey } from './Diarias/useDiariasControllerUpdate.ts';
 export type { FuncionariosControllerCreateMutationKey } from './Funcionarios/useFuncionariosControllerCreate.ts';
 export type { FuncionariosControllerFindAllQueryKey } from './Funcionarios/useFuncionariosControllerFindAll.ts';
 export type { FuncionariosControllerFindOneQueryKey } from './Funcionarios/useFuncionariosControllerFindOne.ts';
@@ -12,17 +13,23 @@ export type { ProjetosControllerFindOneQueryKey } from './Projetos/useProjetosCo
 export type { ProjetosControllerRemoveMutationKey } from './Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './Projetos/useProjetosControllerUpdate.ts';
 export {
+  diariasControllerCreateMutationKey,
+  diariasControllerCreate,
+  diariasControllerCreateMutationOptions,
+  useDiariasControllerCreate,
+} from './Diarias/useDiariasControllerCreate.ts';
+export {
   diariasControllerFindInRangeQueryKey,
   diariasControllerFindInRange,
   diariasControllerFindInRangeQueryOptions,
   useDiariasControllerFindInRange,
 } from './Diarias/useDiariasControllerFindInRange.ts';
 export {
-  diariasControllerUpdateDiariaMutationKey,
-  diariasControllerUpdateDiaria,
-  diariasControllerUpdateDiariaMutationOptions,
-  useDiariasControllerUpdateDiaria,
-} from './Diarias/useDiariasControllerUpdateDiaria.ts';
+  diariasControllerUpdateMutationKey,
+  diariasControllerUpdate,
+  diariasControllerUpdateMutationOptions,
+  useDiariasControllerUpdate,
+} from './Diarias/useDiariasControllerUpdate.ts';
 export {
   funcionariosControllerCreateMutationKey,
   funcionariosControllerCreate,

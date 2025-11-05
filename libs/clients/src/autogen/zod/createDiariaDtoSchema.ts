@@ -5,9 +5,8 @@
 
 import { z } from 'zod/v4';
 
-export const updateDiariaDtoSchema = z.object({
-  funcionarioId: z.string(),
+export const createDiariaDtoSchema = z.object({
   projetoId: z.string(),
+  funcionarioId: z.string(),
   dia: z.string(),
-  tipo: z.object({}),
 });

@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { DiariasService } from './diarias.service';
 import { RangeQueryDto } from './dto/range-query.dto';
-import { IDiariaFuncionarioResultDto } from '@dougust/types';
 import { CreateDiariaDto } from './dto/create-diaria.dto';
+import { DiariaEntity } from './dto/diaria.entity';
 
 @Controller('diarias')
 export class DiariasController {
@@ -20,17 +20,20 @@ export class DiariasController {
   findInRange(
     @Query()
     query: RangeQueryDto
-  ): Promise<IDiariaFuncionarioResultDto> {
+  ): Promise<DiariaEntity[]> {
     return this.service.findInRange(query);
   }
 
   @Post()
-  create(@Body() dto: CreateDiariaDto) {
+  create(@Body() dto: CreateDiariaDto): Promise<DiariaEntity> {
     return this.service.create(dto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: CreateDiariaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() dto: CreateDiariaDto
+  ): Promise<DiariaEntity> {
     return this.service.update(id, dto);
   }
 }
