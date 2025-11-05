@@ -4,6 +4,7 @@
  */
 
 import fetch from '@kubb/plugin-client/clients/axios';
+import type { HealthControllerGetHealthQueryResponse } from '../../types/HealthControllerGetHealth.ts';
 import type {
   RequestConfig,
   ResponseErrorConfig,
@@ -14,7 +15,6 @@ import type {
   QueryObserverOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
-import type { HealthControllerGetHealthQueryResponse } from '../../types/HealthControllerGetHealth.ts';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
 export const healthControllerGetHealthQueryKey = () =>

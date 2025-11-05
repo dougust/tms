@@ -9,6 +9,7 @@
     "phone": { "type": "string" },
     "email": { "type": "string" },
     "rg": { "type": "string" },
+    "projetoId": { "type": "string" },
     "createdAt": { "format": "date-time", "type": "string" },
     "updatedAt": { "format": "date-time", "type": "string" }
   },
@@ -21,6 +22,7 @@
     "phone",
     "email",
     "rg",
+    "projetoId",
     "createdAt",
     "updatedAt"
   ],

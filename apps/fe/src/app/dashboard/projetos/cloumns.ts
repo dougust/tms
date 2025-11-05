@@ -1,13 +1,13 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { IProjetoListDto } from '@dougust/types';
+import { ProjetoDto } from '@dougust/clients';
 
-export const columns: ColumnDef<IProjetoListDto>[] = [
+export const columns: ColumnDef<ProjetoDto>[] = [
   {
     header: 'Nome',
-    accessorKey: 'projeto.nome',
+    accessorKey: 'nome',
   },
   {
     header: 'empresa',
-    accessorKey: 'empresa.razao',
+    accessorKey: 'razao',
   },
 ];

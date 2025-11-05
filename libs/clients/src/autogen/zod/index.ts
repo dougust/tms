@@ -1,6 +1,24 @@
+export { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
 export { createEmpresaDtoSchema } from './createEmpresaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './createProjetoDtoSchema.ts';
+export { diariaDtoSchema } from './diariaDtoSchema.ts';
+export {
+  diariasControllerCreate201Schema,
+  diariasControllerCreateMutationRequestSchema,
+  diariasControllerCreateMutationResponseSchema,
+} from './diariasControllerCreateSchema.ts';
+export {
+  diariasControllerFindInRangeQueryParamsSchema,
+  diariasControllerFindInRange200Schema,
+  diariasControllerFindInRangeQueryResponseSchema,
+} from './diariasControllerFindInRangeSchema.ts';
+export {
+  diariasControllerUpdatePathParamsSchema,
+  diariasControllerUpdate200Schema,
+  diariasControllerUpdateMutationRequestSchema,
+  diariasControllerUpdateMutationResponseSchema,
+} from './diariasControllerUpdateSchema.ts';
 export { empresaDtoSchema } from './empresaDtoSchema.ts';
 export {
   empresasControllerCreate201Schema,
@@ -59,6 +77,7 @@ export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,
 } from './healthControllerGetHealthSchema.ts';
+export { projetoDtoSchema } from './projetoDtoSchema.ts';
 export {
   projetosControllerCreate201Schema,
   projetosControllerCreateMutationRequestSchema,

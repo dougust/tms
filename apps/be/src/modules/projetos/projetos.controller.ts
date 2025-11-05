@@ -11,8 +11,7 @@ import { ProjetosService } from './projetos.service';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
 import { CreateProjetoResultDto } from './dto/create-projeto.result.dto';
-import { IProjeto } from '@dougust/database';
-import { IProjetoListDto } from '@dougust/types';
+import { ProjetoDto } from './dto/projeto.dto';
 
 @Controller('projetos')
 export class ProjetosController {
@@ -24,12 +23,12 @@ export class ProjetosController {
   }
 
   @Get()
-  findAll(): Promise<IProjetoListDto[]> {
+  findAll(): Promise<ProjetoDto[]> {
     return this.service.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<IProjeto> {
+  findOne(@Param('id') id: string): Promise<ProjetoDto> {
     return this.service.findOne(id);
   }
 

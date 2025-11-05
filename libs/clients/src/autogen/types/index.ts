@@ -1,6 +1,27 @@
+export type { CreateDiariaDto } from './CreateDiariaDto.ts';
 export type { CreateEmpresaDto } from './CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './CreateProjetoDto.ts';
+export type { DiariaDto } from './DiariaDto.ts';
+export type {
+  DiariasControllerCreate201,
+  DiariasControllerCreateMutationRequest,
+  DiariasControllerCreateMutationResponse,
+  DiariasControllerCreateMutation,
+} from './DiariasControllerCreate.ts';
+export type {
+  DiariasControllerFindInRangeQueryParams,
+  DiariasControllerFindInRange200,
+  DiariasControllerFindInRangeQueryResponse,
+  DiariasControllerFindInRangeQuery,
+} from './DiariasControllerFindInRange.ts';
+export type {
+  DiariasControllerUpdatePathParams,
+  DiariasControllerUpdate200,
+  DiariasControllerUpdateMutationRequest,
+  DiariasControllerUpdateMutationResponse,
+  DiariasControllerUpdateMutation,
+} from './DiariasControllerUpdate.ts';
 export type { EmpresaDto } from './EmpresaDto.ts';
 export type {
   EmpresasControllerCreate201,
@@ -70,6 +91,7 @@ export type {
   HealthControllerGetHealthQueryResponse,
   HealthControllerGetHealthQuery,
 } from './HealthControllerGetHealth.ts';
+export type { ProjetoDto } from './ProjetoDto.ts';
 export type {
   ProjetosControllerCreate201,
   ProjetosControllerCreateMutationRequest,

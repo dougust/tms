@@ -3,9 +3,10 @@
  * Do not edit manually.
  */
 
+import { projetoDtoSchema } from './projetoDtoSchema.ts';
 import { z } from 'zod/v4';
 
-export const projetosControllerFindAll200Schema = z.array(z.object({}));
+export const projetosControllerFindAll200Schema = z.array(projetoDtoSchema);
 
 export const projetosControllerFindAllQueryResponseSchema =
   projetosControllerFindAll200Schema;

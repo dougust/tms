@@ -37,6 +37,9 @@ export class CreateFuncionarioDto {
   @IsUnique(funcionarios, 'email', { message: 'Email ja cadastrado' })
   email!: string;
 
+  @IsString()
+  projetoId: string;
+
   @IsOptional()
   @IsString()
   @Length(0, 11)

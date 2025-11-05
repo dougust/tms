@@ -5,6 +5,11 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
+  ProjetosControllerUpdateMutationRequest,
+  ProjetosControllerUpdateMutationResponse,
+  ProjetosControllerUpdatePathParams,
+} from '../../types/ProjetosControllerUpdate.ts';
+import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -13,11 +18,6 @@ import type {
   UseMutationResult,
   QueryClient,
 } from '@tanstack/react-query';
-import type {
-  ProjetosControllerUpdateMutationRequest,
-  ProjetosControllerUpdateMutationResponse,
-  ProjetosControllerUpdatePathParams,
-} from '../../types/ProjetosControllerUpdate.ts';
 import { mutationOptions, useMutation } from '@tanstack/react-query';
 
 export const projetosControllerUpdateMutationKey = () =>

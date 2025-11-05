@@ -37,6 +37,10 @@ export type FuncionarioDto = {
    */
   rg: string;
   /**
+   * @type string
+   */
+  projetoId: string;
+  /**
    * @type string, date-time
    */
   createdAt: string;

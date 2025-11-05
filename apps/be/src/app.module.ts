@@ -7,6 +7,7 @@ import { HealthModule } from './modules/health/health.module';
 import { DatabaseUtilsModule } from './common/cadastros/database-utils.module';
 import { ProjetosModule } from './modules/projetos/projetos.module';
 import { EmpresasModule } from './modules/empresas/empresas.module';
+import { DiariasModule } from './modules/diarias/diarias.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EmpresasModule } from './modules/empresas/empresas.module';
     HealthModule,
     DatabaseUtilsModule,
     EmpresasModule,
+    DiariasModule,
   ],
   controllers: [],
   providers: [],

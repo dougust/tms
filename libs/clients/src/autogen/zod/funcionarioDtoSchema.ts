@@ -14,6 +14,7 @@ export const funcionarioDtoSchema = z.object({
   phone: z.string(),
   email: z.string(),
   rg: z.string(),
+  projetoId: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });

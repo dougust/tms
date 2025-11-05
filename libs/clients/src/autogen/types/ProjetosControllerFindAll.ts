@@ -3,7 +3,9 @@
  * Do not edit manually.
  */
 
-export type ProjetosControllerFindAll200 = object[];
+import type { ProjetoDto } from './ProjetoDto.ts';
+
+export type ProjetosControllerFindAll200 = ProjetoDto[];
 
 export type ProjetosControllerFindAllQueryResponse =
   ProjetosControllerFindAll200;

@@ -184,7 +184,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "$ref": "#/components/schemas/ProjetoDto"
                   }
                 }
               }
@@ -211,7 +211,14 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetoDto"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -433,6 +440,116 @@
           "Empresas"
         ]
       }
+    },
+    "/diarias": {
+      "get": {
+        "operationId": "DiariasController_findInRange",
+        "parameters": [
+          {
+            "name": "from",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DiariaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diarias"
+        ]
+      },
+      "post": {
+        "operationId": "DiariasController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDiariaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiariaDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diarias"
+        ]
+      }
+    },
+    "/diarias/{id}": {
+      "patch": {
+        "operationId": "DiariasController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDiariaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiariaDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diarias"
+        ]
+      }
     }
   },
   "info": {
@@ -475,6 +592,9 @@
             "type": "string",
             "format": "email"
           },
+          "projetoId": {
+            "type": "string"
+          },
           "rg": {
             "type": "string",
             "minLength": 0,
@@ -483,7 +603,8 @@
         },
         "required": [
           "cpf",
-          "email"
+          "email",
+          "projetoId"
         ]
       },
       "FuncionarioDto": {
@@ -513,6 +634,9 @@
           "rg": {
             "type": "string"
           },
+          "projetoId": {
+            "type": "string"
+          },
           "createdAt": {
             "format": "date-time",
             "type": "string"
@@ -531,6 +655,7 @@
           "phone",
           "email",
           "rg",
+          "projetoId",
           "createdAt",
           "updatedAt"
         ]
@@ -576,6 +701,9 @@
             "type": "string",
             "format": "email"
           },
+          "projetoId": {
+            "type": "string"
+          },
           "rg": {
             "type": "string",
             "minLength": 0,
@@ -605,6 +733,43 @@
           "nome",
           "inicio",
           "fim"
+        ]
+      },
+      "ProjetoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "empresa_id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "inicio": {
+            "type": "string"
+          },
+          "fim": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "empresa_id",
+          "nome",
+          "inicio",
+          "fim",
+          "createdAt",
+          "updatedAt"
         ]
       },
       "UpdateProjetoDto": {
@@ -749,6 +914,66 @@
             "format": "email"
           }
         }
+      },
+      "DiariaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "dia": {
+            "type": "string"
+          },
+          "funcionarioId": {
+            "type": "string"
+          },
+          "projetoId": {
+            "type": "string"
+          },
+          "tipoDiariaId": {
+            "type": "string"
+          },
+          "observacoes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "dia",
+          "funcionarioId",
+          "projetoId",
+          "tipoDiariaId",
+          "observacoes",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateDiariaDto": {
+        "type": "object",
+        "properties": {
+          "projetoId": {
+            "type": "string"
+          },
+          "funcionarioId": {
+            "type": "string"
+          },
+          "dia": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "projetoId",
+          "funcionarioId",
+          "dia"
+        ]
       }
     }
   }

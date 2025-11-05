@@ -31,6 +31,9 @@ export class FuncionarioDto implements IFuncionario {
   rg: string;
 
   @IsString()
+  projetoId: string;
+
+  @IsString()
   createdAt: Date;
 
   @IsString()

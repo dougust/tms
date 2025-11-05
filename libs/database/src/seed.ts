@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { reset, seed } from 'drizzle-seed';
 import * as schema from './lib/schema.dev';
+import { tipoDeDiariasTpl } from './lib/schema.dev';
 
 async function main() {
   const db = drizzle(process.env['DATABASE_URL']);
@@ -42,8 +43,21 @@ async function main() {
     },
     diariasTpl: {
       count: 1,
-      with: {
-        diariasToFuncionariosTpl: 1,
+    },
+    tipoDeDiariasTpl: {
+      count: 7,
+      columns: {
+        nome: f.valuesFromArray({
+          values: [
+            'presente',
+            'falta',
+            'doente',
+            'paternidade',
+            'maternidade',
+            'casamento',
+            'outros',
+          ],
+        }),
       },
     },
   }));

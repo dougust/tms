@@ -37,6 +37,10 @@ export type UpdateFuncionarioDto = {
    */
   email?: string;
   /**
+   * @type string | undefined
+   */
+  projetoId?: string;
+  /**
    * @minLength 0
    * @maxLength 11
    * @type string | undefined
