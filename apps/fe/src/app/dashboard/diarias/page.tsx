@@ -6,12 +6,7 @@ import {
   ListPageLayout,
 } from '../../../components';
 import React from 'react';
-import {
-  addDays,
-  reduceToRecord,
-  startOfWeekMonday,
-  toISODate,
-} from '../../../lib';
+import { addDays, startOfWeekMonday, toISODate } from '../../../lib';
 import {
   useDiariasControllerFindInRange,
   useFuncionariosControllerFindAll,
@@ -27,20 +22,16 @@ export default function DiariasPage() {
   const toDate = React.useMemo(() => addDays(fromDate, daysCount), [fromDate]);
 
   const {
-    data: employees,
-    isPending: isEmployeesPending,
-    isError: isEmployeesError,
+    data: funcionarios,
+    isPending: isFuncionariosPending,
+    isError: isFuncionariosError,
   } = useFuncionariosControllerFindAll();
 
   const {
-    data: projects,
-    isPending: isProjectsPending,
-    isError: isProjectsError,
-  } = useProjetosControllerFindAll({
-    query: {
-      select: reduceToRecord,
-    },
-  });
+    data: projetos,
+    isPending: isProjetosPending,
+    isError: isProjetosError,
+  } = useProjetosControllerFindAll();
 
   const {
     data: diarias,
@@ -51,8 +42,8 @@ export default function DiariasPage() {
     to: toISODate(toDate),
   });
 
-  const isError = isEmployeesError || isProjectsError || isDiariasError;
-  const isPending = isEmployeesPending || isProjectsPending || isDiariasPending;
+  const isError = isFuncionariosError || isProjetosError || isDiariasError;
+  const isPending = isFuncionariosPending || isProjetosPending || isDiariasPending;
 
   return (
     <ListPageLayout
@@ -71,7 +62,9 @@ export default function DiariasPage() {
         <></>
       ) : (
         <DiariasCalendar
-          funcionarios={employees}
+          diarias={diarias}
+          projetos={projetos}
+          funcionarios={funcionarios}
           fromDate={fromDate}
           range={daysCount}
         />

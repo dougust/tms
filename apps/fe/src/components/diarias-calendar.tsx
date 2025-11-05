@@ -4,13 +4,20 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { addDays, toISODate } from '../lib';
+import { addDays, reduceToRecord, toISODate } from '../lib';
 import { Button, CalendarDataTable } from '@dougust/ui';
-import { FuncionarioDto, useDiariasControllerUpdate } from '@dougust/clients';
+import {
+  DiariaDto,
+  FuncionarioDto,
+  ProjetoDto,
+  useDiariasControllerUpdate,
+} from '@dougust/clients';
 import { useQueryClient } from '@tanstack/react-query';
 
 export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
+  projetos: ProjetoDto[];
+  diarias: DiariaDto[];
   fromDate: Date;
   range: number;
 };
@@ -18,7 +25,12 @@ export type DiariasCalendarProps = {
 const PROJECT_ID = '532278ee-30b0-4599-7c5e-78bb13d8e63f';
 
 export function DiariasCalendar(props: DiariasCalendarProps) {
-  const { funcionarios, fromDate, range } = props;
+  const { funcionarios, diarias, projetos, fromDate, range } = props;
+
+  const projetosRecord = React.useMemo(
+    () => reduceToRecord(projetos),
+    [projetos]
+  );
 
   const queryClient = useQueryClient();
   const update = useDiariasControllerUpdate({
@@ -59,9 +71,21 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
       {
         accessorKey: 'nome',
         header: 'Nome',
-        cell: ({ row }) => (
-          <div className="capitalize">{row.getValue('nome')}</div>
-        ),
+        cell: ({ row }) => {
+          const projetoId = row.original.projetoId;
+          const projeto = projetosRecord[projetoId];
+
+          return (
+            <div className="capitalize">
+              {row.getValue('nome')}
+              {projeto && (
+                <div className="text-xs text-muted-foreground">
+                  {projeto.nome}
+                </div>
+              )}
+            </div>
+          );
+        },
       },
     ];
 
@@ -70,14 +94,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         accessorKey: date,
         header: date,
         cell: ({ row }) => {
-
-          return (
-            <Button
-              size="sm"
-            >
-              empty
-            </Button>
-          );
+          return <Button size="sm">empty</Button>;
         },
       });
     }
