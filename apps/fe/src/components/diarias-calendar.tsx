@@ -23,8 +23,6 @@ export type DiariasCalendarProps = {
   range: DiariasControllerFindInRangeQueryParams;
 };
 
-const PROJECT_ID = '532278ee-30b0-4599-7c5e-78bb13d8e63f';
-
 export function DiariasCalendar(props: DiariasCalendarProps) {
   const { funcionarios, diarias, projetos, range } = props;
 
@@ -109,9 +107,15 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
 
           return (
             <div className="flex flex-col gap-1 items-stretch">
-              {projetDiaria && <Badge variant="outline">{projetDiaria}</Badge>}
-              {diaria?.tipoDiariaId && (
-                <Badge variant="secondary">com tipo</Badge>
+              {diaria && (
+                <>
+                  <Badge variant="outline">{projetDiaria}</Badge>
+                  {diaria?.tipoDiariaId ? (
+                    <Badge variant="secondary">com tipo</Badge>
+                  ) : (
+                    <Badge>presente</Badge>
+                  )}
+                </>
               )}
               {!diaria && (
                 <Button
