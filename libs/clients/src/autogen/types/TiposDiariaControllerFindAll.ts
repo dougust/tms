@@ -12,5 +12,5 @@ export type TiposDiariaControllerFindAllQueryResponse =
 
 export type TiposDiariaControllerFindAllQuery = {
   Response: TiposDiariaControllerFindAll200;
-  Errors: any;
+  Errors: never;
 };
