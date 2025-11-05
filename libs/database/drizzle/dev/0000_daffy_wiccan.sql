@@ -2,7 +2,6 @@ CREATE SCHEMA "dg_0001";
 --> statement-breakpoint
 CREATE TYPE "public"."subscription_tier" AS ENUM('trial', 'starter', 'professional', 'enterprise');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('owner', 'admin', 'agent', 'viewer');--> statement-breakpoint
-CREATE TYPE "public"."tipo_diaria" AS ENUM('presente', 'faltou', 'doente');--> statement-breakpoint
 CREATE TABLE "dg_0001"."cad_diarias" (
 	"diarias_id" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"dia" date NOT NULL,

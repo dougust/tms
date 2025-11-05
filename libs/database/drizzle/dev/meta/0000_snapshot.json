@@ -1,5 +1,5 @@
 {
-  "id": "78bbc06e-75da-4aaf-9cf0-1317b4eb8ece",
+  "id": "bb1ef1b6-f3e0-4e6e-938c-5f5173ea31ba",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -727,15 +727,6 @@
         "admin",
         "agent",
         "viewer"
-      ]
-    },
-    "public.tipo_diaria": {
-      "name": "tipo_diaria",
-      "schema": "public",
-      "values": [
-        "presente",
-        "faltou",
-        "doente"
       ]
     }
   },
