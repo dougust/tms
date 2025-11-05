@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { ProjetoDto } from './ProjetoDto.ts';
+
 export type ProjetosControllerFindOnePathParams = {
   /**
    * @type string
@@ -10,7 +12,7 @@ export type ProjetosControllerFindOnePathParams = {
   id: string;
 };
 
-export type ProjetosControllerFindOne200 = any;
+export type ProjetosControllerFindOne200 = ProjetoDto;
 
 export type ProjetosControllerFindOneQueryResponse =
   ProjetosControllerFindOne200;

@@ -10,7 +10,7 @@ import {
 import { DiariasService } from './diarias.service';
 import { RangeQueryDto } from './dto/range-query.dto';
 import { CreateDiariaDto } from './dto/create-diaria.dto';
-import { DiariaEntity } from './dto/diaria.entity';
+import { DiariaDto } from './dto/diaria.dto';
 
 @Controller('diarias')
 export class DiariasController {
@@ -20,12 +20,12 @@ export class DiariasController {
   findInRange(
     @Query()
     query: RangeQueryDto
-  ): Promise<DiariaEntity[]> {
+  ): Promise<DiariaDto[]> {
     return this.service.findInRange(query);
   }
 
   @Post()
-  create(@Body() dto: CreateDiariaDto): Promise<DiariaEntity> {
+  create(@Body() dto: CreateDiariaDto): Promise<DiariaDto> {
     return this.service.create(dto);
   }
 
@@ -33,7 +33,7 @@ export class DiariasController {
   update(
     @Param('id') id: string,
     @Body() dto: CreateDiariaDto
-  ): Promise<DiariaEntity> {
+  ): Promise<DiariaDto> {
     return this.service.update(id, dto);
   }
 }

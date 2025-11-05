@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { DiariaEntity } from './DiariaEntity.ts';
+import type { DiariaDto } from './DiariaDto.ts';
 
 export type DiariasControllerFindInRangeQueryParams = {
   /**
@@ -16,7 +16,7 @@ export type DiariasControllerFindInRangeQueryParams = {
   to: string;
 };
 
-export type DiariasControllerFindInRange200 = DiariaEntity[];
+export type DiariasControllerFindInRange200 = DiariaDto[];
 
 export type DiariasControllerFindInRangeQueryResponse =
   DiariasControllerFindInRange200;

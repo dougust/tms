@@ -184,7 +184,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object"
+                    "$ref": "#/components/schemas/ProjetoDto"
                   }
                 }
               }
@@ -211,7 +211,14 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetoDto"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -321,7 +328,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DiariaEntity"
+                    "$ref": "#/components/schemas/DiariaDto"
                   }
                 }
               }
@@ -351,7 +358,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DiariaEntity"
+                  "$ref": "#/components/schemas/DiariaDto"
                 }
               }
             }
@@ -391,7 +398,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DiariaEntity"
+                  "$ref": "#/components/schemas/DiariaDto"
                 }
               }
             }
@@ -586,6 +593,43 @@
           "fim"
         ]
       },
+      "ProjetoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "empresa_id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "inicio": {
+            "type": "string"
+          },
+          "fim": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "empresa_id",
+          "nome",
+          "inicio",
+          "fim",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
       "UpdateProjetoDto": {
         "type": "object",
         "properties": {
@@ -605,9 +649,46 @@
           }
         }
       },
-      "DiariaEntity": {
+      "DiariaDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "dia": {
+            "type": "string"
+          },
+          "funcionarioId": {
+            "type": "string"
+          },
+          "projetoId": {
+            "type": "string"
+          },
+          "tipoDiariaId": {
+            "type": "string"
+          },
+          "observacoes": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "dia",
+          "funcionarioId",
+          "projetoId",
+          "tipoDiariaId",
+          "observacoes",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "CreateDiariaDto": {
         "type": "object",

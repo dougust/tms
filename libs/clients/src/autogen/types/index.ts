@@ -1,7 +1,7 @@
 export type { CreateDiariaDto } from './CreateDiariaDto.ts';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './CreateProjetoDto.ts';
-export type { DiariaEntity } from './DiariaEntity.ts';
+export type { DiariaDto } from './DiariaDto.ts';
 export type {
   DiariasControllerCreate201,
   DiariasControllerCreateMutationRequest,
@@ -58,6 +58,7 @@ export type {
   HealthControllerGetHealthQueryResponse,
   HealthControllerGetHealthQuery,
 } from './HealthControllerGetHealth.ts';
+export type { ProjetoDto } from './ProjetoDto.ts';
 export type {
   ProjetosControllerCreate201,
   ProjetosControllerCreateMutationRequest,

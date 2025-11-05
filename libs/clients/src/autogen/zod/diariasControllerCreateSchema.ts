@@ -4,9 +4,9 @@
  */
 
 import { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
-import { diariaEntitySchema } from './diariaEntitySchema.ts';
+import { diariaDtoSchema } from './diariaDtoSchema.ts';
 
-export const diariasControllerCreate201Schema = diariaEntitySchema;
+export const diariasControllerCreate201Schema = diariaDtoSchema;
 
 export const diariasControllerCreateMutationRequestSchema =
   createDiariaDtoSchema;

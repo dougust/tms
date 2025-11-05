@@ -1,7 +1,7 @@
 import { IDiaria } from '@dougust/database';
 import { IsDate, IsDateString, IsString } from 'class-validator';
 
-export class DiariaEntity implements IDiaria {
+export class DiariaDto implements IDiaria {
   @IsString()
   id: string;
 

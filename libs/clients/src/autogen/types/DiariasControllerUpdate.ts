@@ -4,7 +4,7 @@
  */
 
 import type { CreateDiariaDto } from './CreateDiariaDto.ts';
-import type { DiariaEntity } from './DiariaEntity.ts';
+import type { DiariaDto } from './DiariaDto.ts';
 
 export type DiariasControllerUpdatePathParams = {
   /**
@@ -13,7 +13,7 @@ export type DiariasControllerUpdatePathParams = {
   id: string;
 };
 
-export type DiariasControllerUpdate200 = DiariaEntity;
+export type DiariasControllerUpdate200 = DiariaDto;
 
 export type DiariasControllerUpdateMutationRequest = CreateDiariaDto;
 

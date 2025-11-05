@@ -1,12 +1,12 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
-import { empresas, projetos } from '@dougust/database';
-import { IProjetoListDto } from '@dougust/types';
+import { projetos } from '@dougust/database';
 import { eq } from 'drizzle-orm';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
 import { UserContextService } from '../../common/user-context/user-context.service';
+import { ProjetoDto } from './dto/projeto.dto';
 
 @Injectable()
 export class ProjetosService {
@@ -17,10 +17,6 @@ export class ProjetosService {
 
   get table() {
     return projetos(this.userContext.businessId);
-  }
-
-  get empresas() {
-    return empresas(this.userContext.businessId);
   }
 
   async create(dto: CreateProjetoDto) {
@@ -37,14 +33,8 @@ export class ProjetosService {
     return { projeto };
   }
 
-  async findAll(): Promise<IProjetoListDto[]> {
-    return await this.db
-      .select({
-        projeto: this.table,
-        empresa: this.empresas,
-      })
-      .from(this.table)
-      .innerJoin(this.empresas, eq(this.table.empresa_id, this.empresas.id));
+  findAll(): Promise<ProjetoDto[]> {
+    return this.db.select().from(this.table);
   }
 
   async findOne(id: string) {

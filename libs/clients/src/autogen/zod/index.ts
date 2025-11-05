@@ -1,7 +1,7 @@
 export { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './createProjetoDtoSchema.ts';
-export { diariaEntitySchema } from './diariaEntitySchema.ts';
+export { diariaDtoSchema } from './diariaDtoSchema.ts';
 export {
   diariasControllerCreate201Schema,
   diariasControllerCreateMutationRequestSchema,
@@ -49,6 +49,7 @@ export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,
 } from './healthControllerGetHealthSchema.ts';
+export { projetoDtoSchema } from './projetoDtoSchema.ts';
 export {
   projetosControllerCreate201Schema,
   projetosControllerCreateMutationRequestSchema,

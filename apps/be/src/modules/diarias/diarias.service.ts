@@ -7,7 +7,7 @@ import { and, eq, gt, lt } from 'drizzle-orm';
 import { CreateDiariaDto } from './dto/create-diaria.dto';
 import { FuncionariosService } from '../funcionarios/funcionarios.service';
 import { ProjetosService } from '../projetos/projetos.service';
-import { DiariaEntity } from './dto/diaria.entity';
+import { DiariaDto } from './dto/diaria.dto';
 
 @Injectable()
 export class DiariasService {
@@ -22,7 +22,7 @@ export class DiariasService {
     return schema.diarias(this.userContext.businessId);
   }
 
-  async findInRange(query: RangeQueryDto): Promise<DiariaEntity[]> {
+  async findInRange(query: RangeQueryDto): Promise<DiariaDto[]> {
     return this.db
       .select()
       .from(this.diarias)

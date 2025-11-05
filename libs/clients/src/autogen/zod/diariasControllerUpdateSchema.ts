@@ -4,14 +4,14 @@
  */
 
 import { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
-import { diariaEntitySchema } from './diariaEntitySchema.ts';
+import { diariaDtoSchema } from './diariaDtoSchema.ts';
 import { z } from 'zod/v4';
 
 export const diariasControllerUpdatePathParamsSchema = z.object({
   id: z.string(),
 });
 
-export const diariasControllerUpdate200Schema = diariaEntitySchema;
+export const diariasControllerUpdate200Schema = diariaDtoSchema;
 
 export const diariasControllerUpdateMutationRequestSchema =
   createDiariaDtoSchema;

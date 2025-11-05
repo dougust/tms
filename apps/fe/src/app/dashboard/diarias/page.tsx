@@ -1,47 +1,21 @@
 'use client';
 
-import {
-  type FuncionarioDto,
-  useAppQuery,
-  useFuncionariosControllerFindAll,
-} from '@dougust/clients';
 import { DiariasCalendar, ListPageLayout } from '../../../components';
 import { Briefcase, ChevronLeft, ChevronRight } from 'lucide-react';
-import { IDiariaFuncionarioResultDto } from '@dougust/types';
 import React from 'react';
 import { Button } from '@dougust/ui';
 import { addDays, startOfWeekMonday, toISODate } from '../../../lib';
+import { useDiariasQuery } from './useDiariasQuery';
+import { DiariaDto, useFuncionariosControllerFindAll } from '@dougust/clients';
 
 export default function DiariasPage() {
-  const funcionariosQuery = useFuncionariosControllerFindAll({
-    query: {
-      select: (funcionarios): Record<string, FuncionarioDto> =>
-        funcionarios.reduce((acc, funcionario) => {
-          if (funcionario.id) {
-            acc[funcionario.id] = funcionario;
-          }
-          return acc;
-        }, {} as Record<string, FuncionarioDto>),
-    },
-  });
-
-  React.useMemo(() => {
-    console.log('funcionariosQuery.data', funcionariosQuery.data);
-  }, [funcionariosQuery.data]);
-
-  // Initialize to current week's Monday
   const [fromDate, setFromDate] = React.useState(() =>
     startOfWeekMonday(new Date())
   );
   const [daysCount, setDaysCount] = React.useState(7);
   const toDate = React.useMemo(() => addDays(fromDate, daysCount), [fromDate]);
 
-  const { data, isLoading, error, refetch } =
-    useAppQuery<IDiariaFuncionarioResultDto>({
-      queryKey: [`diarias?from=${toISODate(fromDate)}&to=${toISODate(toDate)}`],
-    });
-
-  const funcionarios = data?.funcionarios || [];
+  const { data, isLoading } = useFuncionariosControllerFindAll();
 
   const weekLabel = React.useMemo(() => {
     const fmt = (iso: string) => {
@@ -59,19 +33,6 @@ export default function DiariasPage() {
     <ListPageLayout
       title="Diárias"
       description={`Visão de calendário semanal (${weekLabel}).`}
-      onRefreshClick={refetch}
-      stats={[
-        {
-          title: 'Funcionários',
-          value: isLoading ? '...' : funcionarios.length.toString(),
-          icon: <Briefcase className="h-5 w-5 text-primary" />,
-        },
-        {
-          title: 'Dias no período',
-          value: isLoading ? '...' : daysCount.toString(),
-          icon: <Briefcase className="h-5 w-5 text-primary" />,
-        },
-      ]}
     >
       <div className="flex items-center justify-between gap-2 mb-2">
         <div className="flex items-center gap-2">
@@ -89,7 +50,7 @@ export default function DiariasPage() {
       </div>
 
       <DiariasCalendar
-        funcionarios={funcionarios}
+        funcionarios={data || []}
         fromDate={fromDate}
         range={daysCount}
       />

@@ -15,7 +15,7 @@ export type { ProjetosControllerUpdateMutationKey } from './hooks/Projetos/usePr
 export type { CreateDiariaDto } from './types/CreateDiariaDto.ts';
 export type { CreateFuncionarioDto } from './types/CreateFuncionarioDto.ts';
 export type { CreateProjetoDto } from './types/CreateProjetoDto.ts';
-export type { DiariaEntity } from './types/DiariaEntity.ts';
+export type { DiariaDto } from './types/DiariaDto.ts';
 export type {
   DiariasControllerCreate201,
   DiariasControllerCreateMutationRequest,
@@ -72,6 +72,7 @@ export type {
   HealthControllerGetHealthQueryResponse,
   HealthControllerGetHealthQuery,
 } from './types/HealthControllerGetHealth.ts';
+export type { ProjetoDto } from './types/ProjetoDto.ts';
 export type {
   ProjetosControllerCreate201,
   ProjetosControllerCreateMutationRequest,
@@ -191,7 +192,7 @@ export {
 export { createDiariaDtoSchema } from './zod/createDiariaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';
 export { createProjetoDtoSchema } from './zod/createProjetoDtoSchema.ts';
-export { diariaEntitySchema } from './zod/diariaEntitySchema.ts';
+export { diariaDtoSchema } from './zod/diariaDtoSchema.ts';
 export {
   diariasControllerCreate201Schema,
   diariasControllerCreateMutationRequestSchema,
@@ -239,6 +240,7 @@ export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,
 } from './zod/healthControllerGetHealthSchema.ts';
+export { projetoDtoSchema } from './zod/projetoDtoSchema.ts';
 export {
   projetosControllerCreate201Schema,
   projetosControllerCreateMutationRequestSchema,

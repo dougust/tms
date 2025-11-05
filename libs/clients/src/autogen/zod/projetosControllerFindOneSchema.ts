@@ -3,13 +3,14 @@
  * Do not edit manually.
  */
 
+import { projetoDtoSchema } from './projetoDtoSchema.ts';
 import { z } from 'zod/v4';
 
 export const projetosControllerFindOnePathParamsSchema = z.object({
   id: z.string(),
 });
 
-export const projetosControllerFindOne200Schema = z.any();
+export const projetosControllerFindOne200Schema = projetoDtoSchema;
 
 export const projetosControllerFindOneQueryResponseSchema =
   projetosControllerFindOne200Schema;

@@ -4,9 +4,9 @@
  */
 
 import type { CreateDiariaDto } from './CreateDiariaDto.ts';
-import type { DiariaEntity } from './DiariaEntity.ts';
+import type { DiariaDto } from './DiariaDto.ts';
 
-export type DiariasControllerCreate201 = DiariaEntity;
+export type DiariasControllerCreate201 = DiariaDto;
 
 export type DiariasControllerCreateMutationRequest = CreateDiariaDto;
 
