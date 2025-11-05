@@ -9,15 +9,12 @@ import { Button, CalendarDataTable } from '@dougust/ui';
 import {
   CreateDiariaDto,
   DiariaDto,
-  diariasControllerFindInRangeQueryKey,
   DiariasControllerFindInRangeQueryParams,
   FuncionarioDto,
   ProjetoDto,
-  useDiariasControllerCreate,
-  useDiariasControllerUpdate,
 } from '@dougust/clients';
-import { useQueryClient } from '@tanstack/react-query';
 import { Badge } from '@dougust/ui/components/badge';
+import { useCreateDiaria, useUpdateDiaria } from '../hooks';
 
 export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
@@ -31,36 +28,8 @@ const PROJECT_ID = '532278ee-30b0-4599-7c5e-78bb13d8e63f';
 export function DiariasCalendar(props: DiariasCalendarProps) {
   const { funcionarios, diarias, projetos, range } = props;
 
-  const queryClient = useQueryClient();
-  const updateMutation = useDiariasControllerUpdate({
-    mutation: {
-      client: queryClient,
-      onSuccess: (data, variables) =>
-        queryClient.setQueryData(
-          diariasControllerFindInRangeQueryKey(range),
-          diarias?.map((diaria) =>
-            diaria.id === variables.id ? { ...diaria, ...data } : diaria
-          )
-        ),
-      onError: (err) => {
-        console.error('Falha ao atualizar diária', err);
-      },
-    },
-  });
-
-  const createMutation = useDiariasControllerCreate({
-    mutation: {
-      client: queryClient,
-      onSuccess: (data) =>
-        queryClient.setQueryData(
-          diariasControllerFindInRangeQueryKey(range),
-          diarias ? [...diarias, data] : [data]
-        ),
-      onError: (err) => {
-        console.error('Falha ao atualizar diária', err);
-      },
-    },
-  });
+  const createMutation = useCreateDiaria(range)
+  const updateMutation = useUpdateDiaria(range)
 
   const onCreateClick = async (data: CreateDiariaDto) => {
     createMutation.mutate({ data });
@@ -151,7 +120,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     }
 
     return result;
-  }, [days, updateMutation.isPending]);
+  }, [days, updateMutation.isPending, diarias]);
 
   return <CalendarDataTable columns={columns} data={funcionarios} />;
 }
