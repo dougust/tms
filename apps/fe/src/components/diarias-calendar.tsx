@@ -4,58 +4,87 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { addDays, reduceToRecord, toISODate } from '../lib';
+import { reduceToRecord } from '../lib';
 import { Button, CalendarDataTable } from '@dougust/ui';
 import {
+  CreateDiariaDto,
   DiariaDto,
+  diariasControllerFindInRangeQueryKey,
+  DiariasControllerFindInRangeQueryParams,
   FuncionarioDto,
   ProjetoDto,
+  useDiariasControllerCreate,
   useDiariasControllerUpdate,
 } from '@dougust/clients';
 import { useQueryClient } from '@tanstack/react-query';
+import { Badge } from '@dougust/ui/components/badge';
 
 export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
   projetos: ProjetoDto[];
   diarias: DiariaDto[];
-  fromDate: Date;
-  range: number;
+  range: DiariasControllerFindInRangeQueryParams;
 };
 
 const PROJECT_ID = '532278ee-30b0-4599-7c5e-78bb13d8e63f';
 
 export function DiariasCalendar(props: DiariasCalendarProps) {
-  const { funcionarios, diarias, projetos, fromDate, range } = props;
+  const { funcionarios, diarias, projetos, range } = props;
+
+  const queryClient = useQueryClient();
+  const updateMutation = useDiariasControllerUpdate({
+    mutation: {
+      client: queryClient,
+      onSuccess: (data, variables) =>
+        queryClient.setQueryData(
+          diariasControllerFindInRangeQueryKey(range),
+          diarias?.map((diaria) =>
+            diaria.id === variables.id ? { ...diaria, ...data } : diaria
+          )
+        ),
+      onError: (err) => {
+        console.error('Falha ao atualizar diária', err);
+      },
+    },
+  });
+
+  const createMutation = useDiariasControllerCreate({
+    mutation: {
+      client: queryClient,
+      onSuccess: (data) =>
+        queryClient.setQueryData(
+          diariasControllerFindInRangeQueryKey(range),
+          diarias ? [...diarias, data] : [data]
+        ),
+      onError: (err) => {
+        console.error('Falha ao atualizar diária', err);
+      },
+    },
+  });
+
+  const onCreateClick = async (data: CreateDiariaDto) => {
+    createMutation.mutate({ data });
+  };
 
   const projetosRecord = React.useMemo(
     () => reduceToRecord(projetos),
     [projetos]
   );
 
-  const queryClient = useQueryClient();
-  const update = useDiariasControllerUpdate({
-    mutation: {
-      client: queryClient,
-      onSuccess: () => {
-        // Invalidate any diarias queries to refresh
-        queryClient.invalidateQueries({
-          queryKey: [{ url: '/diarias' }],
-          exact: false,
-        });
-      },
-      onError: (err) => {
-        // Basic error reporting; keep minimal UI changes
-        // eslint-disable-next-line no-console
-        console.error('Falha ao atualizar diária', err);
-      },
-    },
-  });
-  const toDate = React.useMemo(() => addDays(fromDate, range), [fromDate]);
+  const diariasPorFuncionario = React.useMemo(
+    () =>
+      diarias.reduce((acc, diaria) => {
+        if (!acc[diaria.funcionarioId]) acc[diaria.funcionarioId] = {};
+        acc[diaria.funcionarioId][diaria.dia] = diaria;
+        return acc;
+      }, {} as Record<string, Record<string, DiariaDto>>),
+    [diarias]
+  );
 
   const days = useMemo(() => {
     const list: string[] = [];
-    const d = new Date(toISODate(fromDate));
-    const endDate = new Date(toISODate(toDate));
+    const d = new Date(range.from);
+    const endDate = new Date(range.to);
     // Normalize time to avoid DST issues
     d.setUTCHours(0, 0, 0, 0);
     endDate.setUTCHours(0, 0, 0, 0);
@@ -64,7 +93,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
       d.setUTCDate(d.getUTCDate() + 1);
     }
     return list;
-  }, [fromDate, toDate]);
+  }, [range]);
 
   const columns = React.useMemo(() => {
     const result: ColumnDef<FuncionarioDto>[] = [
@@ -89,18 +118,40 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
       },
     ];
 
-    for (const date of days) {
+    for (const dia of days) {
       result.push({
-        accessorKey: date,
-        header: date,
+        accessorKey: dia,
+        header: dia,
         cell: ({ row }) => {
-          return <Button size="sm">empty</Button>;
+          const funcionarioId = row.original.id;
+          const projetoId = row.original.projetoId;
+          const diarias = diariasPorFuncionario?.[funcionarioId];
+          const diaria = diarias?.[dia];
+          const projetDiaria = diaria && projetosRecord[diaria.projetoId].nome;
+
+          return (
+            <div className="flex flex-col gap-1 items-stretch">
+              {projetDiaria && <Badge variant="outline">{projetDiaria}</Badge>}
+              {diaria?.tipoDiariaId && (
+                <Badge variant="secondary">com tipo</Badge>
+              )}
+              {!diaria && (
+                <Button
+                  onClick={() =>
+                    onCreateClick({ funcionarioId, projetoId, dia })
+                  }
+                >
+                  add
+                </Button>
+              )}
+            </div>
+          );
         },
       });
     }
 
     return result;
-  }, [days, update.isPending]);
+  }, [days, updateMutation.isPending]);
 
   return <CalendarDataTable columns={columns} data={funcionarios} />;
 }

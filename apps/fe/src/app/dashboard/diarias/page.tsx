@@ -8,6 +8,7 @@ import {
 import React from 'react';
 import { addDays, startOfWeekMonday, toISODate } from '../../../lib';
 import {
+  type DiariasControllerFindInRangeQueryParams,
   useDiariasControllerFindInRange,
   useFuncionariosControllerFindAll,
   useProjetosControllerFindAll,
@@ -20,6 +21,14 @@ export default function DiariasPage() {
     startOfWeekMonday(new Date())
   );
   const toDate = React.useMemo(() => addDays(fromDate, daysCount), [fromDate]);
+
+  const range: DiariasControllerFindInRangeQueryParams = React.useMemo(
+    () => ({
+      from: toISODate(fromDate),
+      to: toISODate(toDate),
+    }),
+    [fromDate, toDate]
+  );
 
   const {
     data: funcionarios,
@@ -37,13 +46,11 @@ export default function DiariasPage() {
     data: diarias,
     isPending: isDiariasPending,
     isError: isDiariasError,
-  } = useDiariasControllerFindInRange({
-    from: toISODate(fromDate),
-    to: toISODate(toDate),
-  });
+  } = useDiariasControllerFindInRange(range);
 
   const isError = isFuncionariosError || isProjetosError || isDiariasError;
-  const isPending = isFuncionariosPending || isProjetosPending || isDiariasPending;
+  const isPending =
+    isFuncionariosPending || isProjetosPending || isDiariasPending;
 
   return (
     <ListPageLayout
@@ -65,8 +72,7 @@ export default function DiariasPage() {
           diarias={diarias}
           projetos={projetos}
           funcionarios={funcionarios}
-          fromDate={fromDate}
-          range={daysCount}
+          range={range}
         />
       )}
     </ListPageLayout>
