@@ -167,9 +167,36 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
       const isFuture = day > today;
       const dia = day.toISOString().slice(0, 10);
 
+      const addMissingForDay = () => {
+        if (isFuture) return;
+        for (const f of funcionarios) {
+          const hasDiaria = diariasPorFuncionario.get(f.id)?.has(dia);
+          // Only create if funcionário has a projeto and no diária yet for the day
+          if (!hasDiaria && f.projetoId) {
+            onCreateClick({ funcionarioId: f.id, projetoId: f.projetoId, dia });
+          }
+        }
+      };
+
       result.push({
         accessorKey: dia,
-        header: formatDate(day),
+        header: (
+          <div className="flex items-center justify-between gap-2">
+            <span>{formatDate(day)}</span>
+            {!isFuture && (
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-7 w-7"
+                title="Adicionar para todos os que não possuem"
+                onClick={addMissingForDay}
+              >
+                <Plus className="h-4 w-4" />
+                <span className="sr-only">Adicionar ausentes</span>
+              </Button>
+            )}
+          </div>
+        ),
         meta: isFuture
           ? {
               cellClassName:
@@ -254,7 +281,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     }
 
     return result;
-  }, [days, updateMutation.isPending, diarias, formatDate]);
+  }, [days, updateMutation.isPending, diarias, formatDate, funcionarios, diariasPorFuncionario]);
 
   return (
     <>
