@@ -10,4 +10,5 @@ export * from './skeleton';
 export * from './tooltip';
 export * from './table';
 export * from './data-table';
+export * from './dialog';
 export * from './calendar-data-table';

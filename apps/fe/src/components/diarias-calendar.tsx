@@ -6,39 +6,101 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { reduceToRecord } from '../lib';
 import { Button, CalendarDataTable } from '@dougust/ui';
+import { Badge } from '@dougust/ui/components/badge';
 import {
   CreateDiariaDto,
   DiariaDto,
   DiariasControllerFindInRangeQueryParams,
   FuncionarioDto,
   ProjetoDto,
+  TipoDiariaDto,
 } from '@dougust/clients';
-import { Badge } from '@dougust/ui/components/badge';
 import { useCreateDiaria, useUpdateDiaria } from '../hooks';
+import { ProjetoDiariaDialog } from './projeto-diaria-dialog';
+import { TipoDiariaDialog } from './tipo-diaria-dialog';
 
 export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
   projetos: ProjetoDto[];
   diarias: DiariaDto[];
+  tiposDiarias: TipoDiariaDto[];
   range: DiariasControllerFindInRangeQueryParams;
 };
 
-const PROJECT_ID = '532278ee-30b0-4599-7c5e-78bb13d8e63f';
-
 export function DiariasCalendar(props: DiariasCalendarProps) {
-  const { funcionarios, diarias, projetos, range } = props;
+  const { funcionarios, diarias, projetos, tiposDiarias, range } = props;
 
   const createMutation = useCreateDiaria(range);
   const updateMutation = useUpdateDiaria(range);
 
+  // Dialog state for changing projeto of a diária
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [selectedDiaria, setSelectedDiaria] = React.useState<DiariaDto | null>(
+    null
+  );
+  const [selectedProjetoId, setSelectedProjetoId] = React.useState<string>('');
+
+  // Dialog state for changing tipoDiaria of a diária
+  const [tipoDialogOpen, setTipoDialogOpen] = React.useState(false);
+  const [selectedTipoDiariaId, setSelectedTipoDiariaId] =
+    React.useState<string>('');
+
   const onCreateClick = async (data: CreateDiariaDto) => {
     createMutation.mutate({ data });
+  };
+
+  const onConfirmProjetoChange = () => {
+    if (!selectedDiaria || !selectedProjetoId) return;
+    updateMutation.mutate({
+      id: selectedDiaria.id,
+      data: {
+        funcionarioId: selectedDiaria.funcionarioId,
+        projetoId: selectedProjetoId,
+        dia: selectedDiaria.dia,
+      },
+    });
+    setDialogOpen(false);
+    setSelectedDiaria(null);
+  };
+
+  const onConfirmTipoChange = () => {
+    if (!selectedDiaria || !selectedTipoDiariaId) return;
+    updateMutation.mutate({
+      id: selectedDiaria.id,
+      // Cast to any to allow optional tipoDiariaId until clients are regenerated
+      data: {
+        funcionarioId: selectedDiaria.funcionarioId,
+        projetoId: selectedDiaria.projetoId,
+        dia: selectedDiaria.dia,
+        tipoDiariaId: selectedTipoDiariaId,
+      } as any,
+    });
+    setTipoDialogOpen(false);
+    setSelectedDiaria(null);
   };
 
   const projetosRecord = React.useMemo(
     () => reduceToRecord(projetos),
     [projetos]
   );
+
+  const tiposRecord = React.useMemo(
+    () => reduceToRecord(tiposDiarias),
+    [tiposDiarias]
+  );
+
+  const funcionariosRecord = React.useMemo(
+    () => reduceToRecord(funcionarios),
+    [funcionarios]
+  );
+
+  const dialogTitle = React.useMemo(() => {
+    if (!selectedDiaria) return undefined;
+    const nome = funcionariosRecord[selectedDiaria.funcionarioId]?.nome;
+    const dia = selectedDiaria.dia;
+    if (!nome || !dia) return undefined;
+    return `Atualizar Diaria ${dia} de ${nome}`;
+  }, [selectedDiaria, funcionariosRecord]);
 
   const diariasPorFuncionario: Map<
     string,
@@ -109,9 +171,46 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
 
           return (
             <div className="flex flex-col gap-1 items-stretch">
-              {projetDiaria && <Badge variant="outline">{projetDiaria}</Badge>}
-              {diaria?.tipoDiariaId && (
-                <Badge variant="secondary">com tipo</Badge>
+              {diaria && (
+                <>
+                  <Badge
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      if (!diaria) return;
+                      setSelectedDiaria(diaria);
+                      setSelectedProjetoId(diaria.projetoId ?? '');
+                      setDialogOpen(true);
+                    }}
+                  >
+                    {projetDiaria}
+                  </Badge>
+                  {diaria?.tipoDiariaId ? (
+                    <Badge
+                      variant="destructive"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        if (!diaria) return;
+                        setSelectedDiaria(diaria);
+                        setSelectedTipoDiariaId(diaria.tipoDiariaId ?? '');
+                        setTipoDialogOpen(true);
+                      }}
+                    >
+                      {tiposRecord[diaria.tipoDiariaId]?.nome ?? 'com tipo'}
+                    </Badge>
+                  ) : (
+                    <Badge
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setSelectedDiaria(diaria);
+                        setSelectedTipoDiariaId('');
+                        setTipoDialogOpen(true);
+                      }}
+                    >
+                      presente
+                    </Badge>
+                  )}
+                </>
               )}
               {!diaria && (
                 <Button
@@ -131,5 +230,29 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     return result;
   }, [days, updateMutation.isPending, diarias]);
 
-  return <CalendarDataTable columns={columns} data={funcionarios} />;
+  return (
+    <>
+      <CalendarDataTable columns={columns} data={funcionarios} />
+      <ProjetoDiariaDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        projetos={projetos}
+        selectedProjetoId={selectedProjetoId}
+        onSelectedProjetoIdChange={setSelectedProjetoId}
+        onConfirm={onConfirmProjetoChange}
+        isSaving={updateMutation.isPending}
+        title={dialogTitle}
+      />
+      <TipoDiariaDialog
+        open={tipoDialogOpen}
+        onOpenChange={setTipoDialogOpen}
+        tipos={tiposDiarias}
+        selectedTipoDiariaId={selectedTipoDiariaId}
+        onSelectedTipoDiariaIdChange={setSelectedTipoDiariaId}
+        onConfirm={onConfirmTipoChange}
+        isSaving={updateMutation.isPending}
+        title={dialogTitle}
+      />
+    </>
+  );
 }

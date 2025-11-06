@@ -1,4 +1,4 @@
-import { IsDateString, IsString } from 'class-validator';
+import { IsDateString, IsOptional, IsString } from 'class-validator';
 
 export class CreateDiariaDto {
   @IsString()
@@ -9,4 +9,8 @@ export class CreateDiariaDto {
 
   @IsDateString()
   dia: string;
+
+  @IsOptional()
+  @IsString()
+  tipoDiariaId?: string | null;
 }
