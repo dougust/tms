@@ -43,80 +43,75 @@ export function CalendarDataTable<TData, TValue>({
   });
 
   return (
-    <div>
-      <div className="overflow-hidden rounded-md border">
-        <Table className="border-collapse">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+    <div className="flex h-full flex-shrink overflow-hidden rounded-md border">
+      <Table className="border-collapse h-full">
+        <TableHeader className="sticky top-0 z-20">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead
+                    key={header.id}
+                    className="bg-muted text-muted-foreground border border-border sticky top-0 z-20"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+                className="odd:bg-secondary"
+              >
+                {row.getVisibleCells().map((cell) => {
+                  const meta: any = cell.column.columnDef.meta as any;
+                  const ctx = cell.getContext();
+                  const extraClass =
+                    typeof meta?.cellClassName === 'function'
+                      ? meta.cellClassName(ctx)
+                      : meta?.cellClassName;
+                  const extraStyle =
+                    typeof meta?.cellStyle === 'function'
+                      ? meta.cellStyle(ctx)
+                      : meta?.cellStyle;
+                  const extraTitle =
+                    typeof meta?.cellTitle === 'function'
+                      ? meta.cellTitle(ctx)
+                      : meta?.cellTitle;
+
                   return (
-                    <TableHead
-                      key={header.id}
-                      className="bg-muted text-muted-foreground border border-border"
+                    <TableCell
+                      key={cell.id}
+                      className={`border border-border ${extraClass ?? ''}`}
+                      style={extraStyle}
+                      title={extraTitle}
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
+                      {flexRender(cell.column.columnDef.cell, ctx)}
+                    </TableCell>
                   );
                 })}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  className="odd:bg-secondary"
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    const meta: any = cell.column.columnDef.meta as any;
-                    const ctx = cell.getContext();
-                    const extraClass =
-                      typeof meta?.cellClassName === 'function'
-                        ? meta.cellClassName(ctx)
-                        : meta?.cellClassName;
-                    const extraStyle =
-                      typeof meta?.cellStyle === 'function'
-                        ? meta.cellStyle(ctx)
-                        : meta?.cellStyle;
-                    const extraTitle =
-                      typeof meta?.cellTitle === 'function'
-                        ? meta.cellTitle(ctx)
-                        : meta?.cellTitle;
-
-                    return (
-                      <TableCell
-                        key={cell.id}
-                        className={`border border-border ${extraClass ?? ''}`}
-                        style={extraStyle}
-                        title={extraTitle}
-                      >
-                        {flexRender(cell.column.columnDef.cell, ctx)}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }

@@ -24,11 +24,11 @@ export default function DashboardLayout({
   }
 
   return (
-    <SidebarProvider defaultOpen={true}>
+    <SidebarProvider defaultOpen={true} className="h-full">
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="h-full">
         <Navbar />
-        <div className="flex flex-1 flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4 p-4 overflow-auto">
           {children}
         </div>
       </SidebarInset>
