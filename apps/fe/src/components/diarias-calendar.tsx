@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
+import { Plus } from 'lucide-react';
 
 import { reduceToRecord } from '../lib';
 import { Button, CalendarDataTable, cn } from '@dougust/ui';
@@ -230,6 +231,10 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
               )}
               {!diaria && (
                 <Button
+                  variant="outline"
+                  size="icon"
+                  className="self-start h-8 w-8"
+                  title="Adicionar diária"
                   onClick={() =>
                     onCreateClick({
                       funcionarioId,
@@ -238,7 +243,8 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
                     })
                   }
                 >
-                  add
+                  <Plus className="h-4 w-4" />
+                  <span className="sr-only">Adicionar diária</span>
                 </Button>
               )}
             </div>
