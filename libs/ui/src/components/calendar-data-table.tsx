@@ -78,11 +78,18 @@ export function CalendarDataTable<TData, TValue>({
                       : ci % 2 === 0
                       ? 'bg-secondary/90'
                       : 'bg-secondary/10';
+
+                    const meta: any = cell.column.columnDef.meta as any;
+                    const ctx = cell.getContext();
+                    const extraClass = typeof meta?.cellClassName === 'function' ? meta.cellClassName(ctx) : meta?.cellClassName;
+                    const extraStyle = typeof meta?.cellStyle === 'function' ? meta.cellStyle(ctx) : meta?.cellStyle;
+                    const extraTitle = typeof meta?.cellTitle === 'function' ? meta.cellTitle(ctx) : meta?.cellTitle;
+
                     return (
-                      <TableCell key={cell.id} className={bodyBgClass}>
+                      <TableCell key={cell.id} className={`${bodyBgClass} ${extraClass ?? ''}`} style={extraStyle} title={extraTitle}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          ctx
                         )}
                       </TableCell>
                     );

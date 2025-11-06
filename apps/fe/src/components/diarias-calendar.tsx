@@ -157,22 +157,19 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     ];
 
     for (const dia of days) {
+      const isFuture = new Date(dia) > new Date();
       result.push({
         accessorKey: dia,
         header: dia,
+        meta: isFuture
+          ? {
+              cellClassName:
+                'relative text-muted-foreground select-none cursor-not-allowed bg-gray-900/20',
+            }
+          : undefined,
         cell: ({ row }) => {
-          if (new Date(dia) > new Date()) {
-            return (
-              <div
-                className="relative h-12 rounded-xs border bg-muted/20 text-muted-foreground text-xs italic select-none cursor-not-allowed flex items-center justify-center overflow-hidden"
-                style={{
-                  backgroundImage:
-                    'repeating-linear-gradient(45deg, red 0px, red 10px, transparent 10px, transparent 20px)',
-                }}
-                title="data futura"
-              >
-              </div>
-            );
+          if (isFuture) {
+            return null;
           }
 
           const { id: funcionarioId, projetoId } = row.original;
