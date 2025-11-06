@@ -17,6 +17,7 @@ import {
 } from '@dougust/clients';
 import { useCreateDiaria, useUpdateDiaria } from '../hooks';
 import { ProjetoDiariaDialog } from './projeto-diaria-dialog';
+import { TipoDiariaDialog } from './tipo-diaria-dialog';
 
 export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
@@ -27,7 +28,7 @@ export type DiariasCalendarProps = {
 };
 
 export function DiariasCalendar(props: DiariasCalendarProps) {
-  const { funcionarios, diarias, projetos, range } = props;
+  const { funcionarios, diarias, projetos, tiposDiarias, range } = props;
 
   const createMutation = useCreateDiaria(range);
   const updateMutation = useUpdateDiaria(range);
@@ -38,6 +39,10 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     null
   );
   const [selectedProjetoId, setSelectedProjetoId] = React.useState<string>('');
+
+  // Dialog state for changing tipoDiaria of a diária
+  const [tipoDialogOpen, setTipoDialogOpen] = React.useState(false);
+  const [selectedTipoDiariaId, setSelectedTipoDiariaId] = React.useState<string>('');
 
   const onCreateClick = async (data: CreateDiariaDto) => {
     createMutation.mutate({ data });
@@ -57,9 +62,30 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     setSelectedDiaria(null);
   };
 
+  const onConfirmTipoChange = () => {
+    if (!selectedDiaria || !selectedTipoDiariaId) return;
+    updateMutation.mutate({
+      id: selectedDiaria.id,
+      // Cast to any to allow optional tipoDiariaId until clients are regenerated
+      data: {
+        funcionarioId: selectedDiaria.funcionarioId,
+        projetoId: selectedDiaria.projetoId,
+        dia: selectedDiaria.dia,
+        tipoDiariaId: selectedTipoDiariaId,
+      } as any,
+    });
+    setTipoDialogOpen(false);
+    setSelectedDiaria(null);
+  };
+
   const projetosRecord = React.useMemo(
     () => reduceToRecord(projetos),
     [projetos]
+  );
+
+  const tiposRecord = React.useMemo(
+    () => reduceToRecord(tiposDiarias),
+    [tiposDiarias]
   );
 
   const diariasPorFuncionario: Map<
@@ -146,9 +172,29 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
                     {projetDiaria}
                   </Badge>
                   {diaria?.tipoDiariaId ? (
-                    <Badge variant="secondary">com tipo</Badge>
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        if (!diaria) return;
+                        setSelectedDiaria(diaria);
+                        setSelectedTipoDiariaId(diaria.tipoDiariaId ?? '');
+                        setTipoDialogOpen(true);
+                      }}
+                    >
+                      {tiposRecord[diaria.tipoDiariaId]?.nome ?? 'com tipo'}
+                    </Badge>
                   ) : (
-                    <Badge>presente</Badge>
+                    <Badge
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setSelectedDiaria(diaria);
+                        setSelectedTipoDiariaId('');
+                        setTipoDialogOpen(true);
+                      }}
+                    >
+                      presente
+                    </Badge>
                   )}
                 </>
               )}
@@ -180,6 +226,15 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         selectedProjetoId={selectedProjetoId}
         onSelectedProjetoIdChange={setSelectedProjetoId}
         onConfirm={onConfirmProjetoChange}
+        isSaving={updateMutation.isPending}
+      />
+      <TipoDiariaDialog
+        open={tipoDialogOpen}
+        onOpenChange={setTipoDialogOpen}
+        tipos={tiposDiarias}
+        selectedTipoDiariaId={selectedTipoDiariaId}
+        onSelectedTipoDiariaIdChange={setSelectedTipoDiariaId}
+        onConfirm={onConfirmTipoChange}
         isSaving={updateMutation.isPending}
       />
     </>

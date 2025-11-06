@@ -51,6 +51,7 @@ export class DiariasService {
         funcionarioId: data.funcionarioId,
         projetoId: data.projetoId,
         dia: data.dia,
+        tipoDiariaId: data.tipoDiariaId ?? null,
       })
       .returning();
 
@@ -62,6 +63,7 @@ export class DiariasService {
       .update(this.diarias)
       .set({
         projetoId: data.projetoId,
+        tipoDiariaId: data.tipoDiariaId ?? undefined,
       })
       .where(eq(this.diarias.id, id))
       .returning();
