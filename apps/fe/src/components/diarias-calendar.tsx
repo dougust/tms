@@ -5,30 +5,24 @@ import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { reduceToRecord } from '../lib';
-import {
-  Button,
-  CalendarDataTable,
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from '@dougust/ui';
+import { Button, CalendarDataTable } from '@dougust/ui';
+import { Badge } from '@dougust/ui/components/badge';
 import {
   CreateDiariaDto,
   DiariaDto,
   DiariasControllerFindInRangeQueryParams,
   FuncionarioDto,
   ProjetoDto,
+  TipoDiariaDto,
 } from '@dougust/clients';
-import { Badge } from '@dougust/ui/components/badge';
 import { useCreateDiaria, useUpdateDiaria } from '../hooks';
+import { ProjetoDiariaDialog } from './projeto-diaria-dialog';
 
 export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
   projetos: ProjetoDto[];
   diarias: DiariaDto[];
+  tiposDiarias: TipoDiariaDto[];
   range: DiariasControllerFindInRangeQueryParams;
 };
 
@@ -179,41 +173,15 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
   return (
     <>
       <CalendarDataTable columns={columns} data={funcionarios} />
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Alterar projeto da diária</DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col gap-3">
-            <label className="text-sm text-muted-foreground">Projeto</label>
-            <select
-              className="border rounded-md px-3 py-2 bg-background"
-              value={selectedProjetoId}
-              onChange={(e) => setSelectedProjetoId(e.target.value)}
-            >
-              <option value="" disabled>
-                Selecione um projeto
-              </option>
-              {projetos.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.nome}
-                </option>
-              ))}
-            </select>
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancelar</Button>
-            </DialogClose>
-            <Button
-              onClick={onConfirmProjetoChange}
-              disabled={!selectedProjetoId || updateMutation.isPending}
-            >
-              {updateMutation.isPending ? 'Salvando...' : 'Confirmar'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ProjetoDiariaDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        projetos={projetos}
+        selectedProjetoId={selectedProjetoId}
+        onSelectedProjetoIdChange={setSelectedProjetoId}
+        onConfirm={onConfirmProjetoChange}
+        isSaving={updateMutation.isPending}
+      />
     </>
   );
 }

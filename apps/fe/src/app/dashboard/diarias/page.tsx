@@ -12,6 +12,7 @@ import {
   useDiariasControllerFindInRange,
   useFuncionariosControllerFindAll,
   useProjetosControllerFindAll,
+  useTiposDiariaControllerFindAll,
 } from '@dougust/clients';
 
 const daysCount = 7;
@@ -48,9 +49,15 @@ export default function DiariasPage() {
     isError: isDiariasError,
   } = useDiariasControllerFindInRange(range);
 
-  const isError = isFuncionariosError || isProjetosError || isDiariasError;
+  const {
+    data: tiposDiaria,
+    isPending: isTiposPending,
+    isError: isTiposError,
+  } = useTiposDiariaControllerFindAll();
+
+  const isError = isFuncionariosError || isProjetosError || isDiariasError || isTiposError;
   const isPending =
-    isFuncionariosPending || isProjetosPending || isDiariasPending;
+    isFuncionariosPending || isProjetosPending || isDiariasPending || isTiposPending;
 
   return (
     <ListPageLayout
@@ -69,6 +76,7 @@ export default function DiariasPage() {
         <></>
       ) : (
         <DiariasCalendar
+          tiposDiarias={tiposDiaria}
           diarias={diarias}
           projetos={projetos}
           funcionarios={funcionarios}
