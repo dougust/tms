@@ -163,7 +163,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
 
       result.push({
         accessorKey: dia,
-        header: dia,
+        header: day.toLocaleDateString(),
         meta: isFuture
           ? {
               cellClassName:
