@@ -162,7 +162,17 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         header: dia,
         cell: ({ row }) => {
           if (new Date(dia) > new Date()) {
-            return <div className="text-muted-foreground "></div>;
+            return (
+              <div
+                className="relative h-12 rounded-xs border bg-muted/20 text-muted-foreground text-xs italic select-none cursor-not-allowed flex items-center justify-center overflow-hidden"
+                style={{
+                  backgroundImage:
+                    'repeating-linear-gradient(45deg, red 0px, red 10px, transparent 10px, transparent 20px)',
+                }}
+                title="data futura"
+              >
+              </div>
+            );
           }
 
           const { id: funcionarioId, projetoId } = row.original;
