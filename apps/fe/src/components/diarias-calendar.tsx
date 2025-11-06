@@ -16,7 +16,11 @@ import {
   ProjetoDto,
   TipoDiariaDto,
 } from '@dougust/clients';
-import { useCreateDiaria, useUpdateDiaria } from '../hooks';
+import {
+  useCreateDiaria,
+  useCreateManyDiarias,
+  useUpdateDiaria,
+} from '../hooks';
 import { ProjetoDiariaDialog } from './projeto-diaria-dialog';
 import { TipoDiariaDialog } from './tipo-diaria-dialog';
 import { useAppSettings } from './app-settings-context';
@@ -37,6 +41,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
   const today = React.useMemo(() => new Date(), []);
 
   const createMutation = useCreateDiaria(range);
+  const createManyMutation = useCreateManyDiarias(range);
   const updateMutation = useUpdateDiaria(range);
 
   // Dialog state for changing projeto of a diária
@@ -166,24 +171,31 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     for (const day of days) {
       const isFuture = day > today;
       const dia = day.toISOString().slice(0, 10);
+      const showCreateButton = funcionarios.some(
+        (f) => !diariasPorFuncionario.get(f.id)?.has(dia) && f.projetoId
+      );
 
       const addMissingForDay = () => {
         if (isFuture) return;
+        const items: CreateDiariaDto[] = [];
         for (const f of funcionarios) {
           const hasDiaria = diariasPorFuncionario.get(f.id)?.has(dia);
           // Only create if funcionário has a projeto and no diária yet for the day
           if (!hasDiaria && f.projetoId) {
-            onCreateClick({ funcionarioId: f.id, projetoId: f.projetoId, dia });
+            items.push({ funcionarioId: f.id, projetoId: f.projetoId, dia });
           }
+        }
+        if (items.length > 0) {
+          createManyMutation.mutate({ data: { items } });
         }
       };
 
       result.push({
         accessorKey: dia,
-        header: (
+        header: () => (
           <div className="flex items-center justify-between gap-2">
             <span>{formatDate(day)}</span>
-            {!isFuture && (
+            {!isFuture && showCreateButton && (
               <Button
                 variant="outline"
                 size="icon"
@@ -244,7 +256,11 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
                   )}
                   <Badge
                     variant="outline"
-                    className={cn('cursor-pointer', diaria.projetoId != projetoId && 'border-red-500 text-red-500')}
+                    className={cn(
+                      'cursor-pointer',
+                      diaria.projetoId != projetoId &&
+                        'border-red-500 text-red-500'
+                    )}
                     onClick={() => {
                       if (!diaria) return;
                       setSelectedDiaria(diaria);
@@ -281,7 +297,14 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     }
 
     return result;
-  }, [days, updateMutation.isPending, diarias, formatDate, funcionarios, diariasPorFuncionario]);
+  }, [
+    days,
+    updateMutation.isPending,
+    diarias,
+    formatDate,
+    funcionarios,
+    diariasPorFuncionario,
+  ]);
 
   return (
     <>

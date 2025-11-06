@@ -8,6 +8,7 @@ import { CreateDiariaDto } from './dto/create-diaria.dto';
 import { FuncionariosService } from '../funcionarios/funcionarios.service';
 import { ProjetosService } from '../projetos/projetos.service';
 import { DiariaDto } from './dto/diaria.dto';
+import { CreateManyDiariasDto } from './dto/create-many-diarias.dto';
 
 @Injectable()
 export class DiariasService {
@@ -56,6 +57,17 @@ export class DiariasService {
       .returning();
 
     return created;
+  }
+
+  async createMany({ items }: CreateManyDiariasDto): Promise<DiariaDto[]> {
+    if (!Array.isArray(items) || items.length === 0) return [];
+    // For minimal change and to reuse validation, call existing create sequentially
+    const results: DiariaDto[] = [];
+    for (const dto of items) {
+      const created = await this.create(dto);
+      results.push(created);
+    }
+    return results;
   }
 
   async update(id: string, data: CreateDiariaDto) {

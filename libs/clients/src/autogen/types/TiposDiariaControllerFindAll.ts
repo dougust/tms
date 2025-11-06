@@ -3,14 +3,12 @@
  * Do not edit manually.
  */
 
-import type { TipoDiariaDto } from './TipoDiariaDto.ts';
-
-export type TiposDiariaControllerFindAll200 = TipoDiariaDto[];
+export type TiposDiariaControllerFindAll200 = any;
 
 export type TiposDiariaControllerFindAllQueryResponse =
   TiposDiariaControllerFindAll200;
 
 export type TiposDiariaControllerFindAllQuery = {
   Response: TiposDiariaControllerFindAll200;
-  Errors: never;
+  Errors: any;
 };

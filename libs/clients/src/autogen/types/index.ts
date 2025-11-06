@@ -1,6 +1,7 @@
 export type { CreateDiariaDto } from './CreateDiariaDto.ts';
 export type { CreateEmpresaDto } from './CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
+export type { CreateManyDiariasDto } from './CreateManyDiariasDto.ts';
 export type { CreateProjetoDto } from './CreateProjetoDto.ts';
 export type { DiariaDto } from './DiariaDto.ts';
 export type {
@@ -9,6 +10,12 @@ export type {
   DiariasControllerCreateMutationResponse,
   DiariasControllerCreateMutation,
 } from './DiariasControllerCreate.ts';
+export type {
+  DiariasControllerCreateMany201,
+  DiariasControllerCreateManyMutationRequest,
+  DiariasControllerCreateManyMutationResponse,
+  DiariasControllerCreateManyMutation,
+} from './DiariasControllerCreateMany.ts';
 export type {
   DiariasControllerFindInRangeQueryParams,
   DiariasControllerFindInRange200,
@@ -122,12 +129,11 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './ProjetosControllerUpdate.ts';
-export type { UpdateEmpresaDto } from './UpdateEmpresaDto.ts';
-export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto.ts';
-export type { UpdateProjetoDto } from './UpdateProjetoDto.ts';
-export type { TipoDiariaDto } from './TipoDiariaDto.ts';
 export type {
   TiposDiariaControllerFindAll200,
   TiposDiariaControllerFindAllQueryResponse,
   TiposDiariaControllerFindAllQuery,
 } from './TiposDiariaControllerFindAll.ts';
+export type { UpdateEmpresaDto } from './UpdateEmpresaDto.ts';
+export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto.ts';
+export type { UpdateProjetoDto } from './UpdateProjetoDto.ts';

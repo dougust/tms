@@ -4,7 +4,7 @@
  */
 
 import fetch from '@kubb/plugin-client/clients/axios';
-import type { TiposDiariaControllerFindAllQueryResponse } from '../../types';
+import type { TiposDiariaControllerFindAllQueryResponse } from '../../types/TiposDiariaControllerFindAll.ts';
 import type {
   RequestConfig,
   ResponseErrorConfig,
