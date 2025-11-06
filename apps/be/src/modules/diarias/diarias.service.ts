@@ -3,7 +3,7 @@ import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
 import { UserContextService } from '../../common/user-context/user-context.service';
 import { RangeQueryDto } from './dto/range-query.dto';
-import { and, eq, gt, lt } from 'drizzle-orm';
+import { and, eq, gte, lte } from 'drizzle-orm';
 import { CreateDiariaDto } from './dto/create-diaria.dto';
 import { FuncionariosService } from '../funcionarios/funcionarios.service';
 import { ProjetosService } from '../projetos/projetos.service';
@@ -27,7 +27,7 @@ export class DiariasService {
       .select()
       .from(this.diarias)
       .where(
-        and(gt(this.diarias.dia, query.from), lt(this.diarias.dia, query.to))
+        and(gte(this.diarias.dia, query.from), lte(this.diarias.dia, query.to))
       );
   }
 
