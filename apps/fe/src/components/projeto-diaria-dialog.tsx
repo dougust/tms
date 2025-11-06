@@ -20,6 +20,7 @@ export type ProjetoDiariaDialogProps = {
   onSelectedProjetoIdChange: (id: string) => void;
   onConfirm: () => void;
   isSaving?: boolean;
+  title?: string;
 };
 
 export function ProjetoDiariaDialog(props: ProjetoDiariaDialogProps) {
@@ -37,7 +38,7 @@ export function ProjetoDiariaDialog(props: ProjetoDiariaDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Alterar projeto da diária</DialogTitle>
+          <DialogTitle>{props.title ?? "Alterar projeto da diária"}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-3">
           <label className="text-sm text-muted-foreground">Projeto</label>

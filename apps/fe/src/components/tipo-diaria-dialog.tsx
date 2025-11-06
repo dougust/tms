@@ -20,6 +20,7 @@ export type TipoDiariaDialogProps = {
   onSelectedTipoDiariaIdChange: (id: string) => void;
   onConfirm: () => void;
   isSaving?: boolean;
+  title?: string;
 };
 
 export function TipoDiariaDialog(props: TipoDiariaDialogProps) {
@@ -37,7 +38,7 @@ export function TipoDiariaDialog(props: TipoDiariaDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Alterar tipo da diária</DialogTitle>
+          <DialogTitle>{props.title ?? "Alterar tipo da diária"}</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-3">
           <label className="text-sm text-muted-foreground">Tipo de diária</label>

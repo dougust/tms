@@ -42,7 +42,8 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
 
   // Dialog state for changing tipoDiaria of a diária
   const [tipoDialogOpen, setTipoDialogOpen] = React.useState(false);
-  const [selectedTipoDiariaId, setSelectedTipoDiariaId] = React.useState<string>('');
+  const [selectedTipoDiariaId, setSelectedTipoDiariaId] =
+    React.useState<string>('');
 
   const onCreateClick = async (data: CreateDiariaDto) => {
     createMutation.mutate({ data });
@@ -87,6 +88,19 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     () => reduceToRecord(tiposDiarias),
     [tiposDiarias]
   );
+
+  const funcionariosRecord = React.useMemo(
+    () => reduceToRecord(funcionarios),
+    [funcionarios]
+  );
+
+  const dialogTitle = React.useMemo(() => {
+    if (!selectedDiaria) return undefined;
+    const nome = funcionariosRecord[selectedDiaria.funcionarioId]?.nome;
+    const dia = selectedDiaria.dia;
+    if (!nome || !dia) return undefined;
+    return `Atualizar Diaria ${dia} de ${nome}`;
+  }, [selectedDiaria, funcionariosRecord]);
 
   const diariasPorFuncionario: Map<
     string,
@@ -173,7 +187,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
                   </Badge>
                   {diaria?.tipoDiariaId ? (
                     <Badge
-                      variant="secondary"
+                      variant="destructive"
                       className="cursor-pointer"
                       onClick={() => {
                         if (!diaria) return;
@@ -227,6 +241,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         onSelectedProjetoIdChange={setSelectedProjetoId}
         onConfirm={onConfirmProjetoChange}
         isSaving={updateMutation.isPending}
+        title={dialogTitle}
       />
       <TipoDiariaDialog
         open={tipoDialogOpen}
@@ -236,6 +251,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         onSelectedTipoDiariaIdChange={setSelectedTipoDiariaId}
         onConfirm={onConfirmTipoChange}
         isSaving={updateMutation.isPending}
+        title={dialogTitle}
       />
     </>
   );
