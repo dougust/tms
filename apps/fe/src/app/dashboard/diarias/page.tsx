@@ -14,6 +14,7 @@ import {
   useProjetosControllerFindAll,
   useTiposDiariaControllerFindAll,
 } from '@dougust/clients';
+import type { DateHeaderFormat } from '../../../components/diarias-date-selector';
 
 const daysCount = 7;
 
@@ -21,6 +22,7 @@ export default function DiariasPage() {
   const [fromDate, setFromDate] = React.useState(() =>
     startOfWeekMonday(new Date())
   );
+  const [dateFormat, setDateFormat] = React.useState<DateHeaderFormat>('locale');
   const toDate = React.useMemo(() => addDays(fromDate, daysCount), [fromDate]);
 
   const range: DiariasControllerFindInRangeQueryParams = React.useMemo(
@@ -68,6 +70,8 @@ export default function DiariasPage() {
         fromDate={fromDate}
         toDate={toDate}
         onDateChange={setFromDate}
+        dateFormat={dateFormat}
+        onDateFormatChange={setDateFormat}
       />
 
       {isPending ? (
@@ -81,6 +85,7 @@ export default function DiariasPage() {
           projetos={projetos}
           funcionarios={funcionarios}
           range={range}
+          dateFormat={dateFormat}
         />
       )}
     </ListPageLayout>

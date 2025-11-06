@@ -25,10 +25,11 @@ export type DiariasCalendarProps = {
   diarias: DiariaDto[];
   tiposDiarias: TipoDiariaDto[];
   range: DiariasControllerFindInRangeQueryParams;
+  dateFormat?: 'locale' | 'iso' | 'dd/MM' | 'EEE dd/MM' | 'MMM dd' | 'yyyy';
 };
 
 export function DiariasCalendar(props: DiariasCalendarProps) {
-  const { funcionarios, diarias, projetos, tiposDiarias, range } = props;
+  const { funcionarios, diarias, projetos, tiposDiarias, range, dateFormat = 'locale' } = props;
 
   const today = React.useMemo(() => new Date(), []);
 
@@ -157,13 +158,32 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
       },
     ];
 
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const formatHeader = (day: Date): string => {
+      switch (dateFormat) {
+        case 'iso':
+          return day.toISOString().slice(0, 10);
+        case 'dd/MM':
+          return `${pad(day.getDate())}/${pad(day.getMonth() + 1)}`;
+        case 'EEE dd/MM':
+          return `${day.toLocaleDateString(undefined, { weekday: 'short' })} ${pad(day.getDate())}/${pad(day.getMonth() + 1)}`;
+        case 'MMM dd':
+          return `${day.toLocaleDateString(undefined, { month: 'short' })} ${pad(day.getDate())}`;
+        case 'yyyy':
+          return String(day.getFullYear());
+        case 'locale':
+        default:
+          return day.toLocaleDateString();
+      }
+    };
+
     for (const day of days) {
       const isFuture = day > today;
       const dia = day.toISOString().slice(0, 10);
 
       result.push({
         accessorKey: dia,
-        header: day.toLocaleDateString(),
+        header: formatHeader(day),
         meta: isFuture
           ? {
               cellClassName:
@@ -242,7 +262,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     }
 
     return result;
-  }, [days, updateMutation.isPending, diarias]);
+  }, [days, updateMutation.isPending, diarias, dateFormat]);
 
   return (
     <>
