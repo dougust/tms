@@ -5,7 +5,16 @@ import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { reduceToRecord } from '../lib';
-import { Button, CalendarDataTable } from '@dougust/ui';
+import {
+  Button,
+  CalendarDataTable,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from '@dougust/ui';
 import {
   CreateDiariaDto,
   DiariaDto,
@@ -29,8 +38,29 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
   const createMutation = useCreateDiaria(range);
   const updateMutation = useUpdateDiaria(range);
 
+  // Dialog state for changing projeto of a diária
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [selectedDiaria, setSelectedDiaria] = React.useState<DiariaDto | null>(
+    null
+  );
+  const [selectedProjetoId, setSelectedProjetoId] = React.useState<string>('');
+
   const onCreateClick = async (data: CreateDiariaDto) => {
     createMutation.mutate({ data });
+  };
+
+  const onConfirmProjetoChange = () => {
+    if (!selectedDiaria || !selectedProjetoId) return;
+    updateMutation.mutate({
+      id: selectedDiaria.id,
+      data: {
+        funcionarioId: selectedDiaria.funcionarioId,
+        projetoId: selectedProjetoId,
+        dia: selectedDiaria.dia,
+      },
+    });
+    setDialogOpen(false);
+    setSelectedDiaria(null);
   };
 
   const projetosRecord = React.useMemo(
@@ -109,7 +139,18 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
             <div className="flex flex-col gap-1 items-stretch">
               {diaria && (
                 <>
-                  <Badge variant="outline">{projetDiaria}</Badge>
+                  <Badge
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      if (!diaria) return;
+                      setSelectedDiaria(diaria);
+                      setSelectedProjetoId(diaria.projetoId ?? '');
+                      setDialogOpen(true);
+                    }}
+                  >
+                    {projetDiaria}
+                  </Badge>
                   {diaria?.tipoDiariaId ? (
                     <Badge variant="secondary">com tipo</Badge>
                   ) : (
@@ -135,5 +176,44 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     return result;
   }, [days, updateMutation.isPending, diarias]);
 
-  return <CalendarDataTable columns={columns} data={funcionarios} />;
+  return (
+    <>
+      <CalendarDataTable columns={columns} data={funcionarios} />
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Alterar projeto da diária</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col gap-3">
+            <label className="text-sm text-muted-foreground">Projeto</label>
+            <select
+              className="border rounded-md px-3 py-2 bg-background"
+              value={selectedProjetoId}
+              onChange={(e) => setSelectedProjetoId(e.target.value)}
+            >
+              <option value="" disabled>
+                Selecione um projeto
+              </option>
+              {projetos.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancelar</Button>
+            </DialogClose>
+            <Button
+              onClick={onConfirmProjetoChange}
+              disabled={!selectedProjetoId || updateMutation.isPending}
+            >
+              {updateMutation.isPending ? 'Salvando...' : 'Confirmar'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 }
