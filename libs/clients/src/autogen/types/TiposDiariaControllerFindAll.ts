@@ -3,7 +3,9 @@
  * Do not edit manually.
  */
 
-export type TiposDiariaControllerFindAll200 = any;
+import type { TipoDiariaDto } from './TipoDiariaDto.ts';
+
+export type TiposDiariaControllerFindAll200 = TipoDiariaDto[];
 
 export type TiposDiariaControllerFindAllQueryResponse =
   TiposDiariaControllerFindAll200;

@@ -150,6 +150,7 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './types/ProjetosControllerUpdate.ts';
+export type { TipoDiariaDto } from './types/TipoDiariaDto.ts';
 export type {
   TiposDiariaControllerFindAll200,
   TiposDiariaControllerFindAllQueryResponse,
@@ -395,6 +396,7 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './zod/projetosControllerUpdateSchema.ts';
+export { tipoDiariaDtoSchema } from './zod/tipoDiariaDtoSchema.ts';
 export {
   tiposDiariaControllerFindAll200Schema,
   tiposDiariaControllerFindAllQueryResponseSchema,

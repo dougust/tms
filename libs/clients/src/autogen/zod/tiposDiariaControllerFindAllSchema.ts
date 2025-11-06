@@ -3,9 +3,11 @@
  * Do not edit manually.
  */
 
+import { tipoDiariaDtoSchema } from './tipoDiariaDtoSchema.ts';
 import { z } from 'zod/v4';
 
-export const tiposDiariaControllerFindAll200Schema = z.any();
+export const tiposDiariaControllerFindAll200Schema =
+  z.array(tipoDiariaDtoSchema);
 
 export const tiposDiariaControllerFindAllQueryResponseSchema =
   tiposDiariaControllerFindAll200Schema;

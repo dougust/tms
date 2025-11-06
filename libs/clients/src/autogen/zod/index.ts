@@ -109,6 +109,7 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './projetosControllerUpdateSchema.ts';
+export { tipoDiariaDtoSchema } from './tipoDiariaDtoSchema.ts';
 export {
   tiposDiariaControllerFindAll200Schema,
   tiposDiariaControllerFindAllQueryResponseSchema,

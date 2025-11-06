@@ -129,6 +129,7 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './ProjetosControllerUpdate.ts';
+export type { TipoDiariaDto } from './TipoDiariaDto.ts';
 export type {
   TiposDiariaControllerFindAll200,
   TiposDiariaControllerFindAllQueryResponse,

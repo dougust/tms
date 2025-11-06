@@ -591,7 +591,17 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoDiariaDto"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -1039,6 +1049,31 @@
         },
         "required": [
           "items"
+        ]
+      },
+      "TipoDiariaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "createdAt",
+          "updatedAt"
         ]
       }
     }
