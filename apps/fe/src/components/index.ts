@@ -10,3 +10,4 @@ export * from './projeto-diaria-dialog';
 export * from './tipo-diaria-dialog';
 export * from './diarias-date-selector';
 export * from './providers';
+export * from './app-settings-context';

@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setClientConfig } from '@dougust/clients';
+import { AppSettingsProvider } from './app-settings-context';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,6 +19,8 @@ setClientConfig({
 
 export const Providers = ({ children }: React.PropsWithChildren) => {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppSettingsProvider>{children}</AppSettingsProvider>
+    </QueryClientProvider>
   );
 };
