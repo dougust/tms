@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { reduceToRecord } from '../lib';
-import { Button, CalendarDataTable } from '@dougust/ui';
+import { Button, CalendarDataTable, cn } from '@dougust/ui';
 import { Badge } from '@dougust/ui/components/badge';
 import {
   CreateDiariaDto,
@@ -19,6 +19,7 @@ import { useCreateDiaria, useUpdateDiaria } from '../hooks';
 import { ProjetoDiariaDialog } from './projeto-diaria-dialog';
 import { TipoDiariaDialog } from './tipo-diaria-dialog';
 import { useAppSettings } from './app-settings-context';
+import { DataTableColumnHeader } from '@dougust/ui/components/data-table-column-header';
 
 export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
@@ -139,15 +140,17 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
   const columns = React.useMemo(() => {
     const result: ColumnDef<FuncionarioDto>[] = [
       {
-        accessorKey: 'nome',
-        header: 'Nome',
+        accessorKey: 'projetoId',
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Nome" />
+        ),
         cell: ({ row }) => {
           const projetoId = row.original.projetoId;
           const projeto = projetosRecord[projetoId];
 
           return (
             <div className="capitalize">
-              {row.getValue('nome')}
+              {row.original.nome}
               {projeto && (
                 <div className="text-xs text-muted-foreground">
                   {projeto.nome}
@@ -182,21 +185,9 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
           const projetDiaria = diaria && projetosRecord[diaria.projetoId].nome;
 
           return (
-            <div className="flex flex-col gap-1 items-stretch">
+            <div className="flex flex-col gap-1">
               {diaria && (
                 <>
-                  <Badge
-                    variant="outline"
-                    className="cursor-pointer"
-                    onClick={() => {
-                      if (!diaria) return;
-                      setSelectedDiaria(diaria);
-                      setSelectedProjetoId(diaria.projetoId ?? '');
-                      setDialogOpen(true);
-                    }}
-                  >
-                    {projetDiaria}
-                  </Badge>
                   {diaria?.tipoDiariaId ? (
                     <Badge
                       variant="destructive"
@@ -212,6 +203,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
                     </Badge>
                   ) : (
                     <Badge
+                      variant="secondary"
                       className="cursor-pointer"
                       onClick={() => {
                         setSelectedDiaria(diaria);
@@ -222,6 +214,18 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
                       presente
                     </Badge>
                   )}
+                  <Badge
+                    variant="outline"
+                    className={cn('cursor-pointer', diaria.projetoId != projetoId && 'border-red-500 text-red-500')}
+                    onClick={() => {
+                      if (!diaria) return;
+                      setSelectedDiaria(diaria);
+                      setSelectedProjetoId(diaria.projetoId ?? '');
+                      setDialogOpen(true);
+                    }}
+                  >
+                    {projetDiaria}
+                  </Badge>
                 </>
               )}
               {!diaria && (

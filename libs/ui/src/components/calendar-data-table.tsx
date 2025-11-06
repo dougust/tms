@@ -45,13 +45,16 @@ export function CalendarDataTable<TData, TValue>({
   return (
     <div>
       <div className="overflow-hidden rounded-md border">
-        <Table>
+        <Table className="border-collapse">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="bg-muted text-muted-foreground">
+                    <TableHead
+                      key={header.id}
+                      className="bg-muted text-muted-foreground border border-border"
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -70,27 +73,32 @@ export function CalendarDataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  className="odd:bg-secondary"
                 >
-                  {row.getVisibleCells().map((cell, ci) => {
-                    const isFirstCol = ci === 0;
-                    const bodyBgClass = isFirstCol
-                      ? 'bg-secondary/60'
-                      : ci % 2 === 0
-                      ? 'bg-secondary/90'
-                      : 'bg-secondary/10';
-
+                  {row.getVisibleCells().map((cell) => {
                     const meta: any = cell.column.columnDef.meta as any;
                     const ctx = cell.getContext();
-                    const extraClass = typeof meta?.cellClassName === 'function' ? meta.cellClassName(ctx) : meta?.cellClassName;
-                    const extraStyle = typeof meta?.cellStyle === 'function' ? meta.cellStyle(ctx) : meta?.cellStyle;
-                    const extraTitle = typeof meta?.cellTitle === 'function' ? meta.cellTitle(ctx) : meta?.cellTitle;
+                    const extraClass =
+                      typeof meta?.cellClassName === 'function'
+                        ? meta.cellClassName(ctx)
+                        : meta?.cellClassName;
+                    const extraStyle =
+                      typeof meta?.cellStyle === 'function'
+                        ? meta.cellStyle(ctx)
+                        : meta?.cellStyle;
+                    const extraTitle =
+                      typeof meta?.cellTitle === 'function'
+                        ? meta.cellTitle(ctx)
+                        : meta?.cellTitle;
 
                     return (
-                      <TableCell key={cell.id} className={`${bodyBgClass} ${extraClass ?? ''}`} style={extraStyle} title={extraTitle}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          ctx
-                        )}
+                      <TableCell
+                        key={cell.id}
+                        className={`border border-border ${extraClass ?? ''}`}
+                        style={extraStyle}
+                        title={extraTitle}
+                      >
+                        {flexRender(cell.column.columnDef.cell, ctx)}
                       </TableCell>
                     );
                   })}
