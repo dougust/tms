@@ -1,5 +1,5 @@
 import React from 'react';
-import { addDays, startOfWeekMonday, toISODate } from '../lib';
+import { addDays, startOfWeekMonday } from '../lib';
 import { Button } from '@dougust/ui';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -10,15 +10,7 @@ export type DateSelectorProps = {
 };
 
 export function DiariasDateSelector(props: DateSelectorProps) {
-  const { fromDate, toDate, onDateChange } = props;
-
-  const weekLabel = React.useMemo(() => {
-    const fmt = (iso: string) => {
-      const [y, m, d] = iso.split('-');
-      return `${d}/${m}`;
-    };
-    return `${fmt(toISODate(fromDate))} - ${fmt(toISODate(toDate))}`;
-  }, [fromDate, toDate]);
+  const { fromDate, onDateChange } = props;
 
   const goPrevWeek = () => onDateChange(addDays(fromDate, -7));
   const goNextWeek = () => onDateChange(addDays(fromDate, 7));
@@ -37,7 +29,6 @@ export function DiariasDateSelector(props: DateSelectorProps) {
           Próxima semana <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
-      <div className="text-sm text-muted-foreground">{weekLabel}</div>
     </div>
   );
 }
