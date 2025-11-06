@@ -30,6 +30,8 @@ export type DiariasCalendarProps = {
 export function DiariasCalendar(props: DiariasCalendarProps) {
   const { funcionarios, diarias, projetos, tiposDiarias, range } = props;
 
+  const today = React.useMemo(() => new Date(), []);
+
   const createMutation = useCreateDiaria(range);
   const updateMutation = useUpdateDiaria(range);
 
@@ -120,15 +122,14 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
   );
 
   const days = useMemo(() => {
-    const list: string[] = [];
-    const d = new Date(range.from);
+    const list: Date[] = [];
+    const dateIterator = new Date(range.from);
     const endDate = new Date(range.to);
-    // Normalize time to avoid DST issues
-    d.setUTCHours(0, 0, 0, 0);
+    dateIterator.setUTCHours(0, 0, 0, 0);
     endDate.setUTCHours(0, 0, 0, 0);
-    while (d <= endDate) {
-      list.push(d.toISOString().slice(0, 10));
-      d.setUTCDate(d.getUTCDate() + 1);
+    while (dateIterator <= endDate) {
+      list.push(new Date(dateIterator));
+      dateIterator.setUTCDate(dateIterator.getUTCDate() + 1);
     }
     return list;
   }, [range]);
@@ -156,8 +157,10 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
       },
     ];
 
-    for (const dia of days) {
-      const isFuture = new Date(dia) > new Date();
+    for (const day of days) {
+      const isFuture = day > today;
+      const dia = day.toISOString().slice(0, 10);
+
       result.push({
         accessorKey: dia,
         header: dia,
@@ -222,7 +225,11 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
               {!diaria && (
                 <Button
                   onClick={() =>
-                    onCreateClick({ funcionarioId, projetoId, dia })
+                    onCreateClick({
+                      funcionarioId,
+                      projetoId,
+                      dia,
+                    })
                   }
                 >
                   add
