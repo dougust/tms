@@ -11,6 +11,7 @@ import { DiariasService } from './diarias.service';
 import { RangeQueryDto } from './dto/range-query.dto';
 import { CreateDiariaDto } from './dto/create-diaria.dto';
 import { DiariaDto } from './dto/diaria.dto';
+import { CreateManyDiariasDto } from './dto/create-many-diarias.dto';
 
 @Controller('diarias')
 export class DiariasController {
@@ -27,6 +28,11 @@ export class DiariasController {
   @Post()
   create(@Body() dto: CreateDiariaDto): Promise<DiariaDto> {
     return this.service.create(dto);
+  }
+
+  @Post('bulk')
+  createMany(@Body() payload: CreateManyDiariasDto): Promise<DiariaDto[]> {
+    return this.service.createMany(payload);
   }
 
   @Patch(':id')

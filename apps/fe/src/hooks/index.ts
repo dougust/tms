@@ -1,11 +1,4 @@
-import { useFuncionariosControllerFindAll } from '@dougust/clients';
-
 export * from './useCreateDiaria';
 export * from './useUpdateDiaria';
-
-export const useFuncionariosQuery = () =>
-  useFuncionariosControllerFindAll({
-    query: {
-      initialData: () => [],
-    },
-  });
+export * from './useCustomDateFormat';
+export * from './useCreateManyDiarias';

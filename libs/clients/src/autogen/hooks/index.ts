@@ -1,4 +1,5 @@
 export type { DiariasControllerCreateMutationKey } from './Diarias/useDiariasControllerCreate.ts';
+export type { DiariasControllerCreateManyMutationKey } from './Diarias/useDiariasControllerCreateMany.ts';
 export type { DiariasControllerFindInRangeQueryKey } from './Diarias/useDiariasControllerFindInRange.ts';
 export type { DiariasControllerUpdateMutationKey } from './Diarias/useDiariasControllerUpdate.ts';
 export type { EmpresasControllerCreateMutationKey } from './Empresas/useEmpresasControllerCreate.ts';
@@ -24,6 +25,12 @@ export {
   diariasControllerCreateMutationOptions,
   useDiariasControllerCreate,
 } from './Diarias/useDiariasControllerCreate.ts';
+export {
+  diariasControllerCreateManyMutationKey,
+  diariasControllerCreateMany,
+  diariasControllerCreateManyMutationOptions,
+  useDiariasControllerCreateMany,
+} from './Diarias/useDiariasControllerCreateMany.ts';
 export {
   diariasControllerFindInRangeQueryKey,
   diariasControllerFindInRange,

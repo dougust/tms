@@ -511,6 +511,40 @@
         ]
       }
     },
+    "/diarias/bulk": {
+      "post": {
+        "operationId": "DiariasController_createMany",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateManyDiariasDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DiariaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Diarias"
+        ]
+      }
+    },
     "/diarias/{id}": {
       "patch": {
         "operationId": "DiariasController_update",
@@ -548,6 +582,30 @@
         },
         "tags": [
           "Diarias"
+        ]
+      }
+    },
+    "/tipos-diarias": {
+      "get": {
+        "operationId": "TiposDiariaController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoDiariaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "TiposDiaria"
         ]
       }
     }
@@ -967,12 +1025,55 @@
           },
           "dia": {
             "type": "string"
+          },
+          "tipoDiariaId": {
+            "type": "string",
+            "nullable": true
           }
         },
         "required": [
           "projetoId",
           "funcionarioId",
           "dia"
+        ]
+      },
+      "CreateManyDiariasDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateDiariaDto"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "TipoDiariaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "createdAt",
+          "updatedAt"
         ]
       }
     }

@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "projetoId": { "type": "string" },
+          "funcionarioId": { "type": "string" },
+          "dia": { "type": "string" },
+          "tipoDiariaId": { "type": "string", "nullable": true }
+        },
+        "required": ["projetoId", "funcionarioId", "dia"],
+        "x-readme-ref-name": "CreateDiariaDto"
+      }
+    }
+  },
+  "required": ["items"],
+  "x-readme-ref-name": "CreateManyDiariasDto"
+}

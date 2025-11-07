@@ -3,9 +3,10 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
+import { Plus } from 'lucide-react';
 
 import { reduceToRecord } from '../lib';
-import { Button, CalendarDataTable } from '@dougust/ui';
+import { Button, CalendarDataTable, cn } from '@dougust/ui';
 import { Badge } from '@dougust/ui/components/badge';
 import {
   CreateDiariaDto,
@@ -15,9 +16,15 @@ import {
   ProjetoDto,
   TipoDiariaDto,
 } from '@dougust/clients';
-import { useCreateDiaria, useUpdateDiaria } from '../hooks';
+import {
+  useCreateDiaria,
+  useCreateManyDiarias,
+  useUpdateDiaria,
+} from '../hooks';
 import { ProjetoDiariaDialog } from './projeto-diaria-dialog';
 import { TipoDiariaDialog } from './tipo-diaria-dialog';
+import { useAppSettings } from './app-settings-context';
+import { DataTableColumnHeader } from '@dougust/ui/components/data-table-column-header';
 
 export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
@@ -29,8 +36,12 @@ export type DiariasCalendarProps = {
 
 export function DiariasCalendar(props: DiariasCalendarProps) {
   const { funcionarios, diarias, projetos, tiposDiarias, range } = props;
+  const { formatDate } = useAppSettings();
+
+  const today = React.useMemo(() => new Date(), []);
 
   const createMutation = useCreateDiaria(range);
+  const createManyMutation = useCreateManyDiarias(range);
   const updateMutation = useUpdateDiaria(range);
 
   // Dialog state for changing projeto of a diária
@@ -120,15 +131,14 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
   );
 
   const days = useMemo(() => {
-    const list: string[] = [];
-    const d = new Date(range.from);
+    const list: Date[] = [];
+    const dateIterator = new Date(range.from);
     const endDate = new Date(range.to);
-    // Normalize time to avoid DST issues
-    d.setUTCHours(0, 0, 0, 0);
+    dateIterator.setUTCHours(0, 0, 0, 0);
     endDate.setUTCHours(0, 0, 0, 0);
-    while (d <= endDate) {
-      list.push(d.toISOString().slice(0, 10));
-      d.setUTCDate(d.getUTCDate() + 1);
+    while (dateIterator <= endDate) {
+      list.push(new Date(dateIterator));
+      dateIterator.setUTCDate(dateIterator.getUTCDate() + 1);
     }
     return list;
   }, [range]);
@@ -136,15 +146,17 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
   const columns = React.useMemo(() => {
     const result: ColumnDef<FuncionarioDto>[] = [
       {
-        accessorKey: 'nome',
-        header: 'Nome',
+        accessorKey: 'projetoId',
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Nome" />
+        ),
         cell: ({ row }) => {
           const projetoId = row.original.projetoId;
           const projeto = projetosRecord[projetoId];
 
           return (
             <div className="capitalize">
-              {row.getValue('nome')}
+              {row.original.nome}
               {projeto && (
                 <div className="text-xs text-muted-foreground">
                   {projeto.nome}
@@ -156,13 +168,56 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
       },
     ];
 
-    for (const dia of days) {
+    for (const day of days) {
+      const isFuture = day > today;
+      const dia = day.toISOString().slice(0, 10);
+      const showCreateButton = funcionarios.some(
+        (f) => !diariasPorFuncionario.get(f.id)?.has(dia) && f.projetoId
+      );
+
+      const addMissingForDay = () => {
+        if (isFuture) return;
+        const items: CreateDiariaDto[] = [];
+        for (const f of funcionarios) {
+          const hasDiaria = diariasPorFuncionario.get(f.id)?.has(dia);
+          // Only create if funcionário has a projeto and no diária yet for the day
+          if (!hasDiaria && f.projetoId) {
+            items.push({ funcionarioId: f.id, projetoId: f.projetoId, dia });
+          }
+        }
+        if (items.length > 0) {
+          createManyMutation.mutate({ data: { items } });
+        }
+      };
+
       result.push({
         accessorKey: dia,
-        header: dia,
+        header: () => (
+          <div className="flex items-center justify-between gap-2">
+            <span>{formatDate(day)}</span>
+            {!isFuture && showCreateButton && (
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-7 w-7"
+                title="Adicionar para todos os que não possuem"
+                onClick={addMissingForDay}
+              >
+                <Plus className="h-4 w-4" />
+                <span className="sr-only">Adicionar ausentes</span>
+              </Button>
+            )}
+          </div>
+        ),
+        meta: isFuture
+          ? {
+              cellClassName:
+                'relative text-muted-foreground select-none cursor-not-allowed bg-gray-900/20',
+            }
+          : undefined,
         cell: ({ row }) => {
-          if (new Date(dia) > new Date()) {
-            return <div className="text-muted-foreground "></div>;
+          if (isFuture) {
+            return null;
           }
 
           const { id: funcionarioId, projetoId } = row.original;
@@ -170,21 +225,9 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
           const projetDiaria = diaria && projetosRecord[diaria.projetoId].nome;
 
           return (
-            <div className="flex flex-col gap-1 items-stretch">
+            <div className="flex flex-col gap-1">
               {diaria && (
                 <>
-                  <Badge
-                    variant="outline"
-                    className="cursor-pointer"
-                    onClick={() => {
-                      if (!diaria) return;
-                      setSelectedDiaria(diaria);
-                      setSelectedProjetoId(diaria.projetoId ?? '');
-                      setDialogOpen(true);
-                    }}
-                  >
-                    {projetDiaria}
-                  </Badge>
                   {diaria?.tipoDiariaId ? (
                     <Badge
                       variant="destructive"
@@ -200,6 +243,7 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
                     </Badge>
                   ) : (
                     <Badge
+                      variant="secondary"
                       className="cursor-pointer"
                       onClick={() => {
                         setSelectedDiaria(diaria);
@@ -210,15 +254,40 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
                       presente
                     </Badge>
                   )}
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      'cursor-pointer',
+                      diaria.projetoId != projetoId &&
+                        'border-red-500 text-red-500'
+                    )}
+                    onClick={() => {
+                      if (!diaria) return;
+                      setSelectedDiaria(diaria);
+                      setSelectedProjetoId(diaria.projetoId ?? '');
+                      setDialogOpen(true);
+                    }}
+                  >
+                    {projetDiaria}
+                  </Badge>
                 </>
               )}
               {!diaria && (
                 <Button
+                  variant="outline"
+                  size="icon"
+                  className="self-start h-8 w-8"
+                  title="Adicionar diária"
                   onClick={() =>
-                    onCreateClick({ funcionarioId, projetoId, dia })
+                    onCreateClick({
+                      funcionarioId,
+                      projetoId,
+                      dia,
+                    })
                   }
                 >
-                  add
+                  <Plus className="h-4 w-4" />
+                  <span className="sr-only">Adicionar diária</span>
                 </Button>
               )}
             </div>
@@ -228,7 +297,14 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
     }
 
     return result;
-  }, [days, updateMutation.isPending, diarias]);
+  }, [
+    days,
+    updateMutation.isPending,
+    diarias,
+    formatDate,
+    funcionarios,
+    diariasPorFuncionario,
+  ]);
 
   return (
     <>

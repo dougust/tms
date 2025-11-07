@@ -12,3 +12,4 @@ export * from './table';
 export * from './data-table';
 export * from './dialog';
 export * from './calendar-data-table';
+export * from './popover';
