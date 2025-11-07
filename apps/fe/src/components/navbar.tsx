@@ -11,9 +11,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Button,
 } from '@dougust/ui';
-import { Bell, Settings, LogOut, User } from 'lucide-react';
+import { Bell, Settings, LogOut, User, Moon, Sun } from 'lucide-react';
 import { logout } from '../lib/auth';
+import { useAppSettings } from './app-settings-context';
 
 // Fake user data
 const fakeUser = {
@@ -25,6 +27,8 @@ const fakeUser = {
 
 export function Navbar() {
   const router = useRouter();
+  const { theme, setTheme } = useAppSettings();
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
   const handleLogout = () => {
     logout();
@@ -34,7 +38,23 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center gap-4 px-4">
-        <div className="flex flex-1 items-center justify-end gap-4">
+        <div className="flex flex-1 items-center justify-end gap-2">
+          {/* Theme toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Toggle theme"
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            onClick={toggleTheme}
+            className="h-9 w-9"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+          </Button>
+
           {/* Notifications */}
           <button
             className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9"

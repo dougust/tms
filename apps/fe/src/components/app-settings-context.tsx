@@ -4,13 +4,17 @@ import React from 'react';
 import { DateHeaderFormat } from '../lib';
 import { useCustomDateFormat } from '../hooks';
 
+export type ThemeMode = 'light' | 'dark';
+
 export type AppSettings = {
   dateHeaderFormat: DateHeaderFormat;
+  theme: ThemeMode;
   // Add more global settings here in the future
 };
 
 const DEFAULT_SETTINGS: AppSettings = {
   dateHeaderFormat: "locale",
+  theme: 'light',
 };
 
 const STORAGE_KEY = "app:settings";
@@ -38,6 +42,7 @@ function safeParse(json: string | null): AppSettings | null {
 export type AppSettingsContextValue = AppSettings & {
   setDateHeaderFormat: (fmt: DateHeaderFormat) => void;
   setSettings: (partial: Partial<AppSettings>) => void;
+  setTheme: (theme: ThemeMode) => void;
   formatDate: (date: Date) => string;
 };
 
@@ -51,6 +56,17 @@ export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({ childre
     const fromStorage = safeParse(window.localStorage.getItem(STORAGE_KEY));
     return fromStorage ?? DEFAULT_SETTINGS;
   });
+
+  // Apply theme class to document element on change
+  React.useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    if (settings.theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [settings.theme]);
 
   // Persist to localStorage whenever settings change
   React.useEffect(() => {
@@ -73,9 +89,13 @@ export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({ childre
     setSettingsState((prev) => ({ ...prev, dateHeaderFormat: fmt }));
   }, []);
 
+  const setTheme = React.useCallback((theme: ThemeMode) => {
+    setSettingsState((prev) => ({ ...prev, theme }));
+  }, []);
+
   const value = React.useMemo<AppSettingsContextValue>(
-    () => ({ ...settings, setSettings, setDateHeaderFormat, formatDate }),
-    [settings, setSettings, setDateHeaderFormat]
+    () => ({ ...settings, setSettings, setDateHeaderFormat, setTheme, formatDate }),
+    [settings, setSettings, setDateHeaderFormat, setTheme]
   );
 
   return (
