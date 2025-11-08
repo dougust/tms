@@ -11,12 +11,14 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { LogoutDto } from './dto/logout.dto';
+import { Public } from '../../common';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
   @Post('login')
+  @Public()
   async login(@Body() dto: LoginDto, @Req() req: any) {
     const meta = {
       ipAddress: req.ip as string | undefined,

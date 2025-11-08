@@ -1,43 +1,38 @@
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { Request } from 'express';
-import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import * as schema from '@dougust/database';
-
-function isPublicPath(req: Request): boolean {
-  const path = (req.path || req.url || '').toLowerCase();
-  return path.startsWith('/auth') || path.startsWith('/health');
-}
+import { Reflector } from '@nestjs/core';
+import { PublicGuard } from './public.guard';
+import { JwtUser } from '../types';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(
-    private readonly jwt: JwtService,
-    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
-  ) {}
+export class AuthGuard extends PublicGuard implements CanActivate {
+  constructor(private readonly jwt: JwtService, reflector: Reflector) {
+    super(reflector);
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req = context.switchToHttp().getRequest<Request & { user?: any }>();
+    if (await super.isPublic(context)) return true;
 
-    if (isPublicPath(req)) return true;
+    const request = context
+      .switchToHttp()
+      .getRequest<Request & { user?: JwtUser }>();
 
-    const token = this.extractTokenFromHeader(req);
+    const token = this.extractTokenFromHeader(request);
 
     if (!token) {
       throw new UnauthorizedException();
     }
 
     try {
-      const payload = await this.jwt.verifyAsync(token, {
+      request.user = await this.jwt.verifyAsync<JwtUser>(token, {
         secret: process.env.JWT_SECRET || 'dev-secret',
       });
-      req['user'] = payload;
     } catch {
       throw new UnauthorizedException();
     }

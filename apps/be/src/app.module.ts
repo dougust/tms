@@ -30,7 +30,7 @@ import { TenantGuard } from './common/guards/tenant.guard';
   controllers: [],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
-    { provide: APP_GUARD, useClass: TenantGuard },
+    // { provide: APP_GUARD, useClass: TenantGuard },
   ],
 })
 export class AppModule implements NestModule {
