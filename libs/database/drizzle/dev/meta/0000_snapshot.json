@@ -1,5 +1,5 @@
 {
-  "id": "bb1ef1b6-f3e0-4e6e-938c-5f5173ea31ba",
+  "id": "aede0e61-b922-4332-94ab-aede1cad10de",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -598,107 +598,6 @@
           "name": "pk_tipos_diaria",
           "columns": [
             "tipos_diaria_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "dg_0001.cad_users": {
-      "name": "cad_users",
-      "schema": "dg_0001",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "gen_random_uuid()"
-        },
-        "password_hash": {
-          "name": "password_hash",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "role": {
-          "name": "role",
-          "type": "user_role",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'agent'"
-        },
-        "is_active": {
-          "name": "is_active",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": true
-        },
-        "user_name": {
-          "name": "user_name",
-          "type": "varchar(20)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "login": {
-          "name": "login",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "login_verified_at": {
-          "name": "login_verified_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "last_login_at": {
-          "name": "last_login_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "fk_user_login": {
-          "name": "fk_user_login",
-          "tableFrom": "cad_users",
-          "tableTo": "cad_empresas",
-          "schemaTo": "dg_0001",
-          "columnsFrom": [
-            "login"
-          ],
-          "columnsTo": [
-            "email"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "pk_users": {
-          "name": "pk_users",
-          "columns": [
-            "id"
           ]
         }
       },

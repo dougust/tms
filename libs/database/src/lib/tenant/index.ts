@@ -1,4 +1,3 @@
-// Users table - system users (tenant owners and agents)
 import {
   boolean,
   date,
@@ -9,36 +8,7 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
-import { userRoleEnum } from '../enums';
 import { relations } from 'drizzle-orm';
-
-export const users = (tenantId: string) =>
-  pgSchema(tenantId).table(
-    'cad_users',
-    {
-      id: uuid('id').defaultRandom(),
-      passwordHash: varchar('password_hash', { length: 255 }).notNull(),
-      role: userRoleEnum('role').default('agent').notNull(),
-      isActive: boolean('is_active').default(true),
-      userName: varchar('user_name', { length: 20 }),
-      login: varchar('login', { length: 255 }).notNull(),
-      loginVerifiedAt: timestamp('login_verified_at'),
-      lastLoginAt: timestamp('last_login_at'),
-      createdAt: timestamp('created_at').defaultNow(),
-      updatedAt: timestamp('updated_at').defaultNow(),
-    },
-    (t) => [
-      primaryKey({
-        columns: [t.id],
-        name: 'pk_users',
-      }),
-      foreignKey({
-        name: 'fk_user_login',
-        columns: [t.login],
-        foreignColumns: [empresas(tenantId).email],
-      }),
-    ]
-  );
 
 export const empresas = (tenantId: string) =>
   pgSchema(tenantId).table(
