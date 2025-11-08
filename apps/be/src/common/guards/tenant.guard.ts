@@ -9,7 +9,6 @@ import { Reflector } from '@nestjs/core';
 import { PublicGuard } from './public.guard';
 import { JwtUser } from '../types';
 
-// TODO: Tenant guard should check if the tenant is valid based on headers and user from request context
 @Injectable()
 export class TenantGuard extends PublicGuard implements CanActivate {
   constructor(reflector: Reflector) {
@@ -23,11 +22,18 @@ export class TenantGuard extends PublicGuard implements CanActivate {
       .switchToHttp()
       .getRequest<Request & { tenantId?: string; user?: JwtUser }>();
 
-    const tenantId = request.tenantId;
-    console.log(request.user, tenantId, 'request.user, tenantId');
+    const { tenantId, user } = request;
 
-    if (!tenantId) {
+    if (!tenantId || !user) {
       throw new BadRequestException('Missing tenant identifier');
+    }
+
+    const userHasAccessToTenant = user.tenants.some(
+      (t) => t.tenantId === tenantId
+    );
+
+    if (!userHasAccessToTenant) {
+      throw new BadRequestException('No access to tenant');
     }
 
     return true;

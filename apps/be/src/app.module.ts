@@ -11,8 +11,7 @@ import { EmpresasModule } from './modules/empresas/empresas.module';
 import { DiariasModule } from './modules/diarias/diarias.module';
 import { TiposDiariaModule } from './modules/tipos-diaria/tipos-diaria.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { AuthGuard } from './common/guards/auth.guard';
-import { TenantGuard } from './common/guards/tenant.guard';
+import { AuthGuard, TenantGuard } from './common';
 
 @Module({
   imports: [
@@ -30,7 +29,7 @@ import { TenantGuard } from './common/guards/tenant.guard';
   controllers: [],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
-    // { provide: APP_GUARD, useClass: TenantGuard },
+    { provide: APP_GUARD, useClass: TenantGuard },
   ],
 })
 export class AppModule implements NestModule {

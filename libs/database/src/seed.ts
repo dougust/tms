@@ -1,47 +1,56 @@
-import { drizzle } from 'drizzle-orm/node-postgres';
+import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { reset, seed } from 'drizzle-seed';
 import * as devSchema from './lib/schema.dev';
 import * as argon2 from 'argon2';
-import { eq } from 'drizzle-orm';
 
 const { tenant, users, tenantMemberships, authSessions, ...schema } = devSchema;
+
+async function createDevTenant(
+  db: NodePgDatabase,
+  tenantId: string,
+  email: string,
+  password: string
+) {
+  const passwordHash = await argon2.hash(password);
+
+  const [createdTenant] = await db
+    .insert(tenant)
+    .values({ id: tenantId, name: tenantId, isActive: true })
+    .returning();
+
+  const [createdUser] = await db
+    .insert(users)
+    .values({
+      email,
+      passwordHash,
+      isActive: true,
+    })
+    .returning();
+
+  await db.insert(tenantMemberships).values({
+    tenantId: createdTenant.id,
+    userId: createdUser.id,
+    role: 'owner',
+    isDefault: true,
+  });
+}
 
 async function main() {
   const db = drizzle(process.env['DATABASE_URL']);
 
-  const password = await argon2.hash('admin123456');
-
   await reset(db, schema);
-
-  // Seed base tenant matching TENANT_ID so middleware validation passes in dev
-  const tenantId = process.env['TENANT_ID'];
-  if (!tenantId) {
-    console.warn(
-      'TENANT_ID is not set; dev seed will create tenant-scoped tables but base.tenants row will be missing.'
-    );
-  } else {
-    const [createdTenant] = await db
-      .insert(tenant)
-      .values({ id: tenantId, name: 'Dev Tenant', isActive: true })
-      .returning();
-
-    const [createdUser] = await db
-      .insert(users)
-      .values({
-        email: 'admin@admin.com',
-        passwordHash: password,
-        isActive: true,
-      })
-      .returning();
-
-    await db.insert(tenantMemberships).values({
-      tenantId: createdTenant.id,
-      userId: createdUser.id,
-      role: 'owner',
-      isDefault: true,
-    });
-  }
-
+  await createDevTenant(
+    db,
+    process.env.TENANT_ID,
+    process.env.DEV_TENANT_USER_EMAIL,
+    process.env.USER_PASSWORD
+  );
+  await createDevTenant(
+    db,
+    process.env.TENANT_2_ID,
+    process.env.DEV_TENANT_2_USER_EMAIL,
+    process.env.USER_PASSWORD
+  );
   await seed(db, schema).refine((f) => ({
     funcionariosTpl: {
       count: 20,
