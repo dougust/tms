@@ -3,7 +3,7 @@ import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
 import { authSessions as authSessionsTable } from '@dougust/database';
 import { and, eq } from 'drizzle-orm';
-import { randomBytes, createHmac } from 'crypto';
+import { createHmac, randomBytes } from 'crypto';
 
 type SessionMeta = { ipAddress?: string; userAgent?: string };
 
@@ -81,18 +81,26 @@ export class SessionsService {
 
   async findValidByToken(token: string) {
     const tokenHash = this.hashRefreshToken(token);
-    const rows = await this.db
-      .select()
-      .from(authSessionsTable)
-      .where(eq(authSessionsTable.tokenHash, tokenHash))
-      .limit(1);
-    const session = rows[0];
-    if (!session) return null;
+
+    const session = await this.db.query.authSessions.findFirst({
+      where: (authSessions, { eq }) => eq(authSessions.tokenHash, tokenHash),
+      with: {
+        user: {
+          with: {
+            tenants: true,
+          },
+        },
+      },
+    });
+
     if (
+      !session ||
       !session.expiresAt ||
       new Date(session.expiresAt).getTime() <= Date.now()
-    )
+    ) {
       return null;
+    }
+
     return session;
   }
 

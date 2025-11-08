@@ -11,13 +11,13 @@ export class UsersService {
     @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
 
-  async findByEmail(email: string) {
-    const rows = await this.db
-      .select()
-      .from(usersTable)
-      .where(eq(usersTable.email, email))
-      .limit(1);
-    return rows[0] ?? null;
+  findByEmail(email: string) {
+    return this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, email),
+      with: {
+        tenants: true,
+      },
+    });
   }
 
   async findById(id: string) {

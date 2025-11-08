@@ -2,9 +2,11 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { SessionsService } from './sessions.service';
-import { users as usersTable } from '@dougust/database';
+import { tenantMemberships, users as usersTable } from '@dougust/database';
+import { JwtUser } from '../../common';
 
 type User = typeof usersTable.$inferSelect;
+type TenantMembership = typeof tenantMemberships.$inferSelect;
 
 type Meta = { ipAddress?: string; userAgent?: string };
 
@@ -16,9 +18,18 @@ export class AuthService {
     private readonly jwt: JwtService
   ) {}
 
-  private signAccessToken(user: Pick<User, 'id' | 'email'>) {
-    const payload = { sub: user.id, email: user.email };
-    return this.jwt.sign(payload);
+  private generatePayload(
+    user: Pick<User, 'id' | 'email'> & { tenants: TenantMembership[] }
+  ): JwtUser {
+    return {
+      sub: user.id,
+      email: user.email,
+      tenants: user.tenants.map((t) => ({
+        tenantId: t.tenantId,
+        role: t.role,
+        isDefault: t.isDefault,
+      })),
+    };
   }
 
   async login(email: string, password: string, meta?: Meta) {
@@ -29,33 +40,31 @@ export class AuthService {
 
     await this.users.updateLastLogin(user.id, new Date());
 
-    const accessToken = this.signAccessToken(user);
+    const payload = this.generatePayload(user);
+    const accessToken = this.jwt.sign(payload);
     const refreshToken = this.sessions.generateRefreshToken();
     await this.sessions.create(user.id, refreshToken, meta);
 
     return {
       accessToken,
       refreshToken,
-      user: { id: user.id, email: user.email, fullName: user.fullName ?? null },
+      user: payload,
     };
   }
 
   async refresh(refreshToken: string, meta?: Meta) {
     const session = await this.sessions.findValidByToken(refreshToken);
     if (!session) throw new UnauthorizedException('Invalid refresh token');
+    const { userId, user } = session;
 
-    const userId = session.userId as string;
-    const user = await this.users.findById(userId);
     if (!user || !user.isActive) {
       // Revoke this session if user is missing/inactive to prevent reuse
       await this.sessions.deleteByToken(refreshToken);
       throw new UnauthorizedException('Invalid refresh token');
     }
 
-    const accessToken = this.signAccessToken({
-      id: user.id,
-      email: user.email,
-    });
+    const payload = this.generatePayload(user);
+    const accessToken = this.jwt.sign(payload);
     const { newToken } = await this.sessions.rotate(
       session.id as string,
       userId,

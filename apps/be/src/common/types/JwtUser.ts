@@ -1,7 +1,5 @@
 export type JwtUser = {
   sub: string;
-  iat: number;
-  exp: number;
   email: string;
-  role: string;
+  tenants: { tenantId: string; role: string; isDefault: boolean }[];
 };

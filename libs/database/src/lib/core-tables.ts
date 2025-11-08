@@ -10,6 +10,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 import { subscriptionTierEnum, userRoleEnum } from './enums';
+import { relations } from 'drizzle-orm';
 
 // tenant table - multi-tenant tenant accounts
 export const tenant = pgTable('tenants', {
@@ -51,6 +52,10 @@ export const users = pgTable(
   },
   (t) => [uniqueIndex('users_email_unique').on(t.email)]
 );
+export const usersRelations = relations(users, ({ many }) => ({
+  tenants: many(tenantMemberships),
+  sessions: many(authSessions),
+}));
 
 // auth_sessions table - stores hashed refresh tokens
 export const authSessions = pgTable(
@@ -74,6 +79,9 @@ export const authSessions = pgTable(
     }).onDelete('cascade'),
   ]
 );
+export const sessionsRelations = relations(authSessions, ({ one }) => ({
+  user: one(users, { fields: [authSessions.userId], references: [users.id] }),
+}));
 
 // tenant_memberships table - user membership and role within a tenant
 export const tenantMemberships = pgTable(
@@ -102,4 +110,13 @@ export const tenantMemberships = pgTable(
       foreignColumns: [users.id],
     }).onDelete('cascade'),
   ]
+);
+export const tenantMembershipsRelations = relations(
+  tenantMemberships,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [tenantMemberships.userId],
+      references: [users.id],
+    }),
+  })
 );
