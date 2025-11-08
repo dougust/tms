@@ -1,0 +1,5 @@
+{
+  "type": "object",
+  "properties": { "refreshToken": { "type": "string", "minLength": 10 } },
+  "x-readme-ref-name": "LogoutDto"
+}

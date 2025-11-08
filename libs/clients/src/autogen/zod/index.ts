@@ -1,3 +1,18 @@
+export {
+  authControllerLogin201Schema,
+  authControllerLoginMutationRequestSchema,
+  authControllerLoginMutationResponseSchema,
+} from './authControllerLoginSchema.ts';
+export {
+  authControllerLogout204Schema,
+  authControllerLogoutMutationRequestSchema,
+  authControllerLogoutMutationResponseSchema,
+} from './authControllerLogoutSchema.ts';
+export {
+  authControllerRefresh201Schema,
+  authControllerRefreshMutationRequestSchema,
+  authControllerRefreshMutationResponseSchema,
+} from './authControllerRefreshSchema.ts';
 export { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
 export { createEmpresaDtoSchema } from './createEmpresaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
@@ -83,6 +98,8 @@ export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,
 } from './healthControllerGetHealthSchema.ts';
+export { loginDtoSchema } from './loginDtoSchema.ts';
+export { logoutDtoSchema } from './logoutDtoSchema.ts';
 export { projetoDtoSchema } from './projetoDtoSchema.ts';
 export {
   projetosControllerCreate201Schema,
@@ -109,6 +126,7 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './projetosControllerUpdateSchema.ts';
+export { refreshDtoSchema } from './refreshDtoSchema.ts';
 export { tipoDiariaDtoSchema } from './tipoDiariaDtoSchema.ts';
 export {
   tiposDiariaControllerFindAll200Schema,

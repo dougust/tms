@@ -1,3 +1,21 @@
+export type {
+  AuthControllerLogin201,
+  AuthControllerLoginMutationRequest,
+  AuthControllerLoginMutationResponse,
+  AuthControllerLoginMutation,
+} from './AuthControllerLogin.ts';
+export type {
+  AuthControllerLogout204,
+  AuthControllerLogoutMutationRequest,
+  AuthControllerLogoutMutationResponse,
+  AuthControllerLogoutMutation,
+} from './AuthControllerLogout.ts';
+export type {
+  AuthControllerRefresh201,
+  AuthControllerRefreshMutationRequest,
+  AuthControllerRefreshMutationResponse,
+  AuthControllerRefreshMutation,
+} from './AuthControllerRefresh.ts';
 export type { CreateDiariaDto } from './CreateDiariaDto.ts';
 export type { CreateEmpresaDto } from './CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
@@ -98,6 +116,8 @@ export type {
   HealthControllerGetHealthQueryResponse,
   HealthControllerGetHealthQuery,
 } from './HealthControllerGetHealth.ts';
+export type { LoginDto } from './LoginDto.ts';
+export type { LogoutDto } from './LogoutDto.ts';
 export type { ProjetoDto } from './ProjetoDto.ts';
 export type {
   ProjetosControllerCreate201,
@@ -129,6 +149,7 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './ProjetosControllerUpdate.ts';
+export type { RefreshDto } from './RefreshDto.ts';
 export type { TipoDiariaDto } from './TipoDiariaDto.ts';
 export type {
   TiposDiariaControllerFindAll200,

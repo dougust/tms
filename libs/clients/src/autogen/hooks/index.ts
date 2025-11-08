@@ -1,3 +1,6 @@
+export type { AuthControllerLoginMutationKey } from './Auth/useAuthControllerLogin.ts';
+export type { AuthControllerLogoutMutationKey } from './Auth/useAuthControllerLogout.ts';
+export type { AuthControllerRefreshMutationKey } from './Auth/useAuthControllerRefresh.ts';
 export type { DiariasControllerCreateMutationKey } from './Diarias/useDiariasControllerCreate.ts';
 export type { DiariasControllerCreateManyMutationKey } from './Diarias/useDiariasControllerCreateMany.ts';
 export type { DiariasControllerFindInRangeQueryKey } from './Diarias/useDiariasControllerFindInRange.ts';
@@ -19,6 +22,24 @@ export type { ProjetosControllerFindOneQueryKey } from './Projetos/useProjetosCo
 export type { ProjetosControllerRemoveMutationKey } from './Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './Projetos/useProjetosControllerUpdate.ts';
 export type { TiposDiariaControllerFindAllQueryKey } from './TiposDiaria/useTiposDiariaControllerFindAll.ts';
+export {
+  authControllerLoginMutationKey,
+  authControllerLogin,
+  authControllerLoginMutationOptions,
+  useAuthControllerLogin,
+} from './Auth/useAuthControllerLogin.ts';
+export {
+  authControllerLogoutMutationKey,
+  authControllerLogout,
+  authControllerLogoutMutationOptions,
+  useAuthControllerLogout,
+} from './Auth/useAuthControllerLogout.ts';
+export {
+  authControllerRefreshMutationKey,
+  authControllerRefresh,
+  authControllerRefreshMutationOptions,
+  useAuthControllerRefresh,
+} from './Auth/useAuthControllerRefresh.ts';
 export {
   diariasControllerCreateMutationKey,
   diariasControllerCreate,

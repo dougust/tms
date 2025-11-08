@@ -1,3 +1,6 @@
+export type { AuthControllerLoginMutationKey } from './hooks/Auth/useAuthControllerLogin.ts';
+export type { AuthControllerLogoutMutationKey } from './hooks/Auth/useAuthControllerLogout.ts';
+export type { AuthControllerRefreshMutationKey } from './hooks/Auth/useAuthControllerRefresh.ts';
 export type { DiariasControllerCreateMutationKey } from './hooks/Diarias/useDiariasControllerCreate.ts';
 export type { DiariasControllerCreateManyMutationKey } from './hooks/Diarias/useDiariasControllerCreateMany.ts';
 export type { DiariasControllerFindInRangeQueryKey } from './hooks/Diarias/useDiariasControllerFindInRange.ts';
@@ -19,6 +22,24 @@ export type { ProjetosControllerFindOneQueryKey } from './hooks/Projetos/useProj
 export type { ProjetosControllerRemoveMutationKey } from './hooks/Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './hooks/Projetos/useProjetosControllerUpdate.ts';
 export type { TiposDiariaControllerFindAllQueryKey } from './hooks/TiposDiaria/useTiposDiariaControllerFindAll.ts';
+export type {
+  AuthControllerLogin201,
+  AuthControllerLoginMutationRequest,
+  AuthControllerLoginMutationResponse,
+  AuthControllerLoginMutation,
+} from './types/AuthControllerLogin.ts';
+export type {
+  AuthControllerLogout204,
+  AuthControllerLogoutMutationRequest,
+  AuthControllerLogoutMutationResponse,
+  AuthControllerLogoutMutation,
+} from './types/AuthControllerLogout.ts';
+export type {
+  AuthControllerRefresh201,
+  AuthControllerRefreshMutationRequest,
+  AuthControllerRefreshMutationResponse,
+  AuthControllerRefreshMutation,
+} from './types/AuthControllerRefresh.ts';
 export type { CreateDiariaDto } from './types/CreateDiariaDto.ts';
 export type { CreateEmpresaDto } from './types/CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './types/CreateFuncionarioDto.ts';
@@ -119,6 +140,8 @@ export type {
   HealthControllerGetHealthQueryResponse,
   HealthControllerGetHealthQuery,
 } from './types/HealthControllerGetHealth.ts';
+export type { LoginDto } from './types/LoginDto.ts';
+export type { LogoutDto } from './types/LogoutDto.ts';
 export type { ProjetoDto } from './types/ProjetoDto.ts';
 export type {
   ProjetosControllerCreate201,
@@ -150,6 +173,7 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './types/ProjetosControllerUpdate.ts';
+export type { RefreshDto } from './types/RefreshDto.ts';
 export type { TipoDiariaDto } from './types/TipoDiariaDto.ts';
 export type {
   TiposDiariaControllerFindAll200,
@@ -159,6 +183,24 @@ export type {
 export type { UpdateEmpresaDto } from './types/UpdateEmpresaDto.ts';
 export type { UpdateFuncionarioDto } from './types/UpdateFuncionarioDto.ts';
 export type { UpdateProjetoDto } from './types/UpdateProjetoDto.ts';
+export {
+  authControllerLoginMutationKey,
+  authControllerLogin,
+  authControllerLoginMutationOptions,
+  useAuthControllerLogin,
+} from './hooks/Auth/useAuthControllerLogin.ts';
+export {
+  authControllerLogoutMutationKey,
+  authControllerLogout,
+  authControllerLogoutMutationOptions,
+  useAuthControllerLogout,
+} from './hooks/Auth/useAuthControllerLogout.ts';
+export {
+  authControllerRefreshMutationKey,
+  authControllerRefresh,
+  authControllerRefreshMutationOptions,
+  useAuthControllerRefresh,
+} from './hooks/Auth/useAuthControllerRefresh.ts';
 export {
   diariasControllerCreateMutationKey,
   diariasControllerCreate,
@@ -285,6 +327,21 @@ export {
   tiposDiariaControllerFindAllQueryOptions,
   useTiposDiariaControllerFindAll,
 } from './hooks/TiposDiaria/useTiposDiariaControllerFindAll.ts';
+export {
+  authControllerLogin201Schema,
+  authControllerLoginMutationRequestSchema,
+  authControllerLoginMutationResponseSchema,
+} from './zod/authControllerLoginSchema.ts';
+export {
+  authControllerLogout204Schema,
+  authControllerLogoutMutationRequestSchema,
+  authControllerLogoutMutationResponseSchema,
+} from './zod/authControllerLogoutSchema.ts';
+export {
+  authControllerRefresh201Schema,
+  authControllerRefreshMutationRequestSchema,
+  authControllerRefreshMutationResponseSchema,
+} from './zod/authControllerRefreshSchema.ts';
 export { createDiariaDtoSchema } from './zod/createDiariaDtoSchema.ts';
 export { createEmpresaDtoSchema } from './zod/createEmpresaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';
@@ -370,6 +427,8 @@ export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,
 } from './zod/healthControllerGetHealthSchema.ts';
+export { loginDtoSchema } from './zod/loginDtoSchema.ts';
+export { logoutDtoSchema } from './zod/logoutDtoSchema.ts';
 export { projetoDtoSchema } from './zod/projetoDtoSchema.ts';
 export {
   projetosControllerCreate201Schema,
@@ -396,6 +455,7 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './zod/projetosControllerUpdateSchema.ts';
+export { refreshDtoSchema } from './zod/refreshDtoSchema.ts';
 export { tipoDiariaDtoSchema } from './zod/tipoDiariaDtoSchema.ts';
 export {
   tiposDiariaControllerFindAll200Schema,
