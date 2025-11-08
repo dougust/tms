@@ -16,6 +16,6 @@ import { DrizzleModule } from '../database/database.module';
   ],
   controllers: [AuthController],
   providers: [AuthService, UsersService, SessionsService],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

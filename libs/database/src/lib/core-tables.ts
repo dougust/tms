@@ -7,8 +7,9 @@ import {
   varchar,
   uniqueIndex,
   foreignKey,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
-import { subscriptionTierEnum } from './enums';
+import { subscriptionTierEnum, userRoleEnum } from './enums';
 
 // tenant table - multi-tenant tenant accounts
 export const tenant = pgTable('tenants', {
@@ -68,6 +69,32 @@ export const authSessions = pgTable(
     uniqueIndex('auth_sessions_user_token_unique').on(t.userId, t.tokenHash),
     foreignKey({
       name: 'fk_auth_sessions_user',
+      columns: [t.userId],
+      foreignColumns: [users.id],
+    }).onDelete('cascade'),
+  ]
+);
+
+// tenant_memberships table - user membership and role within a tenant
+export const tenantMemberships = pgTable(
+  'tenant_memberships',
+  {
+    tenantId: uuid('tenant_id').notNull(),
+    userId: uuid('user_id').notNull(),
+    role: userRoleEnum('role').notNull().default('viewer'),
+    isDefault: boolean('is_default').default(false),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+  },
+  (t) => [
+    primaryKey({ name: 'pk_tenant_memberships', columns: [t.tenantId, t.userId] }),
+    foreignKey({
+      name: 'fk_tenant_memberships_tenant',
+      columns: [t.tenantId],
+      foreignColumns: [tenant.id],
+    }).onDelete('cascade'),
+    foreignKey({
+      name: 'fk_tenant_memberships_user',
       columns: [t.userId],
       foreignColumns: [users.id],
     }).onDelete('cascade'),
