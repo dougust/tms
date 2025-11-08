@@ -1,19 +1,19 @@
 import {
   boolean,
+  foreignKey,
   pgTable,
+  primaryKey,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
-  uniqueIndex,
-  foreignKey,
-  primaryKey,
 } from 'drizzle-orm/pg-core';
 import { subscriptionTierEnum, userRoleEnum } from './enums';
 
 // tenant table - multi-tenant tenant accounts
 export const tenant = pgTable('tenants', {
-  id: uuid('id').primaryKey().defaultRandom(),
+  id: varchar('tenant_id', { length: 255 }).primaryKey().unique(),
   name: varchar('name', { length: 255 }).notNull(),
   description: text('description'),
   phone: varchar('phone', { length: 20 }),
@@ -79,7 +79,7 @@ export const authSessions = pgTable(
 export const tenantMemberships = pgTable(
   'tenant_memberships',
   {
-    tenantId: uuid('tenant_id').notNull(),
+    tenantId: varchar('tenant_id', { length: 255 }).notNull(),
     userId: uuid('user_id').notNull(),
     role: userRoleEnum('role').notNull().default('viewer'),
     isDefault: boolean('is_default').default(false),
@@ -87,7 +87,10 @@ export const tenantMemberships = pgTable(
     updatedAt: timestamp('updated_at').defaultNow(),
   },
   (t) => [
-    primaryKey({ name: 'pk_tenant_memberships', columns: [t.tenantId, t.userId] }),
+    primaryKey({
+      name: 'pk_tenant_memberships',
+      columns: [t.tenantId, t.userId],
+    }),
     foreignKey({
       name: 'fk_tenant_memberships_tenant',
       columns: [t.tenantId],

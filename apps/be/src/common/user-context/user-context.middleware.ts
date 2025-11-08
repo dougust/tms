@@ -24,11 +24,13 @@ export class UserContextMiddleware implements NestMiddleware {
     return value?.trim() || process.env.TENANT_ID || undefined;
   }
 
-  async use(req: Request, res: Response, next: NextFunction) {
-    const tenantId = this.resolveTenantId(req);
+  async use(request: Request, res: Response, next: NextFunction) {
+    const tenantId = this.resolveTenantId(request);
+
+    console.log(tenantId, 'tenantId');
 
     if (tenantId) {
-      req['tenantId'] = tenantId;
+      request['tenantId'] = tenantId;
     }
 
     this.context.run({ businessId: tenantId }, next);
