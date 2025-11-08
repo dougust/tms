@@ -1,10 +1,12 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { reset, seed } from 'drizzle-seed';
 import * as schema from './lib/schema.dev';
-import { tipoDeDiariasTpl } from './lib/schema.dev';
+import * as argon2 from 'argon2';
 
 async function main() {
   const db = drizzle(process.env['DATABASE_URL']);
+
+  const password = await argon2.hash('admin123456');
 
   await reset(db, schema);
   await seed(db, schema).refine((f) => ({
@@ -58,6 +60,13 @@ async function main() {
             'outros',
           ],
         }),
+      },
+    },
+    users: {
+      count: 1,
+      columns: {
+        email: f.valuesFromArray({ values: ['admin@admin.com'] }),
+        passwordHash: f.valuesFromArray({ values: [password] }),
       },
     },
   }));

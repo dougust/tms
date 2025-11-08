@@ -9,6 +9,7 @@ import { ProjetosModule } from './modules/projetos/projetos.module';
 import { EmpresasModule } from './modules/empresas/empresas.module';
 import { DiariasModule } from './modules/diarias/diarias.module';
 import { TiposDiariaModule } from './modules/tipos-diaria/tipos-diaria.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TiposDiariaModule } from './modules/tipos-diaria/tipos-diaria.module';
     EmpresasModule,
     DiariasModule,
     TiposDiariaModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

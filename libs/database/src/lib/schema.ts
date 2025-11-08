@@ -1,4 +1,4 @@
 
 export * from './enums';
-export { tenant } from './core-tables';
+export { tenant, users, authSessions } from './core-tables';
 
