@@ -12,7 +12,10 @@
         "buildTarget": "fe:build",
         "dev": true,
         "port": 4200
-      }
+      },
+      "dependsOn": [
+        "clients:regenerate"
+      ]
     }
   }
 }

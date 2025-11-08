@@ -89,23 +89,8 @@ CREATE TABLE "dg_0001"."cad_tipo_diarias" (
 	CONSTRAINT "pk_tipos_diaria" PRIMARY KEY("tipos_diaria_id")
 );
 --> statement-breakpoint
-CREATE TABLE "dg_0001"."cad_users" (
-	"id" uuid DEFAULT gen_random_uuid(),
-	"password_hash" varchar(255) NOT NULL,
-	"role" "user_role" DEFAULT 'agent' NOT NULL,
-	"is_active" boolean DEFAULT true,
-	"user_name" varchar(20),
-	"login" varchar(255) NOT NULL,
-	"login_verified_at" timestamp,
-	"last_login_at" timestamp,
-	"created_at" timestamp DEFAULT now(),
-	"updated_at" timestamp DEFAULT now(),
-	CONSTRAINT "pk_users" PRIMARY KEY("id")
-);
---> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_projetos" FOREIGN KEY ("projeto_id") REFERENCES "dg_0001"."cad_projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_funcionarios" FOREIGN KEY ("funcionario_id") REFERENCES "dg_0001"."cad_funcionarios"("funcionario_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_tipo_diaria" FOREIGN KEY ("tipo_diaria_id") REFERENCES "dg_0001"."cad_tipo_diarias"("tipos_diaria_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_funcionarios" ADD CONSTRAINT "fk_funcionarios_projetos" FOREIGN KEY ("projeto_id") REFERENCES "dg_0001"."cad_projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "dg_0001"."cad_projetos" ADD CONSTRAINT "fk_projeto_empresa" FOREIGN KEY ("empresa_id") REFERENCES "dg_0001"."cad_empresas"("empresa_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "dg_0001"."cad_users" ADD CONSTRAINT "fk_user_login" FOREIGN KEY ("login") REFERENCES "dg_0001"."cad_empresas"("email") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "dg_0001"."cad_projetos" ADD CONSTRAINT "fk_projeto_empresa" FOREIGN KEY ("empresa_id") REFERENCES "dg_0001"."cad_empresas"("empresa_id") ON DELETE no action ON UPDATE no action;
