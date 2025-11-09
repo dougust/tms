@@ -12,8 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@dougust/ui';
-import { Bell, Settings, LogOut, User } from 'lucide-react';
-import { logout } from '../lib/utils/auth.utils';
+import { Bell, LogOut, Settings, User } from 'lucide-react';
+import { useAppSettings } from '../components';
 
 // Fake user data
 const fakeUser = {
@@ -25,9 +25,10 @@ const fakeUser = {
 
 export function Navbar() {
   const router = useRouter();
+  const { setSettings } = useAppSettings();
 
   const handleLogout = () => {
-    logout();
+    setSettings({ authContext: null });
     router.push('/login');
   };
 

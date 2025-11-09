@@ -1,29 +1,26 @@
 import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AuthResponseDto, useAuthControllerRefresh } from '@dougust/clients';
-import { getAuthContext, onAuthError, onAuthSuccess } from '../../lib';
+import { useAuthControllerRefresh } from '@dougust/clients';
+import { useAppSettings } from './app-settings-context';
 
-export const RefreshAuthProvider = ({ children }: PropsWithChildren) => {
+export default function RefreshAuthProvider({ children }: PropsWithChildren) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const [authResponse, setAuthResponse] = useState<AuthResponseDto | null>(
-    getAuthContext()
-  );
+  const { authContext, setSettings } = useAppSettings();
 
   const tokenExpiryDate = useMemo(() => {
-    if (!authResponse) return null;
-    const payload = JSON.parse(atob(authResponse.accessToken.split('.')[1]));
+    if (!authContext) return null;
+    const payload = JSON.parse(atob(authContext.accessToken.split('.')[1]));
     return payload.exp * 1000;
-  }, [authResponse]);
+  }, [authContext]);
 
   const { mutate } = useAuthControllerRefresh({
     mutation: {
       onSuccess: (data) => {
-        onAuthSuccess(data);
-        setAuthResponse(data);
+        setSettings({ authContext: data });
       },
       onError: () => {
-        onAuthError();
+        setSettings({ authContext: null });
         router.push('/login');
       },
       onSettled: () => {
@@ -33,18 +30,23 @@ export const RefreshAuthProvider = ({ children }: PropsWithChildren) => {
   });
 
   useEffect(() => {
-    if (!authResponse) {
+    if (!authContext) {
       router.push('/login');
       setIsLoading(false);
     }
-  }, [authResponse]);
+  }, [authContext]);
 
   React.useEffect(() => {
-    if (!tokenExpiryDate || !authResponse) return;
-    const { refreshToken } = authResponse;
+    if (!tokenExpiryDate || !authContext) return;
+    const { refreshToken } = authContext;
 
     const expiryDuration = tokenExpiryDate - Date.now() - 2 * 60 * 1000;
 
+    if (expiryDuration > 0) {
+      setIsLoading(false);
+    }
+
+    console.log('Refreshing token in', expiryDuration / 1000, 'seconds');
     const timeout = setTimeout(() => {
       mutate({ data: { refreshToken } });
     }, Math.max(expiryDuration, 0));
@@ -52,7 +54,7 @@ export const RefreshAuthProvider = ({ children }: PropsWithChildren) => {
     return () => {
       clearInterval(timeout);
     };
-  }, [authResponse]);
+  }, [authContext]);
 
   return <>{isLoading ? <div>Loading...</div> : children}</>;
-};
+}

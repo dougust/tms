@@ -3,17 +3,20 @@
 import React from 'react';
 import { DateHeaderFormat } from '../../lib';
 import { useCustomDateFormat } from '../../hooks';
+import { AuthResponseDto, setAuthToken } from '@dougust/clients';
 
 export type AppSettings = {
   dateHeaderFormat: DateHeaderFormat;
+  authContext: AuthResponseDto | null;
   // Add more global settings here in the future
 };
 
 const DEFAULT_SETTINGS: AppSettings = {
-  dateHeaderFormat: "locale",
+  dateHeaderFormat: 'locale',
+  authContext: null,
 };
 
-const STORAGE_KEY = "app:settings";
+const STORAGE_KEY = 'app:settings';
 
 function safeParse(json: string | null): AppSettings | null {
   if (!json) return null;
@@ -21,8 +24,8 @@ function safeParse(json: string | null): AppSettings | null {
     const parsed = JSON.parse(json);
     if (
       parsed &&
-      typeof parsed === "object" &&
-      typeof parsed.dateHeaderFormat === "string"
+      typeof parsed === 'object' &&
+      typeof parsed.dateHeaderFormat === 'string'
     ) {
       return {
         ...DEFAULT_SETTINGS,
@@ -41,21 +44,21 @@ export type AppSettingsContextValue = AppSettings & {
   formatDate: (date: Date) => string;
 };
 
-const AppSettingsContext = React.createContext<AppSettingsContextValue | undefined>(
-  undefined
-);
+const AppSettingsContext = React.createContext<
+  AppSettingsContextValue | undefined
+>(undefined);
 
-export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const [settings, setSettingsState] = React.useState<AppSettings>(() => {
-    if (typeof window === "undefined") return DEFAULT_SETTINGS;
     const fromStorage = safeParse(window.localStorage.getItem(STORAGE_KEY));
     return fromStorage ?? DEFAULT_SETTINGS;
   });
-
   // Persist to localStorage whenever settings change
   React.useEffect(() => {
     try {
-      if (typeof window !== "undefined") {
+      if (typeof window !== 'undefined') {
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
       }
     } catch (_) {
@@ -67,6 +70,9 @@ export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({ childre
 
   const setSettings = React.useCallback((partial: Partial<AppSettings>) => {
     setSettingsState((prev) => ({ ...prev, ...partial }));
+    if (partial.authContext) {
+      setAuthToken(partial.authContext?.accessToken);
+    }
   }, []);
 
   const setDateHeaderFormat = React.useCallback((fmt: DateHeaderFormat) => {
@@ -88,7 +94,7 @@ export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({ childre
 export function useAppSettings(): AppSettingsContextValue {
   const ctx = React.useContext(AppSettingsContext);
   if (!ctx) {
-    throw new Error("useAppSettings must be used within AppSettingsProvider");
+    throw new Error('useAppSettings must be used within AppSettingsProvider');
   }
   return ctx;
 }

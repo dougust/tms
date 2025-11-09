@@ -3,7 +3,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setClientConfig } from '@dougust/clients';
 import { AppSettingsProvider } from './app-settings-context';
-import { RefreshAuthProvider } from './refresh-auth.provider';
+import dynamic from 'next/dynamic';
+
+const RefreshAuthProvider = dynamic(() => import('./refresh-auth.provider'), {
+  ssr: false,
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {

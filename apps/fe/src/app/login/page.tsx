@@ -2,19 +2,20 @@
 
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthSuccess } from '../../lib';
 import { Button } from '@dougust/ui';
 import { useAuthControllerLogin } from '@dougust/clients';
+import { useAppSettings } from '../../components';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { setSettings } = useAppSettings();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const { mutate, isPending, error } = useAuthControllerLogin({
     mutation: {
       onSuccess: (data) => {
-        onAuthSuccess(data);
+        setSettings({ authContext: data });
         router.push('/dashboard');
       },
     },
