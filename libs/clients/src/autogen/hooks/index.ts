@@ -13,12 +13,17 @@ export type { FuncionariosControllerFindOneQueryKey } from './Funcionarios/useFu
 export type { FuncionariosControllerRemoveMutationKey } from './Funcionarios/useFuncionariosControllerRemove.ts';
 export type { FuncionariosControllerUpdateMutationKey } from './Funcionarios/useFuncionariosControllerUpdate.ts';
 export type { HealthControllerGetHealthQueryKey } from './Health/useHealthControllerGetHealth.ts';
+export type { LookupsControllerCreateMutationKey } from './Lookups/useLookupsControllerCreate.ts';
+export type { LookupsControllerFindAllQueryKey } from './Lookups/useLookupsControllerFindAll.ts';
+export type { LookupsControllerFindByGroupQueryKey } from './Lookups/useLookupsControllerFindByGroup.ts';
+export type { LookupsControllerFindOneQueryKey } from './Lookups/useLookupsControllerFindOne.ts';
+export type { LookupsControllerRemoveMutationKey } from './Lookups/useLookupsControllerRemove.ts';
+export type { LookupsControllerUpdateMutationKey } from './Lookups/useLookupsControllerUpdate.ts';
 export type { ProjetosControllerCreateMutationKey } from './Projetos/useProjetosControllerCreate.ts';
 export type { ProjetosControllerFindAllQueryKey } from './Projetos/useProjetosControllerFindAll.ts';
 export type { ProjetosControllerFindOneQueryKey } from './Projetos/useProjetosControllerFindOne.ts';
 export type { ProjetosControllerRemoveMutationKey } from './Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './Projetos/useProjetosControllerUpdate.ts';
-export type { TiposDiariaControllerFindAllQueryKey } from './TiposDiaria/useTiposDiariaControllerFindAll.ts';
 export {
   diariasControllerCreateMutationKey,
   diariasControllerCreate,
@@ -110,6 +115,42 @@ export {
   useHealthControllerGetHealth,
 } from './Health/useHealthControllerGetHealth.ts';
 export {
+  lookupsControllerCreateMutationKey,
+  lookupsControllerCreate,
+  lookupsControllerCreateMutationOptions,
+  useLookupsControllerCreate,
+} from './Lookups/useLookupsControllerCreate.ts';
+export {
+  lookupsControllerFindAllQueryKey,
+  lookupsControllerFindAll,
+  lookupsControllerFindAllQueryOptions,
+  useLookupsControllerFindAll,
+} from './Lookups/useLookupsControllerFindAll.ts';
+export {
+  lookupsControllerFindByGroupQueryKey,
+  lookupsControllerFindByGroup,
+  lookupsControllerFindByGroupQueryOptions,
+  useLookupsControllerFindByGroup,
+} from './Lookups/useLookupsControllerFindByGroup.ts';
+export {
+  lookupsControllerFindOneQueryKey,
+  lookupsControllerFindOne,
+  lookupsControllerFindOneQueryOptions,
+  useLookupsControllerFindOne,
+} from './Lookups/useLookupsControllerFindOne.ts';
+export {
+  lookupsControllerRemoveMutationKey,
+  lookupsControllerRemove,
+  lookupsControllerRemoveMutationOptions,
+  useLookupsControllerRemove,
+} from './Lookups/useLookupsControllerRemove.ts';
+export {
+  lookupsControllerUpdateMutationKey,
+  lookupsControllerUpdate,
+  lookupsControllerUpdateMutationOptions,
+  useLookupsControllerUpdate,
+} from './Lookups/useLookupsControllerUpdate.ts';
+export {
   projetosControllerCreateMutationKey,
   projetosControllerCreate,
   projetosControllerCreateMutationOptions,
@@ -139,9 +180,3 @@ export {
   projetosControllerUpdateMutationOptions,
   useProjetosControllerUpdate,
 } from './Projetos/useProjetosControllerUpdate.ts';
-export {
-  tiposDiariaControllerFindAllQueryKey,
-  tiposDiariaControllerFindAll,
-  tiposDiariaControllerFindAllQueryOptions,
-  useTiposDiariaControllerFindAll,
-} from './TiposDiaria/useTiposDiariaControllerFindAll.ts';

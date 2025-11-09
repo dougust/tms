@@ -4,7 +4,6 @@
  */
 
 import fetch from '@kubb/plugin-client/clients/axios';
-import type { TiposDiariaControllerFindAllQueryResponse } from '../../types/TiposDiariaControllerFindAll.ts';
 import type {
   RequestConfig,
   ResponseErrorConfig,
@@ -15,61 +14,62 @@ import type {
   QueryObserverOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
+import type { LookupsControllerFindAllQueryResponse } from '../../types/LookupsControllerFindAll.ts';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
-export const tiposDiariaControllerFindAllQueryKey = () =>
-  [{ url: '/tipos-diarias' }] as const;
+export const lookupsControllerFindAllQueryKey = () =>
+  [{ url: '/lookups' }] as const;
 
-export type TiposDiariaControllerFindAllQueryKey = ReturnType<
-  typeof tiposDiariaControllerFindAllQueryKey
+export type LookupsControllerFindAllQueryKey = ReturnType<
+  typeof lookupsControllerFindAllQueryKey
 >;
 
 /**
- * {@link /tipos-diarias}
+ * {@link /lookups}
  */
-export async function tiposDiariaControllerFindAll(
+export async function lookupsControllerFindAll(
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
   const { client: request = fetch, ...requestConfig } = config;
 
   const res = await request<
-    TiposDiariaControllerFindAllQueryResponse,
+    LookupsControllerFindAllQueryResponse,
     ResponseErrorConfig<Error>,
     unknown
-  >({ method: 'GET', url: `/tipos-diarias`, ...requestConfig });
+  >({ method: 'GET', url: `/lookups`, ...requestConfig });
   return res.data;
 }
 
-export function tiposDiariaControllerFindAllQueryOptions(
+export function lookupsControllerFindAllQueryOptions(
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
-  const queryKey = tiposDiariaControllerFindAllQueryKey();
+  const queryKey = lookupsControllerFindAllQueryKey();
   return queryOptions<
-    TiposDiariaControllerFindAllQueryResponse,
+    LookupsControllerFindAllQueryResponse,
     ResponseErrorConfig<Error>,
-    TiposDiariaControllerFindAllQueryResponse,
+    LookupsControllerFindAllQueryResponse,
     typeof queryKey
   >({
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal;
-      return tiposDiariaControllerFindAll(config);
+      return lookupsControllerFindAll(config);
     },
   });
 }
 
 /**
- * {@link /tipos-diarias}
+ * {@link /lookups}
  */
-export function useTiposDiariaControllerFindAll<
-  TData = TiposDiariaControllerFindAllQueryResponse,
-  TQueryData = TiposDiariaControllerFindAllQueryResponse,
-  TQueryKey extends QueryKey = TiposDiariaControllerFindAllQueryKey
+export function useLookupsControllerFindAll<
+  TData = LookupsControllerFindAllQueryResponse,
+  TQueryData = LookupsControllerFindAllQueryResponse,
+  TQueryKey extends QueryKey = LookupsControllerFindAllQueryKey
 >(
   options: {
     query?: Partial<
       QueryObserverOptions<
-        TiposDiariaControllerFindAllQueryResponse,
+        LookupsControllerFindAllQueryResponse,
         ResponseErrorConfig<Error>,
         TData,
         TQueryData,
@@ -81,12 +81,11 @@ export function useTiposDiariaControllerFindAll<
 ) {
   const { query: queryConfig = {}, client: config = {} } = options ?? {};
   const { client: queryClient, ...queryOptions } = queryConfig;
-  const queryKey =
-    queryOptions?.queryKey ?? tiposDiariaControllerFindAllQueryKey();
+  const queryKey = queryOptions?.queryKey ?? lookupsControllerFindAllQueryKey();
 
   const query = useQuery(
     {
-      ...tiposDiariaControllerFindAllQueryOptions(config),
+      ...lookupsControllerFindAllQueryOptions(config),
       queryKey,
       ...queryOptions,
     } as unknown as QueryObserverOptions,

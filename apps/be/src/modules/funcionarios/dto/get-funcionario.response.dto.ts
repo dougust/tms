@@ -1,11 +1,10 @@
-import { IFuncionario } from '@dougust/database';
-import { IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 
 export class GetFuncionarioResponseDto {
   funcionario: FuncionarioDto;
 }
 
-export class FuncionarioDto implements IFuncionario {
+export class FuncionarioDto {
   @IsString()
   id: string;
 
@@ -18,7 +17,7 @@ export class FuncionarioDto implements IFuncionario {
   @IsString()
   cpf: string;
 
-  @IsString()
+  @IsDateString()
   nascimento: string;
 
   @IsString()
@@ -31,11 +30,17 @@ export class FuncionarioDto implements IFuncionario {
   rg: string;
 
   @IsString()
+  funcao: string;
+
+  @IsNumber()
+  dependetes: number;
+
+  @IsString()
   projetoId: string;
 
-  @IsString()
+  @IsDate()
   createdAt: Date;
 
-  @IsString()
+  @IsDate()
   updatedAt: Date;
 }

@@ -10,7 +10,7 @@ export const diariaDtoSchema = z.object({
   dia: z.string(),
   funcionarioId: z.string(),
   projetoId: z.string(),
-  tipoDiariaId: z.string(),
+  tipoDiaria: z.number(),
   observacoes: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),

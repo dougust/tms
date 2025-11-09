@@ -6,7 +6,7 @@ export class ProjetoDto implements IProjeto {
   id: string;
 
   @IsString()
-  empresa_id: string;
+  empresaId: string;
 
   @IsString()
   nome: string;

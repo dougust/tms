@@ -13,15 +13,21 @@ export type { FuncionariosControllerFindOneQueryKey } from './hooks/Funcionarios
 export type { FuncionariosControllerRemoveMutationKey } from './hooks/Funcionarios/useFuncionariosControllerRemove.ts';
 export type { FuncionariosControllerUpdateMutationKey } from './hooks/Funcionarios/useFuncionariosControllerUpdate.ts';
 export type { HealthControllerGetHealthQueryKey } from './hooks/Health/useHealthControllerGetHealth.ts';
+export type { LookupsControllerCreateMutationKey } from './hooks/Lookups/useLookupsControllerCreate.ts';
+export type { LookupsControllerFindAllQueryKey } from './hooks/Lookups/useLookupsControllerFindAll.ts';
+export type { LookupsControllerFindByGroupQueryKey } from './hooks/Lookups/useLookupsControllerFindByGroup.ts';
+export type { LookupsControllerFindOneQueryKey } from './hooks/Lookups/useLookupsControllerFindOne.ts';
+export type { LookupsControllerRemoveMutationKey } from './hooks/Lookups/useLookupsControllerRemove.ts';
+export type { LookupsControllerUpdateMutationKey } from './hooks/Lookups/useLookupsControllerUpdate.ts';
 export type { ProjetosControllerCreateMutationKey } from './hooks/Projetos/useProjetosControllerCreate.ts';
 export type { ProjetosControllerFindAllQueryKey } from './hooks/Projetos/useProjetosControllerFindAll.ts';
 export type { ProjetosControllerFindOneQueryKey } from './hooks/Projetos/useProjetosControllerFindOne.ts';
 export type { ProjetosControllerRemoveMutationKey } from './hooks/Projetos/useProjetosControllerRemove.ts';
 export type { ProjetosControllerUpdateMutationKey } from './hooks/Projetos/useProjetosControllerUpdate.ts';
-export type { TiposDiariaControllerFindAllQueryKey } from './hooks/TiposDiaria/useTiposDiariaControllerFindAll.ts';
 export type { CreateDiariaDto } from './types/CreateDiariaDto.ts';
 export type { CreateEmpresaDto } from './types/CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './types/CreateFuncionarioDto.ts';
+export type { CreateLookupDto } from './types/CreateLookupDto.ts';
 export type { CreateManyDiariasDto } from './types/CreateManyDiariasDto.ts';
 export type { CreateProjetoDto } from './types/CreateProjetoDto.ts';
 export type { DiariaDto } from './types/DiariaDto.ts';
@@ -119,6 +125,43 @@ export type {
   HealthControllerGetHealthQueryResponse,
   HealthControllerGetHealthQuery,
 } from './types/HealthControllerGetHealth.ts';
+export type { LookupDto } from './types/LookupDto.ts';
+export type {
+  LookupsControllerCreate201,
+  LookupsControllerCreateMutationRequest,
+  LookupsControllerCreateMutationResponse,
+  LookupsControllerCreateMutation,
+} from './types/LookupsControllerCreate.ts';
+export type {
+  LookupsControllerFindAll200,
+  LookupsControllerFindAllQueryResponse,
+  LookupsControllerFindAllQuery,
+} from './types/LookupsControllerFindAll.ts';
+export type {
+  LookupsControllerFindByGroupPathParams,
+  LookupsControllerFindByGroup200,
+  LookupsControllerFindByGroupQueryResponse,
+  LookupsControllerFindByGroupQuery,
+} from './types/LookupsControllerFindByGroup.ts';
+export type {
+  LookupsControllerFindOnePathParams,
+  LookupsControllerFindOne200,
+  LookupsControllerFindOneQueryResponse,
+  LookupsControllerFindOneQuery,
+} from './types/LookupsControllerFindOne.ts';
+export type {
+  LookupsControllerRemovePathParams,
+  LookupsControllerRemove200,
+  LookupsControllerRemoveMutationResponse,
+  LookupsControllerRemoveMutation,
+} from './types/LookupsControllerRemove.ts';
+export type {
+  LookupsControllerUpdatePathParams,
+  LookupsControllerUpdate200,
+  LookupsControllerUpdateMutationRequest,
+  LookupsControllerUpdateMutationResponse,
+  LookupsControllerUpdateMutation,
+} from './types/LookupsControllerUpdate.ts';
 export type { ProjetoDto } from './types/ProjetoDto.ts';
 export type {
   ProjetosControllerCreate201,
@@ -150,14 +193,9 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './types/ProjetosControllerUpdate.ts';
-export type { TipoDiariaDto } from './types/TipoDiariaDto.ts';
-export type {
-  TiposDiariaControllerFindAll200,
-  TiposDiariaControllerFindAllQueryResponse,
-  TiposDiariaControllerFindAllQuery,
-} from './types/TiposDiariaControllerFindAll.ts';
 export type { UpdateEmpresaDto } from './types/UpdateEmpresaDto.ts';
 export type { UpdateFuncionarioDto } from './types/UpdateFuncionarioDto.ts';
+export type { UpdateLookupDto } from './types/UpdateLookupDto.ts';
 export type { UpdateProjetoDto } from './types/UpdateProjetoDto.ts';
 export {
   diariasControllerCreateMutationKey,
@@ -250,6 +288,42 @@ export {
   useHealthControllerGetHealth,
 } from './hooks/Health/useHealthControllerGetHealth.ts';
 export {
+  lookupsControllerCreateMutationKey,
+  lookupsControllerCreate,
+  lookupsControllerCreateMutationOptions,
+  useLookupsControllerCreate,
+} from './hooks/Lookups/useLookupsControllerCreate.ts';
+export {
+  lookupsControllerFindAllQueryKey,
+  lookupsControllerFindAll,
+  lookupsControllerFindAllQueryOptions,
+  useLookupsControllerFindAll,
+} from './hooks/Lookups/useLookupsControllerFindAll.ts';
+export {
+  lookupsControllerFindByGroupQueryKey,
+  lookupsControllerFindByGroup,
+  lookupsControllerFindByGroupQueryOptions,
+  useLookupsControllerFindByGroup,
+} from './hooks/Lookups/useLookupsControllerFindByGroup.ts';
+export {
+  lookupsControllerFindOneQueryKey,
+  lookupsControllerFindOne,
+  lookupsControllerFindOneQueryOptions,
+  useLookupsControllerFindOne,
+} from './hooks/Lookups/useLookupsControllerFindOne.ts';
+export {
+  lookupsControllerRemoveMutationKey,
+  lookupsControllerRemove,
+  lookupsControllerRemoveMutationOptions,
+  useLookupsControllerRemove,
+} from './hooks/Lookups/useLookupsControllerRemove.ts';
+export {
+  lookupsControllerUpdateMutationKey,
+  lookupsControllerUpdate,
+  lookupsControllerUpdateMutationOptions,
+  useLookupsControllerUpdate,
+} from './hooks/Lookups/useLookupsControllerUpdate.ts';
+export {
   projetosControllerCreateMutationKey,
   projetosControllerCreate,
   projetosControllerCreateMutationOptions,
@@ -279,15 +353,10 @@ export {
   projetosControllerUpdateMutationOptions,
   useProjetosControllerUpdate,
 } from './hooks/Projetos/useProjetosControllerUpdate.ts';
-export {
-  tiposDiariaControllerFindAllQueryKey,
-  tiposDiariaControllerFindAll,
-  tiposDiariaControllerFindAllQueryOptions,
-  useTiposDiariaControllerFindAll,
-} from './hooks/TiposDiaria/useTiposDiariaControllerFindAll.ts';
 export { createDiariaDtoSchema } from './zod/createDiariaDtoSchema.ts';
 export { createEmpresaDtoSchema } from './zod/createEmpresaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';
+export { createLookupDtoSchema } from './zod/createLookupDtoSchema.ts';
 export { createManyDiariasDtoSchema } from './zod/createManyDiariasDtoSchema.ts';
 export { createProjetoDtoSchema } from './zod/createProjetoDtoSchema.ts';
 export { diariaDtoSchema } from './zod/diariaDtoSchema.ts';
@@ -370,6 +439,37 @@ export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,
 } from './zod/healthControllerGetHealthSchema.ts';
+export { lookupDtoSchema } from './zod/lookupDtoSchema.ts';
+export {
+  lookupsControllerCreate201Schema,
+  lookupsControllerCreateMutationRequestSchema,
+  lookupsControllerCreateMutationResponseSchema,
+} from './zod/lookupsControllerCreateSchema.ts';
+export {
+  lookupsControllerFindAll200Schema,
+  lookupsControllerFindAllQueryResponseSchema,
+} from './zod/lookupsControllerFindAllSchema.ts';
+export {
+  lookupsControllerFindByGroupPathParamsSchema,
+  lookupsControllerFindByGroup200Schema,
+  lookupsControllerFindByGroupQueryResponseSchema,
+} from './zod/lookupsControllerFindByGroupSchema.ts';
+export {
+  lookupsControllerFindOnePathParamsSchema,
+  lookupsControllerFindOne200Schema,
+  lookupsControllerFindOneQueryResponseSchema,
+} from './zod/lookupsControllerFindOneSchema.ts';
+export {
+  lookupsControllerRemovePathParamsSchema,
+  lookupsControllerRemove200Schema,
+  lookupsControllerRemoveMutationResponseSchema,
+} from './zod/lookupsControllerRemoveSchema.ts';
+export {
+  lookupsControllerUpdatePathParamsSchema,
+  lookupsControllerUpdate200Schema,
+  lookupsControllerUpdateMutationRequestSchema,
+  lookupsControllerUpdateMutationResponseSchema,
+} from './zod/lookupsControllerUpdateSchema.ts';
 export { projetoDtoSchema } from './zod/projetoDtoSchema.ts';
 export {
   projetosControllerCreate201Schema,
@@ -396,11 +496,7 @@ export {
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
 } from './zod/projetosControllerUpdateSchema.ts';
-export { tipoDiariaDtoSchema } from './zod/tipoDiariaDtoSchema.ts';
-export {
-  tiposDiariaControllerFindAll200Schema,
-  tiposDiariaControllerFindAllQueryResponseSchema,
-} from './zod/tiposDiariaControllerFindAllSchema.ts';
 export { updateEmpresaDtoSchema } from './zod/updateEmpresaDtoSchema.ts';
 export { updateFuncionarioDtoSchema } from './zod/updateFuncionarioDtoSchema.ts';
+export { updateLookupDtoSchema } from './zod/updateLookupDtoSchema.ts';
 export { updateProjetoDtoSchema } from './zod/updateProjetoDtoSchema.ts';

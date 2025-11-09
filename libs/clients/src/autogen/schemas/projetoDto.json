@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "id": { "type": "string" },
-    "empresa_id": { "type": "string" },
+    "empresaId": { "type": "string" },
     "nome": { "type": "string" },
     "inicio": { "type": "string" },
     "fim": { "type": "string" },
@@ -11,7 +11,7 @@
   },
   "required": [
     "id",
-    "empresa_id",
+    "empresaId",
     "nome",
     "inicio",
     "fim",

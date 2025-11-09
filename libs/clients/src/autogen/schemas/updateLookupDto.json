@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "grupo": { "type": "string" },
+    "key": { "type": "string" },
+    "nome": { "type": "string" }
+  },
+  "x-readme-ref-name": "UpdateLookupDto"
+}

@@ -585,9 +585,31 @@
         ]
       }
     },
-    "/tipos-diarias": {
+    "/lookups": {
+      "post": {
+        "operationId": "LookupsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLookupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Lookups"
+        ]
+      },
       "get": {
-        "operationId": "TiposDiariaController_findAll",
+        "operationId": "LookupsController_findAll",
         "parameters": [],
         "responses": {
           "200": {
@@ -597,7 +619,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TipoDiariaDto"
+                    "$ref": "#/components/schemas/LookupDto"
                   }
                 }
               }
@@ -605,7 +627,139 @@
           }
         },
         "tags": [
-          "TiposDiaria"
+          "Lookups"
+        ]
+      }
+    },
+    "/lookups/{grupo}": {
+      "get": {
+        "operationId": "LookupsController_findByGroup",
+        "parameters": [
+          {
+            "name": "grupo",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookupDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Lookups"
+        ]
+      }
+    },
+    "/lookups/{grupo}/{key}": {
+      "get": {
+        "operationId": "LookupsController_findOne",
+        "parameters": [
+          {
+            "name": "grupo",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Lookups"
+        ]
+      },
+      "patch": {
+        "operationId": "LookupsController_update",
+        "parameters": [
+          {
+            "name": "grupo",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLookupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Lookups"
+        ]
+      },
+      "delete": {
+        "operationId": "LookupsController_remove",
+        "parameters": [
+          {
+            "name": "grupo",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Lookups"
         ]
       }
     }
@@ -657,12 +811,22 @@
             "type": "string",
             "minLength": 0,
             "maxLength": 11
+          },
+          "funcao": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 30
+          },
+          "dependetes": {
+            "type": "number"
           }
         },
         "required": [
           "cpf",
           "email",
-          "projetoId"
+          "projetoId",
+          "funcao",
+          "dependetes"
         ]
       },
       "FuncionarioDto": {
@@ -692,6 +856,12 @@
           "rg": {
             "type": "string"
           },
+          "funcao": {
+            "type": "string"
+          },
+          "dependetes": {
+            "type": "number"
+          },
           "projetoId": {
             "type": "string"
           },
@@ -713,6 +883,8 @@
           "phone",
           "email",
           "rg",
+          "funcao",
+          "dependetes",
           "projetoId",
           "createdAt",
           "updatedAt"
@@ -766,13 +938,21 @@
             "type": "string",
             "minLength": 0,
             "maxLength": 11
+          },
+          "funcao": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 30
+          },
+          "dependetes": {
+            "type": "number"
           }
         }
       },
       "CreateProjetoDto": {
         "type": "object",
         "properties": {
-          "empresa_id": {
+          "empresaId": {
             "type": "string"
           },
           "nome": {
@@ -799,7 +979,7 @@
           "id": {
             "type": "string"
           },
-          "empresa_id": {
+          "empresaId": {
             "type": "string"
           },
           "nome": {
@@ -822,7 +1002,7 @@
         },
         "required": [
           "id",
-          "empresa_id",
+          "empresaId",
           "nome",
           "inicio",
           "fim",
@@ -833,7 +1013,7 @@
       "UpdateProjetoDto": {
         "type": "object",
         "properties": {
-          "empresa_id": {
+          "empresaId": {
             "type": "string"
           },
           "nome": {
@@ -988,8 +1168,8 @@
           "projetoId": {
             "type": "string"
           },
-          "tipoDiariaId": {
-            "type": "string"
+          "tipoDiaria": {
+            "type": "number"
           },
           "observacoes": {
             "type": "string"
@@ -1008,7 +1188,7 @@
           "dia",
           "funcionarioId",
           "projetoId",
-          "tipoDiariaId",
+          "tipoDiaria",
           "observacoes",
           "createdAt",
           "updatedAt"
@@ -1026,8 +1206,8 @@
           "dia": {
             "type": "string"
           },
-          "tipoDiariaId": {
-            "type": "string",
+          "tipoDiaria": {
+            "type": "number",
             "nullable": true
           }
         },
@@ -1051,11 +1231,32 @@
           "items"
         ]
       },
-      "TipoDiariaDto": {
+      "CreateLookupDto": {
         "type": "object",
         "properties": {
-          "id": {
+          "grupo": {
             "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "grupo",
+          "nome"
+        ]
+      },
+      "LookupDto": {
+        "type": "object",
+        "properties": {
+          "grupo": {
+            "type": "string"
+          },
+          "key": {
+            "type": "number"
           },
           "nome": {
             "type": "string"
@@ -1070,11 +1271,24 @@
           }
         },
         "required": [
-          "id",
-          "nome",
-          "createdAt",
-          "updatedAt"
+          "grupo",
+          "key",
+          "nome"
         ]
+      },
+      "UpdateLookupDto": {
+        "type": "object",
+        "properties": {
+          "grupo": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          }
+        }
       }
     }
   }

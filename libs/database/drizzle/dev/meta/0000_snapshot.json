@@ -1,9 +1,97 @@
 {
-  "id": "aede0e61-b922-4332-94ab-aede1cad10de",
+  "id": "d0bf515f-56e7-41ef-98e1-466a1bcb5c60",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "dg_0001.cad_projetos": {
+      "name": "cad_projetos",
+      "schema": "dg_0001",
+      "columns": {
+        "projeto_id": {
+          "name": "projeto_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "gen_random_uuid()"
+        },
+        "empresa_id": {
+          "name": "empresa_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nome": {
+          "name": "nome",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "inicio": {
+          "name": "inicio",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fim": {
+          "name": "fim",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_projeto_empresa": {
+          "name": "fk_projeto_empresa",
+          "tableFrom": "cad_projetos",
+          "tableTo": "cad_empresas",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "empresa_id"
+          ],
+          "columnsTo": [
+            "empresa_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_projetos": {
+          "name": "pk_projetos",
+          "columns": [
+            "projeto_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "cad_projetos_nome_unique": {
+          "name": "cad_projetos_nome_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "nome"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "dg_0001.cad_diarias": {
       "name": "cad_diarias",
       "schema": "dg_0001",
@@ -33,8 +121,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "tipo_diaria_id": {
-          "name": "tipo_diaria_id",
+        "tipo_diaria": {
+          "name": "tipo_diaria",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -90,16 +178,16 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "fk_diarias_tipo_diaria": {
-          "name": "fk_diarias_tipo_diaria",
+        "fk_diarialookup": {
+          "name": "fk_diarialookup",
           "tableFrom": "cad_diarias",
-          "tableTo": "cad_tipo_diarias",
+          "tableTo": "cad_lookup",
           "schemaTo": "dg_0001",
           "columnsFrom": [
-            "tipo_diaria_id"
+            "tipo_diaria"
           ],
           "columnsTo": [
-            "tipos_diaria_id"
+            "lookup_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -263,6 +351,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "funcao": {
+          "name": "funcao",
+          "type": "varchar(40)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dependentes": {
+          "name": "dependentes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "projeto_id": {
           "name": "projeto_id",
           "type": "uuid",
@@ -329,20 +429,20 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "dg_0001.cad_projetos": {
-      "name": "cad_projetos",
+    "dg_0001.cad_lookup": {
+      "name": "cad_lookup",
       "schema": "dg_0001",
       "columns": {
-        "projeto_id": {
-          "name": "projeto_id",
+        "lookup_id": {
+          "name": "lookup_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false,
           "default": "gen_random_uuid()"
         },
-        "empresa_id": {
-          "name": "empresa_id",
-          "type": "uuid",
+        "grupo": {
+          "name": "grupo",
+          "type": "varchar(100)",
           "primaryKey": false,
           "notNull": false
         },
@@ -351,18 +451,6 @@
           "type": "varchar(100)",
           "primaryKey": false,
           "notNull": false
-        },
-        "inicio": {
-          "name": "inicio",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "fim": {
-          "name": "fim",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -380,36 +468,22 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "fk_projeto_empresa": {
-          "name": "fk_projeto_empresa",
-          "tableFrom": "cad_projetos",
-          "tableTo": "cad_empresas",
-          "schemaTo": "dg_0001",
-          "columnsFrom": [
-            "empresa_id"
-          ],
-          "columnsTo": [
-            "empresa_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {
-        "pk_projetos": {
-          "name": "pk_projetos",
+        "pk_lookup": {
+          "name": "pk_lookup",
           "columns": [
-            "projeto_id"
+            "grupo",
+            "nome"
           ]
         }
       },
       "uniqueConstraints": {
-        "cad_projetos_nome_unique": {
-          "name": "cad_projetos_nome_unique",
+        "cad_lookup_lookup_id_unique": {
+          "name": "cad_lookup_lookup_id_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "nome"
+            "lookup_id"
           ]
         }
       },
@@ -554,53 +628,6 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "dg_0001.cad_tipo_diarias": {
-      "name": "cad_tipo_diarias",
-      "schema": "dg_0001",
-      "columns": {
-        "tipos_diaria_id": {
-          "name": "tipos_diaria_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "gen_random_uuid()"
-        },
-        "nome": {
-          "name": "nome",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "pk_tipos_diaria": {
-          "name": "pk_tipos_diaria",
-          "columns": [
-            "tipos_diaria_id"
-          ]
-        }
-      },
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},

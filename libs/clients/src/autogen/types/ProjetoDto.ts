@@ -11,7 +11,7 @@ export type ProjetoDto = {
   /**
    * @type string
    */
-  empresa_id: string;
+  empresaId: string;
   /**
    * @type string
    */

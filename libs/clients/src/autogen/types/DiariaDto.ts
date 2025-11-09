@@ -21,9 +21,9 @@ export type DiariaDto = {
    */
   projetoId: string;
   /**
-   * @type string
+   * @type number
    */
-  tipoDiariaId: string;
+  tipoDiaria: number;
   /**
    * @type string
    */

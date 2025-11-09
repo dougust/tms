@@ -4,7 +4,7 @@
     "projetoId": { "type": "string" },
     "funcionarioId": { "type": "string" },
     "dia": { "type": "string" },
-    "tipoDiariaId": { "type": "string", "nullable": true }
+    "tipoDiaria": { "type": "number", "nullable": true }
   },
   "required": ["projetoId", "funcionarioId", "dia"],
   "x-readme-ref-name": "CreateDiariaDto"

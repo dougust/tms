@@ -8,7 +8,9 @@
     "phone": { "type": "string", "minLength": 0, "maxLength": 20 },
     "email": { "type": "string", "format": "email" },
     "projetoId": { "type": "string" },
-    "rg": { "type": "string", "minLength": 0, "maxLength": 11 }
+    "rg": { "type": "string", "minLength": 0, "maxLength": 11 },
+    "funcao": { "type": "string", "minLength": 0, "maxLength": 30 },
+    "dependetes": { "type": "number" }
   },
   "x-readme-ref-name": "UpdateFuncionarioDto"
 }

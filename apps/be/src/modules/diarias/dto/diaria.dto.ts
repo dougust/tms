@@ -1,5 +1,5 @@
 import { IDiaria } from '@dougust/database';
-import { IsDate, IsDateString, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 
 export class DiariaDto implements IDiaria {
   @IsString()
@@ -14,8 +14,8 @@ export class DiariaDto implements IDiaria {
   @IsString()
   projetoId: string;
 
-  @IsString()
-  tipoDiariaId: string;
+  @IsNumber()
+  tipoDiaria: number;
 
   @IsString()
   observacoes: string;

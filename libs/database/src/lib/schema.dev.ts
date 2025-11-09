@@ -1,12 +1,13 @@
 import {
-  diarias,
   empresas,
   empresasRelations,
   funcionarios,
   funcionariosRelations,
   projetos,
   projetosRelations,
-  tiposDiaria,
+  // beneficios,
+  lookup,
+  diarias,
 } from './tenant';
 import { pgSchema } from 'drizzle-orm/pg-core';
 
@@ -22,8 +23,10 @@ export const projetosTpl = projetos(process.env.TENANT_ID);
 export const projetosRelationsTpl = projetosRelations(process.env.TENANT_ID);
 
 export const funcionariosTpl = funcionarios(process.env.TENANT_ID);
-export const funcionariosRelTp = funcionariosRelations(process.env.TENANT_ID);
+export const funcionariosRelTpl = funcionariosRelations(process.env.TENANT_ID);
 
 export const diariasTpl = diarias(process.env.TENANT_ID);
 
-export const tipoDeDiariasTpl = tiposDiaria(process.env.TENANT_ID);
+// export const beneficiosTpl = beneficios(process.env.TENANT_ID);
+
+export const lookupTpl = lookup(process.env.TENANT_ID);

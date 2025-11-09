@@ -17,7 +17,7 @@ export type CreateDiariaDto = {
    */
   dia: string;
   /**
-   * @type string
+   * @type number
    */
-  tipoDiariaId?: string | null;
+  tipoDiaria?: number | null;
 };

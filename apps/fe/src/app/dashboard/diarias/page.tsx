@@ -12,7 +12,8 @@ import {
   useDiariasControllerFindInRange,
   useFuncionariosControllerFindAll,
   useProjetosControllerFindAll,
-  useTiposDiariaControllerFindAll,
+  useLookupsControllerFindAll,
+  LookupDto,
 } from '@dougust/clients';
 
 const daysCount = 7;
@@ -50,14 +51,21 @@ export default function DiariasPage() {
   } = useDiariasControllerFindInRange(range);
 
   const {
-    data: tiposDiaria,
-    isPending: isTiposPending,
-    isError: isTiposError,
-  } = useTiposDiariaControllerFindAll();
+    data: lookups = [],
+    isPending: isLookupsPending,
+    isError: isLookupsError,
+  } = useLookupsControllerFindAll<LookupDto[]>();
 
-  const isError = isFuncionariosError || isProjetosError || isDiariasError || isTiposError;
+  const tiposDiaria = React.useMemo(() =>
+    (lookups || [])
+      .filter((l) => l.grupo === 'TipoDiaria')
+      .map((l) => ({ id: String(l.key), nome: l.nome } as any)),
+    [lookups]
+  );
+
+  const isError = isFuncionariosError || isProjetosError || isDiariasError || isLookupsError;
   const isPending =
-    isFuncionariosPending || isProjetosPending || isDiariasPending || isTiposPending;
+    isFuncionariosPending || isProjetosPending || isDiariasPending || isLookupsPending;
 
   return (
     <ListPageLayout
