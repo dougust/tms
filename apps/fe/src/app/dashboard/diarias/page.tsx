@@ -59,7 +59,7 @@ export default function DiariasPage() {
   const tiposDiaria = React.useMemo(() =>
     (lookups || [])
       .filter((l) => l.grupo === 'TipoDiaria')
-      .map((l) => ({ id: String(l.key), nome: l.nome } as any)),
+      .map((l) => ({ id: l.id, nome: l.nome })),
     [lookups]
   );
 

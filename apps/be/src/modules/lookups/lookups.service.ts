@@ -19,11 +19,11 @@ class LookupsService {
   }
 
   async findAll() {
-    return await this.db.select().from(this.table);
+    return this.db.select().from(this.table);
   }
 
   async findByGroup(grupo: string) {
-    return await this.db.select().from(this.table).where(eq(this.table.grupo, grupo));
+    return this.db.select().from(this.table).where(eq(this.table.grupo, grupo));
   }
 
   async findOne(grupo: string, id: string) {
