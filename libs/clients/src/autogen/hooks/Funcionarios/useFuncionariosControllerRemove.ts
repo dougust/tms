@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   FuncionariosControllerRemoveMutationResponse,
   FuncionariosControllerRemovePathParams,
-} from '../../types/FuncionariosControllerRemove.ts';
+} from '../../types/FuncionariosControllerRemove';
 import type {
   RequestConfig,
   ResponseErrorConfig,

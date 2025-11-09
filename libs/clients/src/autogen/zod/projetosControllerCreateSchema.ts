@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { createProjetoDtoSchema } from './createProjetoDtoSchema.ts';
+import { createProjetoDtoSchema } from './createProjetoDtoSchema';
 import { z } from 'zod/v4';
 
 export const projetosControllerCreate201Schema = z.object({});

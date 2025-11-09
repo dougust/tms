@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { UpdateProjetoDto } from './UpdateProjetoDto.ts';
+import type { UpdateProjetoDto } from './UpdateProjetoDto';
 
 export type ProjetosControllerUpdatePathParams = {
   /**

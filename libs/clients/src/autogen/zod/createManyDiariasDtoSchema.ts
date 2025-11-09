@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
+import { createDiariaDtoSchema } from './createDiariaDtoSchema';
 import { z } from 'zod/v4';
 
 export const createManyDiariasDtoSchema = z.object({

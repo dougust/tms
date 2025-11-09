@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import { authResponseDtoSchema } from './authResponseDtoSchema.ts';
-import { loginDtoSchema } from './loginDtoSchema.ts';
+import { authResponseDtoSchema } from './authResponseDtoSchema';
+import { loginDtoSchema } from './loginDtoSchema';
 
 export const authControllerLogin201Schema = authResponseDtoSchema;
 

@@ -3,160 +3,160 @@ export type {
   AuthControllerLoginMutationRequest,
   AuthControllerLoginMutationResponse,
   AuthControllerLoginMutation,
-} from './AuthControllerLogin.ts';
+} from './AuthControllerLogin';
 export type {
   AuthControllerLogout204,
   AuthControllerLogoutMutationRequest,
   AuthControllerLogoutMutationResponse,
   AuthControllerLogoutMutation,
-} from './AuthControllerLogout.ts';
+} from './AuthControllerLogout';
 export type {
   AuthControllerRefresh201,
   AuthControllerRefreshMutationRequest,
   AuthControllerRefreshMutationResponse,
   AuthControllerRefreshMutation,
-} from './AuthControllerRefresh.ts';
-export type { AuthResponseDto } from './AuthResponseDto.ts';
-export type { CreateDiariaDto } from './CreateDiariaDto.ts';
-export type { CreateEmpresaDto } from './CreateEmpresaDto.ts';
-export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
-export type { CreateManyDiariasDto } from './CreateManyDiariasDto.ts';
-export type { CreateProjetoDto } from './CreateProjetoDto.ts';
-export type { DiariaDto } from './DiariaDto.ts';
+} from './AuthControllerRefresh';
+export type { AuthResponseDto } from './AuthResponseDto';
+export type { CreateDiariaDto } from './CreateDiariaDto';
+export type { CreateEmpresaDto } from './CreateEmpresaDto';
+export type { CreateFuncionarioDto } from './CreateFuncionarioDto';
+export type { CreateManyDiariasDto } from './CreateManyDiariasDto';
+export type { CreateProjetoDto } from './CreateProjetoDto';
+export type { DiariaDto } from './DiariaDto';
 export type {
   DiariasControllerCreate201,
   DiariasControllerCreateMutationRequest,
   DiariasControllerCreateMutationResponse,
   DiariasControllerCreateMutation,
-} from './DiariasControllerCreate.ts';
+} from './DiariasControllerCreate';
 export type {
   DiariasControllerCreateMany201,
   DiariasControllerCreateManyMutationRequest,
   DiariasControllerCreateManyMutationResponse,
   DiariasControllerCreateManyMutation,
-} from './DiariasControllerCreateMany.ts';
+} from './DiariasControllerCreateMany';
 export type {
   DiariasControllerFindInRangeQueryParams,
   DiariasControllerFindInRange200,
   DiariasControllerFindInRangeQueryResponse,
   DiariasControllerFindInRangeQuery,
-} from './DiariasControllerFindInRange.ts';
+} from './DiariasControllerFindInRange';
 export type {
   DiariasControllerUpdatePathParams,
   DiariasControllerUpdate200,
   DiariasControllerUpdateMutationRequest,
   DiariasControllerUpdateMutationResponse,
   DiariasControllerUpdateMutation,
-} from './DiariasControllerUpdate.ts';
-export type { EmpresaDto } from './EmpresaDto.ts';
+} from './DiariasControllerUpdate';
+export type { EmpresaDto } from './EmpresaDto';
 export type {
   EmpresasControllerCreate201,
   EmpresasControllerCreateMutationRequest,
   EmpresasControllerCreateMutationResponse,
   EmpresasControllerCreateMutation,
-} from './EmpresasControllerCreate.ts';
+} from './EmpresasControllerCreate';
 export type {
   EmpresasControllerFindAll200,
   EmpresasControllerFindAllQueryResponse,
   EmpresasControllerFindAllQuery,
-} from './EmpresasControllerFindAll.ts';
+} from './EmpresasControllerFindAll';
 export type {
   EmpresasControllerFindOnePathParams,
   EmpresasControllerFindOne200,
   EmpresasControllerFindOneQueryResponse,
   EmpresasControllerFindOneQuery,
-} from './EmpresasControllerFindOne.ts';
+} from './EmpresasControllerFindOne';
 export type {
   EmpresasControllerRemovePathParams,
   EmpresasControllerRemove200,
   EmpresasControllerRemoveMutationResponse,
   EmpresasControllerRemoveMutation,
-} from './EmpresasControllerRemove.ts';
+} from './EmpresasControllerRemove';
 export type {
   EmpresasControllerUpdatePathParams,
   EmpresasControllerUpdate200,
   EmpresasControllerUpdateMutationRequest,
   EmpresasControllerUpdateMutationResponse,
   EmpresasControllerUpdateMutation,
-} from './EmpresasControllerUpdate.ts';
-export type { FuncionarioDto } from './FuncionarioDto.ts';
+} from './EmpresasControllerUpdate';
+export type { FuncionarioDto } from './FuncionarioDto';
 export type {
   FuncionariosControllerCreate201,
   FuncionariosControllerCreateMutationRequest,
   FuncionariosControllerCreateMutationResponse,
   FuncionariosControllerCreateMutation,
-} from './FuncionariosControllerCreate.ts';
+} from './FuncionariosControllerCreate';
 export type {
   FuncionariosControllerFindAll200,
   FuncionariosControllerFindAllQueryResponse,
   FuncionariosControllerFindAllQuery,
-} from './FuncionariosControllerFindAll.ts';
+} from './FuncionariosControllerFindAll';
 export type {
   FuncionariosControllerFindOnePathParams,
   FuncionariosControllerFindOne200,
   FuncionariosControllerFindOneQueryResponse,
   FuncionariosControllerFindOneQuery,
-} from './FuncionariosControllerFindOne.ts';
+} from './FuncionariosControllerFindOne';
 export type {
   FuncionariosControllerRemovePathParams,
   FuncionariosControllerRemove200,
   FuncionariosControllerRemoveMutationResponse,
   FuncionariosControllerRemoveMutation,
-} from './FuncionariosControllerRemove.ts';
+} from './FuncionariosControllerRemove';
 export type {
   FuncionariosControllerUpdatePathParams,
   FuncionariosControllerUpdate200,
   FuncionariosControllerUpdateMutationRequest,
   FuncionariosControllerUpdateMutationResponse,
   FuncionariosControllerUpdateMutation,
-} from './FuncionariosControllerUpdate.ts';
-export type { GetEmpresaResponseDto } from './GetEmpresaResponseDto.ts';
-export type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto.ts';
+} from './FuncionariosControllerUpdate';
+export type { GetEmpresaResponseDto } from './GetEmpresaResponseDto';
+export type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto';
 export type {
   HealthControllerGetHealth200,
   HealthControllerGetHealthQueryResponse,
   HealthControllerGetHealthQuery,
-} from './HealthControllerGetHealth.ts';
-export type { LoginDto } from './LoginDto.ts';
-export type { LogoutDto } from './LogoutDto.ts';
-export type { ProjetoDto } from './ProjetoDto.ts';
+} from './HealthControllerGetHealth';
+export type { LoginDto } from './LoginDto';
+export type { LogoutDto } from './LogoutDto';
+export type { ProjetoDto } from './ProjetoDto';
 export type {
   ProjetosControllerCreate201,
   ProjetosControllerCreateMutationRequest,
   ProjetosControllerCreateMutationResponse,
   ProjetosControllerCreateMutation,
-} from './ProjetosControllerCreate.ts';
+} from './ProjetosControllerCreate';
 export type {
   ProjetosControllerFindAll200,
   ProjetosControllerFindAllQueryResponse,
   ProjetosControllerFindAllQuery,
-} from './ProjetosControllerFindAll.ts';
+} from './ProjetosControllerFindAll';
 export type {
   ProjetosControllerFindOnePathParams,
   ProjetosControllerFindOne200,
   ProjetosControllerFindOneQueryResponse,
   ProjetosControllerFindOneQuery,
-} from './ProjetosControllerFindOne.ts';
+} from './ProjetosControllerFindOne';
 export type {
   ProjetosControllerRemovePathParams,
   ProjetosControllerRemove200,
   ProjetosControllerRemoveMutationResponse,
   ProjetosControllerRemoveMutation,
-} from './ProjetosControllerRemove.ts';
+} from './ProjetosControllerRemove';
 export type {
   ProjetosControllerUpdatePathParams,
   ProjetosControllerUpdate200,
   ProjetosControllerUpdateMutationRequest,
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
-} from './ProjetosControllerUpdate.ts';
-export type { RefreshDto } from './RefreshDto.ts';
-export type { TipoDiariaDto } from './TipoDiariaDto.ts';
+} from './ProjetosControllerUpdate';
+export type { RefreshDto } from './RefreshDto';
+export type { TipoDiariaDto } from './TipoDiariaDto';
 export type {
   TiposDiariaControllerFindAll200,
   TiposDiariaControllerFindAllQueryResponse,
   TiposDiariaControllerFindAllQuery,
-} from './TiposDiariaControllerFindAll.ts';
-export type { UpdateEmpresaDto } from './UpdateEmpresaDto.ts';
-export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto.ts';
-export type { UpdateProjetoDto } from './UpdateProjetoDto.ts';
+} from './TiposDiariaControllerFindAll';
+export type { UpdateEmpresaDto } from './UpdateEmpresaDto';
+export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto';
+export type { UpdateProjetoDto } from './UpdateProjetoDto';

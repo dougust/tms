@@ -1,7 +1,7 @@
-export type { HealthControllerGetHealthQueryKey } from './useHealthControllerGetHealth.ts';
+export type { HealthControllerGetHealthQueryKey } from './useHealthControllerGetHealth';
 export {
   healthControllerGetHealthQueryKey,
   healthControllerGetHealth,
   healthControllerGetHealthQueryOptions,
   useHealthControllerGetHealth,
-} from './useHealthControllerGetHealth.ts';
+} from './useHealthControllerGetHealth';

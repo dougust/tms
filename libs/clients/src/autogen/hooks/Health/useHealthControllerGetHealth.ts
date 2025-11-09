@@ -4,7 +4,7 @@
  */
 
 import fetch from '@kubb/plugin-client/clients/axios';
-import type { HealthControllerGetHealthQueryResponse } from '../../types/HealthControllerGetHealth.ts';
+import type { HealthControllerGetHealthQueryResponse } from '../../types/HealthControllerGetHealth';
 import type {
   RequestConfig,
   ResponseErrorConfig,

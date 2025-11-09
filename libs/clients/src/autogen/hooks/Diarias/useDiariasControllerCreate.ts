@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   DiariasControllerCreateMutationRequest,
   DiariasControllerCreateMutationResponse,
-} from '../../types/DiariasControllerCreate.ts';
+} from '../../types/DiariasControllerCreate';
 import type {
   RequestConfig,
   ResponseErrorConfig,

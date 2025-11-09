@@ -1,21 +1,21 @@
-export type { AuthControllerLoginMutationKey } from './useAuthControllerLogin.ts';
-export type { AuthControllerLogoutMutationKey } from './useAuthControllerLogout.ts';
-export type { AuthControllerRefreshMutationKey } from './useAuthControllerRefresh.ts';
+export type { AuthControllerLoginMutationKey } from './useAuthControllerLogin';
+export type { AuthControllerLogoutMutationKey } from './useAuthControllerLogout';
+export type { AuthControllerRefreshMutationKey } from './useAuthControllerRefresh';
 export {
   authControllerLoginMutationKey,
   authControllerLogin,
   authControllerLoginMutationOptions,
   useAuthControllerLogin,
-} from './useAuthControllerLogin.ts';
+} from './useAuthControllerLogin';
 export {
   authControllerLogoutMutationKey,
   authControllerLogout,
   authControllerLogoutMutationOptions,
   useAuthControllerLogout,
-} from './useAuthControllerLogout.ts';
+} from './useAuthControllerLogout';
 export {
   authControllerRefreshMutationKey,
   authControllerRefresh,
   authControllerRefreshMutationOptions,
   useAuthControllerRefresh,
-} from './useAuthControllerRefresh.ts';
+} from './useAuthControllerRefresh';

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { tipoDiariaDtoSchema } from './tipoDiariaDtoSchema.ts';
+import { tipoDiariaDtoSchema } from './tipoDiariaDtoSchema';
 import { z } from 'zod/v4';
 
 export const tiposDiariaControllerFindAll200Schema =

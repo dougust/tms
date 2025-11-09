@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { LogoutDto } from './LogoutDto.ts';
+import type { LogoutDto } from './LogoutDto';
 
 export type AuthControllerLogout204 = any;
 

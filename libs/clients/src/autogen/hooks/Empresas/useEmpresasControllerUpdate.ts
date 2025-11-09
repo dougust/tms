@@ -8,7 +8,7 @@ import type {
   EmpresasControllerUpdateMutationRequest,
   EmpresasControllerUpdateMutationResponse,
   EmpresasControllerUpdatePathParams,
-} from '../../types/EmpresasControllerUpdate.ts';
+} from '../../types/EmpresasControllerUpdate';
 import type {
   RequestConfig,
   ResponseErrorConfig,

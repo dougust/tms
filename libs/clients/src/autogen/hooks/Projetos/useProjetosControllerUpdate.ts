@@ -8,7 +8,7 @@ import type {
   ProjetosControllerUpdateMutationRequest,
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdatePathParams,
-} from '../../types/ProjetosControllerUpdate.ts';
+} from '../../types/ProjetosControllerUpdate';
 import type {
   RequestConfig,
   ResponseErrorConfig,

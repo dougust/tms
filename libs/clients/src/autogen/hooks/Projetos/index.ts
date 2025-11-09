@@ -1,35 +1,35 @@
-export type { ProjetosControllerCreateMutationKey } from './useProjetosControllerCreate.ts';
-export type { ProjetosControllerFindAllQueryKey } from './useProjetosControllerFindAll.ts';
-export type { ProjetosControllerFindOneQueryKey } from './useProjetosControllerFindOne.ts';
-export type { ProjetosControllerRemoveMutationKey } from './useProjetosControllerRemove.ts';
-export type { ProjetosControllerUpdateMutationKey } from './useProjetosControllerUpdate.ts';
+export type { ProjetosControllerCreateMutationKey } from './useProjetosControllerCreate';
+export type { ProjetosControllerFindAllQueryKey } from './useProjetosControllerFindAll';
+export type { ProjetosControllerFindOneQueryKey } from './useProjetosControllerFindOne';
+export type { ProjetosControllerRemoveMutationKey } from './useProjetosControllerRemove';
+export type { ProjetosControllerUpdateMutationKey } from './useProjetosControllerUpdate';
 export {
   projetosControllerCreateMutationKey,
   projetosControllerCreate,
   projetosControllerCreateMutationOptions,
   useProjetosControllerCreate,
-} from './useProjetosControllerCreate.ts';
+} from './useProjetosControllerCreate';
 export {
   projetosControllerFindAllQueryKey,
   projetosControllerFindAll,
   projetosControllerFindAllQueryOptions,
   useProjetosControllerFindAll,
-} from './useProjetosControllerFindAll.ts';
+} from './useProjetosControllerFindAll';
 export {
   projetosControllerFindOneQueryKey,
   projetosControllerFindOne,
   projetosControllerFindOneQueryOptions,
   useProjetosControllerFindOne,
-} from './useProjetosControllerFindOne.ts';
+} from './useProjetosControllerFindOne';
 export {
   projetosControllerRemoveMutationKey,
   projetosControllerRemove,
   projetosControllerRemoveMutationOptions,
   useProjetosControllerRemove,
-} from './useProjetosControllerRemove.ts';
+} from './useProjetosControllerRemove';
 export {
   projetosControllerUpdateMutationKey,
   projetosControllerUpdate,
   projetosControllerUpdateMutationOptions,
   useProjetosControllerUpdate,
-} from './useProjetosControllerUpdate.ts';
+} from './useProjetosControllerUpdate';

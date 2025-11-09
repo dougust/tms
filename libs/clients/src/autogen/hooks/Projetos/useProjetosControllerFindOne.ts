@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   ProjetosControllerFindOneQueryResponse,
   ProjetosControllerFindOnePathParams,
-} from '../../types/ProjetosControllerFindOne.ts';
+} from '../../types/ProjetosControllerFindOne';
 import type {
   RequestConfig,
   ResponseErrorConfig,

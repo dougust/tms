@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { TipoDiariaDto } from './TipoDiariaDto.ts';
+import type { TipoDiariaDto } from './TipoDiariaDto';
 
 export type TiposDiariaControllerFindAll200 = TipoDiariaDto[];
 

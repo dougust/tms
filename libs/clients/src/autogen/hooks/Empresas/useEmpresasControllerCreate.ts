@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   EmpresasControllerCreateMutationRequest,
   EmpresasControllerCreateMutationResponse,
-} from '../../types/EmpresasControllerCreate.ts';
+} from '../../types/EmpresasControllerCreate';
 import type {
   RequestConfig,
   ResponseErrorConfig,

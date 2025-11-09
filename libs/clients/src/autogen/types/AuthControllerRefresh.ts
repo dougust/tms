@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import type { AuthResponseDto } from './AuthResponseDto.ts';
-import type { RefreshDto } from './RefreshDto.ts';
+import type { AuthResponseDto } from './AuthResponseDto';
+import type { RefreshDto } from './RefreshDto';
 
 export type AuthControllerRefresh201 = AuthResponseDto;
 

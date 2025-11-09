@@ -4,7 +4,7 @@
  */
 
 import fetch from '@kubb/plugin-client/clients/axios';
-import type { ProjetosControllerFindAllQueryResponse } from '../../types/ProjetosControllerFindAll.ts';
+import type { ProjetosControllerFindAllQueryResponse } from '../../types/ProjetosControllerFindAll';
 import type {
   RequestConfig,
   ResponseErrorConfig,

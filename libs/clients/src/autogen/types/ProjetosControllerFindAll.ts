@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { ProjetoDto } from './ProjetoDto.ts';
+import type { ProjetoDto } from './ProjetoDto';
 
 export type ProjetosControllerFindAll200 = ProjetoDto[];
 

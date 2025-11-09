@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { CreateDiariaDto } from './CreateDiariaDto.ts';
+import type { CreateDiariaDto } from './CreateDiariaDto';
 
 export type CreateManyDiariasDto = {
   /**

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { FuncionarioDto } from './FuncionarioDto.ts';
+import type { FuncionarioDto } from './FuncionarioDto';
 
 export type GetFuncionarioResponseDto = {
   /**

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { empresaDtoSchema } from './empresaDtoSchema.ts';
+import { empresaDtoSchema } from './empresaDtoSchema';
 import { z } from 'zod/v4';
 
 export const getEmpresaResponseDtoSchema = z.object({

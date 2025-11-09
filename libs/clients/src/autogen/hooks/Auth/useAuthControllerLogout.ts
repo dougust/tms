@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   AuthControllerLogoutMutationRequest,
   AuthControllerLogoutMutationResponse,
-} from '../../types/AuthControllerLogout.ts';
+} from '../../types/AuthControllerLogout';
 import type {
   RequestConfig,
   ResponseErrorConfig,

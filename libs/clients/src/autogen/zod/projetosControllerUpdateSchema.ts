@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { updateProjetoDtoSchema } from './updateProjetoDtoSchema.ts';
+import { updateProjetoDtoSchema } from './updateProjetoDtoSchema';
 import { z } from 'zod/v4';
 
 export const projetosControllerUpdatePathParamsSchema = z.object({

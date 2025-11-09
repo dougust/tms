@@ -4,7 +4,7 @@
  */
 
 import fetch from '@kubb/plugin-client/clients/axios';
-import type { EmpresasControllerFindAllQueryResponse } from '../../types/EmpresasControllerFindAll.ts';
+import type { EmpresasControllerFindAllQueryResponse } from '../../types/EmpresasControllerFindAll';
 import type {
   RequestConfig,
   ResponseErrorConfig,

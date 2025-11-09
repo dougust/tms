@@ -8,7 +8,7 @@ import type {
   FuncionariosControllerUpdateMutationRequest,
   FuncionariosControllerUpdateMutationResponse,
   FuncionariosControllerUpdatePathParams,
-} from '../../types/FuncionariosControllerUpdate.ts';
+} from '../../types/FuncionariosControllerUpdate';
 import type {
   RequestConfig,
   ResponseErrorConfig,

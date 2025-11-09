@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import type { AuthResponseDto } from './AuthResponseDto.ts';
-import type { LoginDto } from './LoginDto.ts';
+import type { AuthResponseDto } from './AuthResponseDto';
+import type { LoginDto } from './LoginDto';
 
 export type AuthControllerLogin201 = AuthResponseDto;
 

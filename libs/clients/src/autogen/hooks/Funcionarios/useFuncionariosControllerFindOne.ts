@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   FuncionariosControllerFindOneQueryResponse,
   FuncionariosControllerFindOnePathParams,
-} from '../../types/FuncionariosControllerFindOne.ts';
+} from '../../types/FuncionariosControllerFindOne';
 import type {
   RequestConfig,
   ResponseErrorConfig,

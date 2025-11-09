@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
+import { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema';
 import { z } from 'zod/v4';
 
 export const funcionariosControllerCreate201Schema = z.object({});

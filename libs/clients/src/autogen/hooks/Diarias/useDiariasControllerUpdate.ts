@@ -8,7 +8,7 @@ import type {
   DiariasControllerUpdateMutationRequest,
   DiariasControllerUpdateMutationResponse,
   DiariasControllerUpdatePathParams,
-} from '../../types/DiariasControllerUpdate.ts';
+} from '../../types/DiariasControllerUpdate';
 import type {
   RequestConfig,
   ResponseErrorConfig,

@@ -2,137 +2,137 @@ export {
   authControllerLogin201Schema,
   authControllerLoginMutationRequestSchema,
   authControllerLoginMutationResponseSchema,
-} from './authControllerLoginSchema.ts';
+} from './authControllerLoginSchema';
 export {
   authControllerLogout204Schema,
   authControllerLogoutMutationRequestSchema,
   authControllerLogoutMutationResponseSchema,
-} from './authControllerLogoutSchema.ts';
+} from './authControllerLogoutSchema';
 export {
   authControllerRefresh201Schema,
   authControllerRefreshMutationRequestSchema,
   authControllerRefreshMutationResponseSchema,
-} from './authControllerRefreshSchema.ts';
-export { authResponseDtoSchema } from './authResponseDtoSchema.ts';
-export { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
-export { createEmpresaDtoSchema } from './createEmpresaDtoSchema.ts';
-export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';
-export { createManyDiariasDtoSchema } from './createManyDiariasDtoSchema.ts';
-export { createProjetoDtoSchema } from './createProjetoDtoSchema.ts';
-export { diariaDtoSchema } from './diariaDtoSchema.ts';
+} from './authControllerRefreshSchema';
+export { authResponseDtoSchema } from './authResponseDtoSchema';
+export { createDiariaDtoSchema } from './createDiariaDtoSchema';
+export { createEmpresaDtoSchema } from './createEmpresaDtoSchema';
+export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema';
+export { createManyDiariasDtoSchema } from './createManyDiariasDtoSchema';
+export { createProjetoDtoSchema } from './createProjetoDtoSchema';
+export { diariaDtoSchema } from './diariaDtoSchema';
 export {
   diariasControllerCreateMany201Schema,
   diariasControllerCreateManyMutationRequestSchema,
   diariasControllerCreateManyMutationResponseSchema,
-} from './diariasControllerCreateManySchema.ts';
+} from './diariasControllerCreateManySchema';
 export {
   diariasControllerCreate201Schema,
   diariasControllerCreateMutationRequestSchema,
   diariasControllerCreateMutationResponseSchema,
-} from './diariasControllerCreateSchema.ts';
+} from './diariasControllerCreateSchema';
 export {
   diariasControllerFindInRangeQueryParamsSchema,
   diariasControllerFindInRange200Schema,
   diariasControllerFindInRangeQueryResponseSchema,
-} from './diariasControllerFindInRangeSchema.ts';
+} from './diariasControllerFindInRangeSchema';
 export {
   diariasControllerUpdatePathParamsSchema,
   diariasControllerUpdate200Schema,
   diariasControllerUpdateMutationRequestSchema,
   diariasControllerUpdateMutationResponseSchema,
-} from './diariasControllerUpdateSchema.ts';
-export { empresaDtoSchema } from './empresaDtoSchema.ts';
+} from './diariasControllerUpdateSchema';
+export { empresaDtoSchema } from './empresaDtoSchema';
 export {
   empresasControllerCreate201Schema,
   empresasControllerCreateMutationRequestSchema,
   empresasControllerCreateMutationResponseSchema,
-} from './empresasControllerCreateSchema.ts';
+} from './empresasControllerCreateSchema';
 export {
   empresasControllerFindAll200Schema,
   empresasControllerFindAllQueryResponseSchema,
-} from './empresasControllerFindAllSchema.ts';
+} from './empresasControllerFindAllSchema';
 export {
   empresasControllerFindOnePathParamsSchema,
   empresasControllerFindOne200Schema,
   empresasControllerFindOneQueryResponseSchema,
-} from './empresasControllerFindOneSchema.ts';
+} from './empresasControllerFindOneSchema';
 export {
   empresasControllerRemovePathParamsSchema,
   empresasControllerRemove200Schema,
   empresasControllerRemoveMutationResponseSchema,
-} from './empresasControllerRemoveSchema.ts';
+} from './empresasControllerRemoveSchema';
 export {
   empresasControllerUpdatePathParamsSchema,
   empresasControllerUpdate200Schema,
   empresasControllerUpdateMutationRequestSchema,
   empresasControllerUpdateMutationResponseSchema,
-} from './empresasControllerUpdateSchema.ts';
-export { funcionarioDtoSchema } from './funcionarioDtoSchema.ts';
+} from './empresasControllerUpdateSchema';
+export { funcionarioDtoSchema } from './funcionarioDtoSchema';
 export {
   funcionariosControllerCreate201Schema,
   funcionariosControllerCreateMutationRequestSchema,
   funcionariosControllerCreateMutationResponseSchema,
-} from './funcionariosControllerCreateSchema.ts';
+} from './funcionariosControllerCreateSchema';
 export {
   funcionariosControllerFindAll200Schema,
   funcionariosControllerFindAllQueryResponseSchema,
-} from './funcionariosControllerFindAllSchema.ts';
+} from './funcionariosControllerFindAllSchema';
 export {
   funcionariosControllerFindOnePathParamsSchema,
   funcionariosControllerFindOne200Schema,
   funcionariosControllerFindOneQueryResponseSchema,
-} from './funcionariosControllerFindOneSchema.ts';
+} from './funcionariosControllerFindOneSchema';
 export {
   funcionariosControllerRemovePathParamsSchema,
   funcionariosControllerRemove200Schema,
   funcionariosControllerRemoveMutationResponseSchema,
-} from './funcionariosControllerRemoveSchema.ts';
+} from './funcionariosControllerRemoveSchema';
 export {
   funcionariosControllerUpdatePathParamsSchema,
   funcionariosControllerUpdate200Schema,
   funcionariosControllerUpdateMutationRequestSchema,
   funcionariosControllerUpdateMutationResponseSchema,
-} from './funcionariosControllerUpdateSchema.ts';
-export { getEmpresaResponseDtoSchema } from './getEmpresaResponseDtoSchema.ts';
-export { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema.ts';
+} from './funcionariosControllerUpdateSchema';
+export { getEmpresaResponseDtoSchema } from './getEmpresaResponseDtoSchema';
+export { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema';
 export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,
-} from './healthControllerGetHealthSchema.ts';
-export { loginDtoSchema } from './loginDtoSchema.ts';
-export { logoutDtoSchema } from './logoutDtoSchema.ts';
-export { projetoDtoSchema } from './projetoDtoSchema.ts';
+} from './healthControllerGetHealthSchema';
+export { loginDtoSchema } from './loginDtoSchema';
+export { logoutDtoSchema } from './logoutDtoSchema';
+export { projetoDtoSchema } from './projetoDtoSchema';
 export {
   projetosControllerCreate201Schema,
   projetosControllerCreateMutationRequestSchema,
   projetosControllerCreateMutationResponseSchema,
-} from './projetosControllerCreateSchema.ts';
+} from './projetosControllerCreateSchema';
 export {
   projetosControllerFindAll200Schema,
   projetosControllerFindAllQueryResponseSchema,
-} from './projetosControllerFindAllSchema.ts';
+} from './projetosControllerFindAllSchema';
 export {
   projetosControllerFindOnePathParamsSchema,
   projetosControllerFindOne200Schema,
   projetosControllerFindOneQueryResponseSchema,
-} from './projetosControllerFindOneSchema.ts';
+} from './projetosControllerFindOneSchema';
 export {
   projetosControllerRemovePathParamsSchema,
   projetosControllerRemove200Schema,
   projetosControllerRemoveMutationResponseSchema,
-} from './projetosControllerRemoveSchema.ts';
+} from './projetosControllerRemoveSchema';
 export {
   projetosControllerUpdatePathParamsSchema,
   projetosControllerUpdate200Schema,
   projetosControllerUpdateMutationRequestSchema,
   projetosControllerUpdateMutationResponseSchema,
-} from './projetosControllerUpdateSchema.ts';
-export { refreshDtoSchema } from './refreshDtoSchema.ts';
-export { tipoDiariaDtoSchema } from './tipoDiariaDtoSchema.ts';
+} from './projetosControllerUpdateSchema';
+export { refreshDtoSchema } from './refreshDtoSchema';
+export { tipoDiariaDtoSchema } from './tipoDiariaDtoSchema';
 export {
   tiposDiariaControllerFindAll200Schema,
   tiposDiariaControllerFindAllQueryResponseSchema,
-} from './tiposDiariaControllerFindAllSchema.ts';
-export { updateEmpresaDtoSchema } from './updateEmpresaDtoSchema.ts';
-export { updateFuncionarioDtoSchema } from './updateFuncionarioDtoSchema.ts';
-export { updateProjetoDtoSchema } from './updateProjetoDtoSchema.ts';
+} from './tiposDiariaControllerFindAllSchema';
+export { updateEmpresaDtoSchema } from './updateEmpresaDtoSchema';
+export { updateFuncionarioDtoSchema } from './updateFuncionarioDtoSchema';
+export { updateProjetoDtoSchema } from './updateProjetoDtoSchema';

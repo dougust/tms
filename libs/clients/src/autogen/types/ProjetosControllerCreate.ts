@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { CreateProjetoDto } from './CreateProjetoDto.ts';
+import type { CreateProjetoDto } from './CreateProjetoDto';
 
 export type ProjetosControllerCreate201 = object;
 

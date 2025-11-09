@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { GetEmpresaResponseDto } from './GetEmpresaResponseDto.ts';
+import type { GetEmpresaResponseDto } from './GetEmpresaResponseDto';
 
 export type EmpresasControllerFindOnePathParams = {
   /**

@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   DiariasControllerFindInRangeQueryResponse,
   DiariasControllerFindInRangeQueryParams,
-} from '../../types/DiariasControllerFindInRange.ts';
+} from '../../types/DiariasControllerFindInRange';
 import type {
   RequestConfig,
   ResponseErrorConfig,

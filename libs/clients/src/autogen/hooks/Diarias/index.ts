@@ -1,28 +1,28 @@
-export type { DiariasControllerCreateMutationKey } from './useDiariasControllerCreate.ts';
-export type { DiariasControllerCreateManyMutationKey } from './useDiariasControllerCreateMany.ts';
-export type { DiariasControllerFindInRangeQueryKey } from './useDiariasControllerFindInRange.ts';
-export type { DiariasControllerUpdateMutationKey } from './useDiariasControllerUpdate.ts';
+export type { DiariasControllerCreateMutationKey } from './useDiariasControllerCreate';
+export type { DiariasControllerCreateManyMutationKey } from './useDiariasControllerCreateMany';
+export type { DiariasControllerFindInRangeQueryKey } from './useDiariasControllerFindInRange';
+export type { DiariasControllerUpdateMutationKey } from './useDiariasControllerUpdate';
 export {
   diariasControllerCreateMutationKey,
   diariasControllerCreate,
   diariasControllerCreateMutationOptions,
   useDiariasControllerCreate,
-} from './useDiariasControllerCreate.ts';
+} from './useDiariasControllerCreate';
 export {
   diariasControllerCreateManyMutationKey,
   diariasControllerCreateMany,
   diariasControllerCreateManyMutationOptions,
   useDiariasControllerCreateMany,
-} from './useDiariasControllerCreateMany.ts';
+} from './useDiariasControllerCreateMany';
 export {
   diariasControllerFindInRangeQueryKey,
   diariasControllerFindInRange,
   diariasControllerFindInRangeQueryOptions,
   useDiariasControllerFindInRange,
-} from './useDiariasControllerFindInRange.ts';
+} from './useDiariasControllerFindInRange';
 export {
   diariasControllerUpdateMutationKey,
   diariasControllerUpdate,
   diariasControllerUpdateMutationOptions,
   useDiariasControllerUpdate,
-} from './useDiariasControllerUpdate.ts';
+} from './useDiariasControllerUpdate';

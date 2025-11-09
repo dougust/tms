@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { logoutDtoSchema } from './logoutDtoSchema.ts';
+import { logoutDtoSchema } from './logoutDtoSchema';
 import { z } from 'zod/v4';
 
 export const authControllerLogout204Schema = z.any();

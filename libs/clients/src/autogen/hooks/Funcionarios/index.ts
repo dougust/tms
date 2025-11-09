@@ -1,35 +1,35 @@
-export type { FuncionariosControllerCreateMutationKey } from './useFuncionariosControllerCreate.ts';
-export type { FuncionariosControllerFindAllQueryKey } from './useFuncionariosControllerFindAll.ts';
-export type { FuncionariosControllerFindOneQueryKey } from './useFuncionariosControllerFindOne.ts';
-export type { FuncionariosControllerRemoveMutationKey } from './useFuncionariosControllerRemove.ts';
-export type { FuncionariosControllerUpdateMutationKey } from './useFuncionariosControllerUpdate.ts';
+export type { FuncionariosControllerCreateMutationKey } from './useFuncionariosControllerCreate';
+export type { FuncionariosControllerFindAllQueryKey } from './useFuncionariosControllerFindAll';
+export type { FuncionariosControllerFindOneQueryKey } from './useFuncionariosControllerFindOne';
+export type { FuncionariosControllerRemoveMutationKey } from './useFuncionariosControllerRemove';
+export type { FuncionariosControllerUpdateMutationKey } from './useFuncionariosControllerUpdate';
 export {
   funcionariosControllerCreateMutationKey,
   funcionariosControllerCreate,
   funcionariosControllerCreateMutationOptions,
   useFuncionariosControllerCreate,
-} from './useFuncionariosControllerCreate.ts';
+} from './useFuncionariosControllerCreate';
 export {
   funcionariosControllerFindAllQueryKey,
   funcionariosControllerFindAll,
   funcionariosControllerFindAllQueryOptions,
   useFuncionariosControllerFindAll,
-} from './useFuncionariosControllerFindAll.ts';
+} from './useFuncionariosControllerFindAll';
 export {
   funcionariosControllerFindOneQueryKey,
   funcionariosControllerFindOne,
   funcionariosControllerFindOneQueryOptions,
   useFuncionariosControllerFindOne,
-} from './useFuncionariosControllerFindOne.ts';
+} from './useFuncionariosControllerFindOne';
 export {
   funcionariosControllerRemoveMutationKey,
   funcionariosControllerRemove,
   funcionariosControllerRemoveMutationOptions,
   useFuncionariosControllerRemove,
-} from './useFuncionariosControllerRemove.ts';
+} from './useFuncionariosControllerRemove';
 export {
   funcionariosControllerUpdateMutationKey,
   funcionariosControllerUpdate,
   funcionariosControllerUpdateMutationOptions,
   useFuncionariosControllerUpdate,
-} from './useFuncionariosControllerUpdate.ts';
+} from './useFuncionariosControllerUpdate';

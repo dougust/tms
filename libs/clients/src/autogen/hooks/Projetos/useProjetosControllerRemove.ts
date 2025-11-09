@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   ProjetosControllerRemoveMutationResponse,
   ProjetosControllerRemovePathParams,
-} from '../../types/ProjetosControllerRemove.ts';
+} from '../../types/ProjetosControllerRemove';
 import type {
   RequestConfig,
   ResponseErrorConfig,

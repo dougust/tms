@@ -7,7 +7,7 @@ import fetch from '@kubb/plugin-client/clients/axios';
 import type {
   ProjetosControllerCreateMutationRequest,
   ProjetosControllerCreateMutationResponse,
-} from '../../types/ProjetosControllerCreate.ts';
+} from '../../types/ProjetosControllerCreate';
 import type {
   RequestConfig,
   ResponseErrorConfig,

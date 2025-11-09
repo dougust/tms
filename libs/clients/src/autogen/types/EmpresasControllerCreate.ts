@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { CreateEmpresaDto } from './CreateEmpresaDto.ts';
+import type { CreateEmpresaDto } from './CreateEmpresaDto';
 
 export type EmpresasControllerCreate201 = object;
 

@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { updateEmpresaDtoSchema } from './updateEmpresaDtoSchema.ts';
+import { updateEmpresaDtoSchema } from './updateEmpresaDtoSchema';
 import { z } from 'zod/v4';
 
 export const empresasControllerUpdatePathParamsSchema = z.object({
