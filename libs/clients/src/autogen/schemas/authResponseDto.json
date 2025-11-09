@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "accessToken": { "type": "string", "format": "email" },
+    "refreshToken": { "type": "string" }
+  },
+  "required": ["accessToken", "refreshToken"],
+  "x-readme-ref-name": "AuthResponseDto"
+}

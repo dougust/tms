@@ -1,30 +1,33 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { login } from '../../lib/auth';
+import { onAuthSuccess } from '../../lib';
 import { Button } from '@dougust/ui';
+import { useAuthControllerLogin } from '@dougust/clients';
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: FormEvent) => {
+  const { mutate, isPending, error } = useAuthControllerLogin({
+    mutation: {
+      onSuccess: (data) => {
+        onAuthSuccess(data);
+        router.push('/dashboard');
+      },
+    },
+  });
+
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    const result = await login({ email, password });
-
-    if (result.success) {
-      router.push('/dashboard');
-    } else {
-      setError(result.error || 'Login failed');
-      setLoading(false);
-    }
+    mutate({
+      data: {
+        email,
+        password,
+      },
+    });
   };
 
   return (
@@ -40,10 +43,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium mb-2"
-              >
+              <label htmlFor="email" className="block text-sm font-medium mb-2">
                 Email
               </label>
               <input
@@ -80,16 +80,12 @@ export default function LoginPage() {
 
           {error && (
             <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-              {error}
+              {error.message || 'An error occurred. Please try again.'}
             </div>
           )}
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full"
-          >
-            {loading ? 'Signing in...' : 'Sign In'}
+          <Button type="submit" disabled={isPending} className="w-full">
+            {isPending ? 'Signing in...' : 'Sign In'}
           </Button>
 
           <p className="text-center text-xs text-muted-foreground">

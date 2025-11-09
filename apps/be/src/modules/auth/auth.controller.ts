@@ -12,14 +12,18 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
 import { LogoutDto } from './dto/logout.dto';
 import { Public } from '../../common';
+import { AuthResponseDto } from './dto/auth-response.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
-  @Post('login')
   @Public()
-  async login(@Body() dto: LoginDto, @Req() req: any) {
+  @Post('login')
+  async login(
+    @Body() dto: LoginDto,
+    @Req() req: any
+  ): Promise<AuthResponseDto> {
     const meta = {
       ipAddress: req.ip as string | undefined,
       userAgent: (req.get
@@ -31,8 +35,12 @@ export class AuthController {
     return result;
   }
 
+  @Public()
   @Post('refresh')
-  async refresh(@Body() dto: RefreshDto, @Req() req: any) {
+  async refresh(
+    @Body() dto: RefreshDto,
+    @Req() req: any
+  ): Promise<AuthResponseDto> {
     const meta = {
       ipAddress: req.ip as string | undefined,
       userAgent: (req.get

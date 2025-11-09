@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@dougust/ui';
 import { Bell, Settings, LogOut, User } from 'lucide-react';
-import { logout } from '../lib/auth';
+import { logout } from '../lib/utils/auth.utils';
 
 // Fake user data
 const fakeUser = {

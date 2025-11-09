@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { DateHeaderFormat } from '../lib';
-import { useCustomDateFormat } from '../hooks';
+import { DateHeaderFormat } from '../../lib';
+import { useCustomDateFormat } from '../../hooks';
 
 export type AppSettings = {
   dateHeaderFormat: DateHeaderFormat;

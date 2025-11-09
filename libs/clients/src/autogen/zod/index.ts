@@ -13,6 +13,7 @@ export {
   authControllerRefreshMutationRequestSchema,
   authControllerRefreshMutationResponseSchema,
 } from './authControllerRefreshSchema.ts';
+export { authResponseDtoSchema } from './authResponseDtoSchema.ts';
 export { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
 export { createEmpresaDtoSchema } from './createEmpresaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema.ts';

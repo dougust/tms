@@ -5,6 +5,7 @@ import {
   pgSchema,
   primaryKey,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';

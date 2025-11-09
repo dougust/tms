@@ -40,6 +40,7 @@ export type {
   AuthControllerRefreshMutationResponse,
   AuthControllerRefreshMutation,
 } from './types/AuthControllerRefresh.ts';
+export type { AuthResponseDto } from './types/AuthResponseDto.ts';
 export type { CreateDiariaDto } from './types/CreateDiariaDto.ts';
 export type { CreateEmpresaDto } from './types/CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './types/CreateFuncionarioDto.ts';
@@ -342,6 +343,7 @@ export {
   authControllerRefreshMutationRequestSchema,
   authControllerRefreshMutationResponseSchema,
 } from './zod/authControllerRefreshSchema.ts';
+export { authResponseDtoSchema } from './zod/authResponseDtoSchema.ts';
 export { createDiariaDtoSchema } from './zod/createDiariaDtoSchema.ts';
 export { createEmpresaDtoSchema } from './zod/createEmpresaDtoSchema.ts';
 export { createFuncionarioDtoSchema } from './zod/createFuncionarioDtoSchema.ts';

@@ -23,7 +23,7 @@ import {
 } from '../hooks';
 import { ProjetoDiariaDialog } from './projeto-diaria-dialog';
 import { TipoDiariaDialog } from './tipo-diaria-dialog';
-import { useAppSettings } from './app-settings-context';
+import { useAppSettings } from './providers';
 import { DataTableColumnHeader } from '@dougust/ui/components/data-table-column-header';
 
 export type DiariasCalendarProps = {

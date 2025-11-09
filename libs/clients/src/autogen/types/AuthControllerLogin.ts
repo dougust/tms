@@ -3,9 +3,10 @@
  * Do not edit manually.
  */
 
+import type { AuthResponseDto } from './AuthResponseDto.ts';
 import type { LoginDto } from './LoginDto.ts';
 
-export type AuthControllerLogin201 = any;
+export type AuthControllerLogin201 = AuthResponseDto;
 
 export type AuthControllerLoginMutationRequest = LoginDto;
 

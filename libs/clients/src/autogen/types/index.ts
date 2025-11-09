@@ -16,6 +16,7 @@ export type {
   AuthControllerRefreshMutationResponse,
   AuthControllerRefreshMutation,
 } from './AuthControllerRefresh.ts';
+export type { AuthResponseDto } from './AuthResponseDto.ts';
 export type { CreateDiariaDto } from './CreateDiariaDto.ts';
 export type { CreateEmpresaDto } from './CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';

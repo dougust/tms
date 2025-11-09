@@ -3,10 +3,10 @@
  * Do not edit manually.
  */
 
+import { authResponseDtoSchema } from './authResponseDtoSchema.ts';
 import { loginDtoSchema } from './loginDtoSchema.ts';
-import { z } from 'zod/v4';
 
-export const authControllerLogin201Schema = z.any();
+export const authControllerLogin201Schema = authResponseDtoSchema;
 
 export const authControllerLoginMutationRequestSchema = loginDtoSchema;
 
