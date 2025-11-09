@@ -7,7 +7,7 @@ import { z } from 'zod/v4';
 
 export const lookupsControllerFindOnePathParamsSchema = z.object({
   grupo: z.string(),
-  key: z.coerce.number(),
+  id: z.string(),
 });
 
 export const lookupsControllerFindOne200Schema = z.any();

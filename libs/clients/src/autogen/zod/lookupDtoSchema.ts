@@ -7,7 +7,7 @@ import { z } from 'zod/v4';
 
 export const lookupDtoSchema = z.object({
   grupo: z.string(),
-  key: z.number(),
+  id: z.string(),
   nome: z.string(),
   createdAt: z.optional(z.string().datetime()),
   updatedAt: z.optional(z.string().datetime()),

@@ -17,7 +17,7 @@ export type CreateDiariaDto = {
    */
   dia: string;
   /**
-   * @type number
+   * @type string | undefined
    */
-  tipoDiaria?: number | null;
+  tipoDiaria?: string;
 };

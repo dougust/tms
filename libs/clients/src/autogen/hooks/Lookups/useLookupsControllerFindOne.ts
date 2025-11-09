@@ -22,22 +22,20 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 
 export const lookupsControllerFindOneQueryKey = (
   grupo: LookupsControllerFindOnePathParams['grupo'],
-  key: LookupsControllerFindOnePathParams['key']
+  id: LookupsControllerFindOnePathParams['id']
 ) =>
-  [
-    { url: '/lookups/:grupo/:key', params: { grupo: grupo, key: key } },
-  ] as const;
+  [{ url: '/lookups/:grupo/:id', params: { grupo: grupo, id: id } }] as const;
 
 export type LookupsControllerFindOneQueryKey = ReturnType<
   typeof lookupsControllerFindOneQueryKey
 >;
 
 /**
- * {@link /lookups/:grupo/:key}
+ * {@link /lookups/:grupo/:id}
  */
 export async function lookupsControllerFindOne(
   grupo: LookupsControllerFindOnePathParams['grupo'],
-  key: LookupsControllerFindOnePathParams['key'],
+  id: LookupsControllerFindOnePathParams['id'],
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
   const { client: request = fetch, ...requestConfig } = config;
@@ -46,33 +44,33 @@ export async function lookupsControllerFindOne(
     LookupsControllerFindOneQueryResponse,
     ResponseErrorConfig<Error>,
     unknown
-  >({ method: 'GET', url: `/lookups/${grupo}/${key}`, ...requestConfig });
+  >({ method: 'GET', url: `/lookups/${grupo}/${id}`, ...requestConfig });
   return res.data;
 }
 
 export function lookupsControllerFindOneQueryOptions(
   grupo: LookupsControllerFindOnePathParams['grupo'],
-  key: LookupsControllerFindOnePathParams['key'],
+  id: LookupsControllerFindOnePathParams['id'],
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
-  const queryKey = lookupsControllerFindOneQueryKey(grupo, key);
+  const queryKey = lookupsControllerFindOneQueryKey(grupo, id);
   return queryOptions<
     LookupsControllerFindOneQueryResponse,
     ResponseErrorConfig<Error>,
     LookupsControllerFindOneQueryResponse,
     typeof queryKey
   >({
-    enabled: !!(grupo && key),
+    enabled: !!(grupo && id),
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal;
-      return lookupsControllerFindOne(grupo, key, config);
+      return lookupsControllerFindOne(grupo, id, config);
     },
   });
 }
 
 /**
- * {@link /lookups/:grupo/:key}
+ * {@link /lookups/:grupo/:id}
  */
 export function useLookupsControllerFindOne<
   TData = LookupsControllerFindOneQueryResponse,
@@ -80,7 +78,7 @@ export function useLookupsControllerFindOne<
   TQueryKey extends QueryKey = LookupsControllerFindOneQueryKey
 >(
   grupo: LookupsControllerFindOnePathParams['grupo'],
-  key: LookupsControllerFindOnePathParams['key'],
+  id: LookupsControllerFindOnePathParams['id'],
   options: {
     query?: Partial<
       QueryObserverOptions<
@@ -97,11 +95,11 @@ export function useLookupsControllerFindOne<
   const { query: queryConfig = {}, client: config = {} } = options ?? {};
   const { client: queryClient, ...queryOptions } = queryConfig;
   const queryKey =
-    queryOptions?.queryKey ?? lookupsControllerFindOneQueryKey(grupo, key);
+    queryOptions?.queryKey ?? lookupsControllerFindOneQueryKey(grupo, id);
 
   const query = useQuery(
     {
-      ...lookupsControllerFindOneQueryOptions(grupo, key, config),
+      ...lookupsControllerFindOneQueryOptions(grupo, id, config),
       queryKey,
       ...queryOptions,
     } as unknown as QueryObserverOptions,

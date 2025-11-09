@@ -14,8 +14,8 @@ export class DiariaDto implements IDiaria {
   @IsString()
   projetoId: string;
 
-  @IsNumber()
-  tipoDiaria: number;
+  @IsString()
+  tipoDiaria: string;
 
   @IsString()
   observacoes: string;

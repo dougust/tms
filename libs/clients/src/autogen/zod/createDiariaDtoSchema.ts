@@ -9,5 +9,5 @@ export const createDiariaDtoSchema = z.object({
   projetoId: z.string(),
   funcionarioId: z.string(),
   dia: z.string(),
-  tipoDiaria: z.number().nullish(),
+  tipoDiaria: z.optional(z.string()),
 });

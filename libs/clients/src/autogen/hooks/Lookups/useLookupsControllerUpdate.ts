@@ -21,18 +21,18 @@ import type {
 import { mutationOptions, useMutation } from '@tanstack/react-query';
 
 export const lookupsControllerUpdateMutationKey = () =>
-  [{ url: '/lookups/:grupo/:key' }] as const;
+  [{ url: '/lookups/:grupo/:id' }] as const;
 
 export type LookupsControllerUpdateMutationKey = ReturnType<
   typeof lookupsControllerUpdateMutationKey
 >;
 
 /**
- * {@link /lookups/:grupo/:key}
+ * {@link /lookups/:grupo/:id}
  */
 export async function lookupsControllerUpdate(
   grupo: LookupsControllerUpdatePathParams['grupo'],
-  key: LookupsControllerUpdatePathParams['key'],
+  id: LookupsControllerUpdatePathParams['id'],
   data?: LookupsControllerUpdateMutationRequest,
   config: Partial<RequestConfig<LookupsControllerUpdateMutationRequest>> & {
     client?: typeof fetch;
@@ -48,7 +48,7 @@ export async function lookupsControllerUpdate(
     LookupsControllerUpdateMutationRequest
   >({
     method: 'PATCH',
-    url: `/lookups/${grupo}/${key}`,
+    url: `/lookups/${grupo}/${id}`,
     data: requestData,
     ...requestConfig,
   });
@@ -66,20 +66,20 @@ export function lookupsControllerUpdateMutationOptions(
     ResponseErrorConfig<Error>,
     {
       grupo: LookupsControllerUpdatePathParams['grupo'];
-      key: LookupsControllerUpdatePathParams['key'];
+      id: LookupsControllerUpdatePathParams['id'];
       data?: LookupsControllerUpdateMutationRequest;
     },
     typeof mutationKey
   >({
     mutationKey,
-    mutationFn: async ({ grupo, key, data }) => {
-      return lookupsControllerUpdate(grupo, key, data, config);
+    mutationFn: async ({ grupo, id, data }) => {
+      return lookupsControllerUpdate(grupo, id, data, config);
     },
   });
 }
 
 /**
- * {@link /lookups/:grupo/:key}
+ * {@link /lookups/:grupo/:id}
  */
 export function useLookupsControllerUpdate<TContext>(
   options: {
@@ -88,7 +88,7 @@ export function useLookupsControllerUpdate<TContext>(
       ResponseErrorConfig<Error>,
       {
         grupo: LookupsControllerUpdatePathParams['grupo'];
-        key: LookupsControllerUpdatePathParams['key'];
+        id: LookupsControllerUpdatePathParams['id'];
         data?: LookupsControllerUpdateMutationRequest;
       },
       TContext
@@ -110,7 +110,7 @@ export function useLookupsControllerUpdate<TContext>(
     ResponseErrorConfig<Error>,
     {
       grupo: LookupsControllerUpdatePathParams['grupo'];
-      key: LookupsControllerUpdatePathParams['key'];
+      id: LookupsControllerUpdatePathParams['id'];
       data?: LookupsControllerUpdateMutationRequest;
     },
     TContext
@@ -121,7 +121,7 @@ export function useLookupsControllerUpdate<TContext>(
     ResponseErrorConfig<Error>,
     {
       grupo: LookupsControllerUpdatePathParams['grupo'];
-      key: LookupsControllerUpdatePathParams['key'];
+      id: LookupsControllerUpdatePathParams['id'];
       data?: LookupsControllerUpdateMutationRequest;
     },
     TContext
@@ -137,7 +137,7 @@ export function useLookupsControllerUpdate<TContext>(
     ResponseErrorConfig<Error>,
     {
       grupo: LookupsControllerUpdatePathParams['grupo'];
-      key: LookupsControllerUpdatePathParams['key'];
+      id: LookupsControllerUpdatePathParams['id'];
       data?: LookupsControllerUpdateMutationRequest;
     },
     TContext

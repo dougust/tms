@@ -4,8 +4,8 @@ export class LookupDto {
   @IsString()
   grupo!: string;
 
-  @IsInt()
-  key!: number;
+  @IsString()
+  id!: string;
 
   @IsString()
   nome!: string;

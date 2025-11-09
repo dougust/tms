@@ -9,9 +9,9 @@ export type LookupsControllerFindOnePathParams = {
    */
   grupo: string;
   /**
-   * @type number
+   * @type string
    */
-  key: number;
+  id: string;
 };
 
 export type LookupsControllerFindOne200 = any;

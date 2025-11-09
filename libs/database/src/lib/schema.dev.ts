@@ -5,7 +5,7 @@ import {
   funcionariosRelations,
   projetos,
   projetosRelations,
-  // beneficios,
+  beneficios,
   lookup,
   diarias,
 } from './tenant';
@@ -27,6 +27,6 @@ export const funcionariosRelTpl = funcionariosRelations(process.env.TENANT_ID);
 
 export const diariasTpl = diarias(process.env.TENANT_ID);
 
-// export const beneficiosTpl = beneficios(process.env.TENANT_ID);
+export const beneficiosTpl = beneficios(process.env.TENANT_ID);
 
 export const lookupTpl = lookup(process.env.TENANT_ID);

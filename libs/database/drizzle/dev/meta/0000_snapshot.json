@@ -1,43 +1,31 @@
 {
-  "id": "d0bf515f-56e7-41ef-98e1-466a1bcb5c60",
+  "id": "728cedf8-5026-468f-be7f-5f05c95b2f5c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "dg_0001.cad_projetos": {
-      "name": "cad_projetos",
+    "dg_0001.cad_beneficios": {
+      "name": "cad_beneficios",
       "schema": "dg_0001",
       "columns": {
-        "projeto_id": {
-          "name": "projeto_id",
+        "beneficio_id": {
+          "name": "beneficio_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false,
           "default": "gen_random_uuid()"
         },
-        "empresa_id": {
-          "name": "empresa_id",
+        "funcionario_id": {
+          "name": "funcionario_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "nome": {
-          "name": "nome",
-          "type": "varchar(100)",
+        "valor": {
+          "name": "valor",
+          "type": "numeric(15, 2)",
           "primaryKey": false,
           "notNull": false
-        },
-        "inicio": {
-          "name": "inicio",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "fim": {
-          "name": "fim",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -56,38 +44,30 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "fk_projeto_empresa": {
-          "name": "fk_projeto_empresa",
-          "tableFrom": "cad_projetos",
-          "tableTo": "cad_empresas",
+        "fk_funcionario_beneficios": {
+          "name": "fk_funcionario_beneficios",
+          "tableFrom": "cad_beneficios",
+          "tableTo": "cad_funcionarios",
           "schemaTo": "dg_0001",
           "columnsFrom": [
-            "empresa_id"
+            "funcionario_id"
           ],
           "columnsTo": [
-            "empresa_id"
+            "funcionario_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "pk_projetos": {
-          "name": "pk_projetos",
+        "pk_beneficios": {
+          "name": "pk_beneficios",
           "columns": [
-            "projeto_id"
+            "beneficio_id"
           ]
         }
       },
-      "uniqueConstraints": {
-        "cad_projetos_nome_unique": {
-          "name": "cad_projetos_nome_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "nome"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -178,8 +158,8 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "fk_diarialookup": {
-          "name": "fk_diarialookup",
+        "fk_diaria_lookup": {
+          "name": "fk_diaria_lookup",
           "tableFrom": "cad_diarias",
           "tableTo": "cad_lookup",
           "schemaTo": "dg_0001",
@@ -353,7 +333,13 @@
         },
         "funcao": {
           "name": "funcao",
-          "type": "varchar(40)",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salario": {
+          "name": "salario",
+          "type": "numeric(15, 2)",
           "primaryKey": false,
           "notNull": false
         },
@@ -396,6 +382,20 @@
           ],
           "columnsTo": [
             "projeto_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_funcionarios_funcao": {
+          "name": "fk_funcionarios_funcao",
+          "tableFrom": "cad_funcionarios",
+          "tableTo": "cad_lookup",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "funcao"
+          ],
+          "columnsTo": [
+            "lookup_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -484,6 +484,94 @@
           "nullsNotDistinct": false,
           "columns": [
             "lookup_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "dg_0001.cad_projetos": {
+      "name": "cad_projetos",
+      "schema": "dg_0001",
+      "columns": {
+        "projeto_id": {
+          "name": "projeto_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "gen_random_uuid()"
+        },
+        "empresa_id": {
+          "name": "empresa_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nome": {
+          "name": "nome",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "inicio": {
+          "name": "inicio",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fim": {
+          "name": "fim",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_projeto_empresa": {
+          "name": "fk_projeto_empresa",
+          "tableFrom": "cad_projetos",
+          "tableTo": "cad_empresas",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "empresa_id"
+          ],
+          "columnsTo": [
+            "empresa_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_projetos": {
+          "name": "pk_projetos",
+          "columns": [
+            "projeto_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "cad_projetos_nome_unique": {
+          "name": "cad_projetos_nome_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "nome"
           ]
         }
       },

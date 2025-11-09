@@ -11,7 +11,7 @@ export type UpdateLookupDto = {
   /**
    * @type string | undefined
    */
-  key?: string;
+  id?: string;
   /**
    * @type string | undefined
    */

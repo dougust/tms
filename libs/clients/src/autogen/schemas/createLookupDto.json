@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "grupo": { "type": "string" },
-    "key": { "type": "string" },
+    "id": { "type": "string" },
     "nome": { "type": "string" }
   },
   "required": ["grupo", "nome"],

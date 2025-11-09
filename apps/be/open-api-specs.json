@@ -664,7 +664,7 @@
         ]
       }
     },
-    "/lookups/{grupo}/{key}": {
+    "/lookups/{grupo}/{id}": {
       "get": {
         "operationId": "LookupsController_findOne",
         "parameters": [
@@ -677,11 +677,11 @@
             }
           },
           {
-            "name": "key",
+            "name": "id",
             "required": true,
             "in": "path",
             "schema": {
-              "type": "number"
+              "type": "string"
             }
           }
         ],
@@ -706,11 +706,11 @@
             }
           },
           {
-            "name": "key",
+            "name": "id",
             "required": true,
             "in": "path",
             "schema": {
-              "type": "number"
+              "type": "string"
             }
           }
         ],
@@ -745,11 +745,11 @@
             }
           },
           {
-            "name": "key",
+            "name": "id",
             "required": true,
             "in": "path",
             "schema": {
-              "type": "number"
+              "type": "string"
             }
           }
         ],
@@ -1169,7 +1169,7 @@
             "type": "string"
           },
           "tipoDiaria": {
-            "type": "number"
+            "type": "string"
           },
           "observacoes": {
             "type": "string"
@@ -1207,8 +1207,7 @@
             "type": "string"
           },
           "tipoDiaria": {
-            "type": "number",
-            "nullable": true
+            "type": "string"
           }
         },
         "required": [
@@ -1237,7 +1236,7 @@
           "grupo": {
             "type": "string"
           },
-          "key": {
+          "id": {
             "type": "string"
           },
           "nome": {
@@ -1255,8 +1254,8 @@
           "grupo": {
             "type": "string"
           },
-          "key": {
-            "type": "number"
+          "id": {
+            "type": "string"
           },
           "nome": {
             "type": "string"
@@ -1272,7 +1271,7 @@
         },
         "required": [
           "grupo",
-          "key",
+          "id",
           "nome"
         ]
       },
@@ -1282,7 +1281,7 @@
           "grupo": {
             "type": "string"
           },
-          "key": {
+          "id": {
             "type": "string"
           },
           "nome": {

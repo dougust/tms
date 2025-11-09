@@ -11,9 +11,9 @@ export type LookupsControllerUpdatePathParams = {
    */
   grupo: string;
   /**
-   * @type number
+   * @type string
    */
-  key: number;
+  id: string;
 };
 
 export type LookupsControllerUpdate200 = any;

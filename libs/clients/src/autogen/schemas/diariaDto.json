@@ -5,7 +5,7 @@
     "dia": { "type": "string" },
     "funcionarioId": { "type": "string" },
     "projetoId": { "type": "string" },
-    "tipoDiaria": { "type": "number" },
+    "tipoDiaria": { "type": "string" },
     "observacoes": { "type": "string" },
     "createdAt": { "format": "date-time", "type": "string" },
     "updatedAt": { "format": "date-time", "type": "string" }

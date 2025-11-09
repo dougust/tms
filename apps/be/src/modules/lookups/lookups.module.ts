@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { LookupsService } from './lookups.service';
+import LookupsService from './lookups.service';
 import { LookupsController } from './lookups.controller';
 import { DrizzleModule } from '../database/database.module';
 import { UserContextModule } from '../../common/user-context/user-context.module';

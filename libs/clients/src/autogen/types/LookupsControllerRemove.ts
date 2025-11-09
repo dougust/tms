@@ -9,9 +9,9 @@ export type LookupsControllerRemovePathParams = {
    */
   grupo: string;
   /**
-   * @type number
+   * @type string
    */
-  key: number;
+  id: string;
 };
 
 export type LookupsControllerRemove200 = any;

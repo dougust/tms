@@ -8,7 +8,7 @@ import {
   Post,
   ParseIntPipe,
 } from '@nestjs/common';
-import { LookupsService } from './lookups.service';
+import LookupsService from './lookups.service';
 import { CreateLookupDto } from './dto/create-lookup.dto';
 import { UpdateLookupDto } from './dto/update-lookup.dto';
 import { LookupDto } from './dto/lookup.dto';
@@ -32,28 +32,28 @@ export class LookupsController {
     return this.service.findByGroup(grupo);
   }
 
-  @Get(':grupo/:key')
+  @Get(':grupo/:id')
   async findOne(
     @Param('grupo') grupo: string,
-    @Param('key', new ParseIntPipe()) key: number
+    @Param('id', new ParseIntPipe()) id: string
   ): Promise<{ lookup: LookupDto }> {
-    return this.service.findOne(grupo, key);
+    return this.service.findOne(grupo, id);
   }
 
-  @Patch(':grupo/:key')
+  @Patch(':grupo/:id')
   update(
     @Param('grupo') grupo: string,
-    @Param('key', new ParseIntPipe()) key: number,
+    @Param('id', new ParseIntPipe()) id: string,
     @Body() dto: UpdateLookupDto
   ) {
-    return this.service.update(grupo, key, dto);
+    return this.service.update(grupo, id, dto);
   }
 
-  @Delete(':grupo/:key')
+  @Delete(':grupo/:id')
   remove(
     @Param('grupo') grupo: string,
-    @Param('key', new ParseIntPipe()) key: number
+    @Param('id', new ParseIntPipe()) id: string
   ) {
-    return this.service.remove(grupo, key);
+    return this.service.remove(grupo, id);
   }
 }

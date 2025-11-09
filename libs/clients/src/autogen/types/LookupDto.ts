@@ -9,9 +9,9 @@ export type LookupDto = {
    */
   grupo: string;
   /**
-   * @type number
+   * @type string
    */
-  key: number;
+  id: string;
   /**
    * @type string
    */

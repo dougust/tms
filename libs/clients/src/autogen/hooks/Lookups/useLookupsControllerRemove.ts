@@ -20,18 +20,18 @@ import type {
 import { mutationOptions, useMutation } from '@tanstack/react-query';
 
 export const lookupsControllerRemoveMutationKey = () =>
-  [{ url: '/lookups/:grupo/:key' }] as const;
+  [{ url: '/lookups/:grupo/:id' }] as const;
 
 export type LookupsControllerRemoveMutationKey = ReturnType<
   typeof lookupsControllerRemoveMutationKey
 >;
 
 /**
- * {@link /lookups/:grupo/:key}
+ * {@link /lookups/:grupo/:id}
  */
 export async function lookupsControllerRemove(
   grupo: LookupsControllerRemovePathParams['grupo'],
-  key: LookupsControllerRemovePathParams['key'],
+  id: LookupsControllerRemovePathParams['id'],
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
   const { client: request = fetch, ...requestConfig } = config;
@@ -40,7 +40,7 @@ export async function lookupsControllerRemove(
     LookupsControllerRemoveMutationResponse,
     ResponseErrorConfig<Error>,
     unknown
-  >({ method: 'DELETE', url: `/lookups/${grupo}/${key}`, ...requestConfig });
+  >({ method: 'DELETE', url: `/lookups/${grupo}/${id}`, ...requestConfig });
   return res.data;
 }
 
@@ -53,19 +53,19 @@ export function lookupsControllerRemoveMutationOptions(
     ResponseErrorConfig<Error>,
     {
       grupo: LookupsControllerRemovePathParams['grupo'];
-      key: LookupsControllerRemovePathParams['key'];
+      id: LookupsControllerRemovePathParams['id'];
     },
     typeof mutationKey
   >({
     mutationKey,
-    mutationFn: async ({ grupo, key }) => {
-      return lookupsControllerRemove(grupo, key, config);
+    mutationFn: async ({ grupo, id }) => {
+      return lookupsControllerRemove(grupo, id, config);
     },
   });
 }
 
 /**
- * {@link /lookups/:grupo/:key}
+ * {@link /lookups/:grupo/:id}
  */
 export function useLookupsControllerRemove<TContext>(
   options: {
@@ -74,7 +74,7 @@ export function useLookupsControllerRemove<TContext>(
       ResponseErrorConfig<Error>,
       {
         grupo: LookupsControllerRemovePathParams['grupo'];
-        key: LookupsControllerRemovePathParams['key'];
+        id: LookupsControllerRemovePathParams['id'];
       },
       TContext
     > & { client?: QueryClient };
@@ -93,7 +93,7 @@ export function useLookupsControllerRemove<TContext>(
     ResponseErrorConfig<Error>,
     {
       grupo: LookupsControllerRemovePathParams['grupo'];
-      key: LookupsControllerRemovePathParams['key'];
+      id: LookupsControllerRemovePathParams['id'];
     },
     TContext
   >;
@@ -103,7 +103,7 @@ export function useLookupsControllerRemove<TContext>(
     ResponseErrorConfig<Error>,
     {
       grupo: LookupsControllerRemovePathParams['grupo'];
-      key: LookupsControllerRemovePathParams['key'];
+      id: LookupsControllerRemovePathParams['id'];
     },
     TContext
   >(
@@ -118,7 +118,7 @@ export function useLookupsControllerRemove<TContext>(
     ResponseErrorConfig<Error>,
     {
       grupo: LookupsControllerRemovePathParams['grupo'];
-      key: LookupsControllerRemovePathParams['key'];
+      id: LookupsControllerRemovePathParams['id'];
     },
     TContext
   >;

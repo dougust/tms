@@ -7,6 +7,6 @@ import { z } from 'zod/v4';
 
 export const updateLookupDtoSchema = z.object({
   grupo: z.optional(z.string()),
-  key: z.optional(z.string()),
+  id: z.optional(z.string()),
   nome: z.optional(z.string()),
 });

@@ -2,11 +2,11 @@
   "type": "object",
   "properties": {
     "grupo": { "type": "string" },
-    "key": { "type": "number" },
+    "id": { "type": "string" },
     "nome": { "type": "string" },
     "createdAt": { "format": "date-time", "type": "string" },
     "updatedAt": { "format": "date-time", "type": "string" }
   },
-  "required": ["grupo", "key", "nome"],
+  "required": ["grupo", "id", "nome"],
   "x-readme-ref-name": "LookupDto"
 }

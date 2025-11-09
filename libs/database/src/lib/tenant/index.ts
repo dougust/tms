@@ -81,7 +81,8 @@ export const funcionarios = (tenantId: string) =>
       phone: varchar('phone', { length: 20 }),
       email: varchar('email', { length: 255 }).unique().notNull(),
       rg: varchar('rg', { length: 11 }),
-      funcao: varchar('funcao', { length: 40 }),
+      funcao: uuid('funcao'),
+      salario: numeric('salario', { precision: 15, scale: 2, mode: 'number'}),
       dependetes: integer('dependentes'),
       projetoId: uuid('projeto_id').notNull(),
       createdAt: timestamp('created_at').defaultNow(),
@@ -97,6 +98,11 @@ export const funcionarios = (tenantId: string) =>
         columns: [t.projetoId],
         foreignColumns: [projetos(tenantId).id],
       }),
+      foreignKey({
+        name: 'fk_funcionarios_funcao',
+        columns: [t.funcao],
+        foreignColumns: [lookup(tenantId).id],
+      }),
     ]
   );
 
@@ -106,14 +112,7 @@ export const beneficios = (tenantId: string) =>
     {
       id: uuid('beneficio_id').defaultRandom(),
       funcionarioId: uuid('funcionario_id'),
-      valorDiaria: numeric('valor_diaria', { precision: 2, mode: 'number'}),
-      valorAlmoco: numeric('valor_almoco', { precision: 2, mode: 'number'}),
-      valorCafe: numeric('valor_cafe', { precision: 2, mode: 'number'}),
-      valorSaudeOcupacional: numeric('valor_saude_ocupacional', { precision: 2, mode: 'number'}),
-      valorSaudePlano: numeric('valor_saude_plano', { precision: 2, mode: 'number'}),
-      valorJanta: numeric('valor_janta', { precision: 2, mode: 'number'}),
-      valorDescontoCasa: numeric('valor_desconto_casa', { precision: 2, mode: 'number'}),
-      salario: numeric('salario', { precision: 2, mode: 'number'}),
+      valor: numeric('valor', { precision: 15, scale: 2, mode: 'number'}),
       createdAt: timestamp('created_at').defaultNow(),
       updatedAt: timestamp('updated_at').defaultNow(),
     },

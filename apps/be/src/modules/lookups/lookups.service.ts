@@ -8,7 +8,7 @@ import { UpdateLookupDto } from './dto/update-lookup.dto';
 import { UserContextService } from '../../common/user-context/user-context.service';
 
 @Injectable()
-export class LookupsService {
+class LookupsService {
   constructor(
     @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
     @Inject() private readonly userContext: UserContextService
@@ -26,8 +26,8 @@ export class LookupsService {
     return await this.db.select().from(this.table).where(eq(this.table.grupo, grupo));
   }
 
-  async findOne(grupo: string, key: number) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.key, key));
+  async findOne(grupo: string, id: string) {
+    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
     const result = await this.db
       .select({ lookup: this.table })
       .from(this.table)
@@ -51,8 +51,8 @@ export class LookupsService {
     return { lookup: created };
   }
 
-  async update(grupo: string, key: number, dto: UpdateLookupDto) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.key, key));
+  async update(grupo: string, id: string, dto: UpdateLookupDto) {
+    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
 
     const [updated] = await this.db
       .update(this.table)
@@ -69,10 +69,12 @@ export class LookupsService {
     return { lookup: updated };
   }
 
-  async remove(grupo: string, key: number) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.key, key));
+  async remove(grupo: string, id: string) {
+    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
     const [deleted] = await this.db.delete(this.table).where(where).returning();
     if (!deleted) throw new NotFoundException('Lookup not found');
     return deleted;
   }
 }
+
+export default LookupsService;

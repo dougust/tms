@@ -11,6 +11,6 @@ export class CreateDiariaDto {
   dia: string;
 
   @IsOptional()
-  @IsNumber()
-  tipoDiaria?: number | null;
+  @IsString()
+  tipoDiaria?: string;
 }

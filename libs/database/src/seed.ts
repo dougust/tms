@@ -15,22 +15,30 @@ async function createLookups (db : NodePgDatabase) {
     'outros',
   ];
   const tiposDiaria =  await db.insert(lookupTpl).values(tipoDiariaValues.map((value) => ({ nome: value, grupo: 'TipoDiaria' }))).returning({ id: lookupTpl.id });
-  /*const funcaoValues = ['Encarregado', 'Peão', 'Outra função'];
 
-  const lookupNomes = [...tipoDiariaValues, ...funcaoValues];
-  const lookupGrupos = [
-    ...Array(tipoDiariaValues.length).fill('TipoDiaria'),
-    ...Array(funcaoValues.length).fill('Funcao'),
-  ];*/
 
-  return { tiposDiaria };
+  const funcaoValues = ['Encarregado', 'Peão', 'Outra função'];
+  const funcao =  await db.insert(lookupTpl).values(funcaoValues.map((value) => ({ nome: value, grupo: 'Funcao' }))).returning({ id: lookupTpl.id });
+
+  const tipoBeneficioValues = [
+    'valorDiaria',
+    'valorAlmoco',
+    'valorCafe',
+    'valorSaudeOcupacional',
+    'valorSaudePlano',
+    'valorJanta',
+    'valorDescontoCasa'
+  ];
+  const beneficio =  await db.insert(lookupTpl).values(tipoBeneficioValues.map((value) => ({ nome: value, grupo: 'Beneficio' }))).returning({ id: lookupTpl.id });
+
+  return { tiposDiaria, funcao, beneficio };
 }
 
 async function main() {
   const db = drizzle(process.env['DATABASE_URL']);
 
   await reset(db, schema);
-  const  { tiposDiaria } =  await createLookups(db);
+  const  { tiposDiaria, funcao, beneficio } =  await createLookups(db);
   await seed(db, schema).refine((f) => {
 
     return {
@@ -41,6 +49,7 @@ async function main() {
           social: f.valuesFromArray({ values: [''] }),
           cpf: f.phoneNumber({ template: '###.###.###-##' }),
           phone: f.phoneNumber({ template: '(47) ##### ####' }),
+          funcao: f.valuesFromArray({ values: funcao.map((funcao) => funcao.id) }),
         },
       },
       empresasTpl: {
@@ -73,7 +82,12 @@ async function main() {
           tipoDiaria: f.valuesFromArray({ values: tiposDiaria.map((tipoDiaria) => tipoDiaria.id) }),
         }
       },
-
+      beneficiosTpl: {
+        count: 1,
+        columns: {
+          id: f.valuesFromArray({ values: beneficio.map((beneficio) => beneficio.id) }),
+        }
+      },
     };
   });
 
