@@ -24,13 +24,6 @@ const defaultValues: CreateFuncionarioDto = {
   rg: '',
   projetoId: '',
   funcao: '',
-  valor_diaria: '',
-  valor_almoco: '',
-  valor_cafe: '',
-  valor_saude_ocupacional: '',
-  valor_saude_plano: '',
-  valor_janta: '',
-  valor_desconto_casa: '',
   salario: '',
   dependetes: '',
 };
@@ -53,7 +46,6 @@ export default function NewFuncionarioPage() {
           const errorMessage = error?.response?.data?.message;
           if (errorMessage) {
             return {
-              // The `form` key is optional
               fields: {
                 ...errorMessage,
               },
@@ -261,156 +253,6 @@ export default function NewFuncionarioPage() {
                   label="Função"
                   type="text"
                   placeholder="Ex: Servente, Pedreiro, Mestre de obras"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-          </div>
-        </div>
-
-        {/* Valores e Benefícios */}
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold">Valores e Benefícios</h3>
-          <div className="grid gap-4 md:grid-cols-2">
-            {/* Valor Diária */}
-            <form.Field
-              name="valor_diaria"
-              children={(field) => (
-                <FormField
-                  id="valor_diaria"
-                  label="Valor da Diária"
-                  type="text"
-                  placeholder="0,00"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-
-            {/* Valor Almoço */}
-            <form.Field
-              name="valor_almoco"
-              children={(field) => (
-                <FormField
-                  id="valor_almoco"
-                  label="Valor do Almoço"
-                  type="text"
-                  placeholder="0,00"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-
-            {/* Valor Café */}
-            <form.Field
-              name="valor_cafe"
-              children={(field) => (
-                <FormField
-                  id="valor_cafe"
-                  label="Valor do Café"
-                  type="text"
-                  placeholder="0,00"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-
-            {/* Valor Janta */}
-            <form.Field
-              name="valor_janta"
-              children={(field) => (
-                <FormField
-                  id="valor_janta"
-                  label="Valor da Janta"
-                  type="text"
-                  placeholder="0,00"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-
-            {/* Saúde Ocupacional */}
-            <form.Field
-              name="valor_saude_ocupacional"
-              children={(field) => (
-                <FormField
-                  id="valor_saude_ocupacional"
-                  label="Saúde Ocupacional"
-                  type="text"
-                  placeholder="0,00"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-
-            {/* Plano de Saúde */}
-            <form.Field
-              name="valor_saude_plano"
-              children={(field) => (
-                <FormField
-                  id="valor_saude_plano"
-                  label="Plano de Saúde"
-                  type="text"
-                  placeholder="0,00"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-
-            {/* Desconto Casa */}
-            <form.Field
-              name="valor_desconto_casa"
-              children={(field) => (
-                <FormField
-                  id="valor_desconto_casa"
-                  label="Desconto Casa"
-                  type="text"
-                  placeholder="0,00"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-
-            {/* Salário */}
-            <form.Field
-              name="salario"
-              children={(field) => (
-                <FormField
-                  id="salario"
-                  label="Salário"
-                  type="text"
-                  placeholder="0,00"
-                  state={field.state}
-                  handleChange={field.handleChange}
-                  handleBlur={field.handleBlur}
-                />
-              )}
-            />
-
-            {/* Dependentes */}
-            <form.Field
-              name="dependetes"
-              children={(field) => (
-                <FormField
-                  id="dependetes"
-                  label="Dependentes"
-                  type="text"
-                  placeholder="0"
                   state={field.state}
                   handleChange={field.handleChange}
                   handleBlur={field.handleBlur}
