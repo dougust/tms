@@ -75,30 +75,7 @@ export type DadosDatatableProps = {
 export const DadosDatatable = (props: DadosDatatableProps) => {
   const { funcionarios } = props;
 
-  return <DataTable columns={columns} data={funcionarios} />;
+  return (
+    <DataTable columns={columns} data={funcionarios} showColumnsSelector />
+  );
 };
-
-
-
-// <div className="rounded-lg border bg-card shadow-sm">
-//   <div className="border-b bg-muted/50 p-4 space-y-4">
-//     {/* Month selector */}
-//     <div className="flex items-center gap-3">
-//       <label className="text-sm font-medium" htmlFor="mes">
-//         Mês
-//       </label>
-//       <input
-//         id="mes"
-//         type="month"
-//         className="border rounded-md px-3 py-2 bg-background"
-//         value={selectedMonth}
-//         onChange={(e) => setSelectedMonth(e.target.value)}
-//       />
-//     </div>
-//
-//     {anyError ? (
-//     ) : anyLoading || !funcionarios ? (
-//       ) : (
-//       )}
-//   </div>
-// </div>

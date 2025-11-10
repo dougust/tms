@@ -9,11 +9,10 @@ import {
   useLookupsControllerFindByGroup,
 } from '@dougust/clients';
 import {
+  DadosDatatable,
   ErrorPanel,
   ListPageLayout,
-  DadosDatatable,
 } from '../../../../components';
-import { Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 function getMonthBoundaries(monthStr: string) {
@@ -26,13 +25,14 @@ function getMonthBoundaries(monthStr: string) {
   return { from, to };
 }
 
+const getCurrentMonth = () => {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+};
+
 export default function DadosFuncionariosPage() {
   // Default to current month in user's local time
-  const now = new Date();
-  const defaultMonth = `${now.getFullYear()}-${String(
-    now.getMonth() + 1
-  ).padStart(2, '0')}`;
-  const [selectedMonth, setSelectedMonth] = useState<string>(defaultMonth);
+  const [selectedMonth, setSelectedMonth] = useState<string>(getCurrentMonth());
 
   const {
     data: funcionarios,
@@ -47,11 +47,6 @@ export default function DadosFuncionariosPage() {
     isError: isLookupError,
   } = useLookupsControllerFindByGroup<LookupDto[]>('TipoDiaria');
 
-  const faltaTipoId = useMemo(() => {
-    const falta = tipos.find((t) => t.nome?.toLowerCase?.() === 'falta');
-    return falta?.id ?? null;
-  }, [tipos]);
-
   // Fetch diárias in the selected month
   const { from, to } = useMemo(
     () => getMonthBoundaries(selectedMonth),
@@ -63,17 +58,6 @@ export default function DadosFuncionariosPage() {
     isError: isDiariasError,
     refetch: refetchDiarias,
   } = useDiariasControllerFindInRange<DiariaDto[]>({ from, to });
-
-  const faltasByFuncionario = useMemo(() => {
-    if (!faltaTipoId) return new Map<string, number>();
-    const map = new Map<string, number>();
-    for (const d of diarias) {
-      if (d.tipoDiaria && d.tipoDiaria === faltaTipoId) {
-        map.set(d.funcionarioId, (map.get(d.funcionarioId) || 0) + 1);
-      }
-    }
-    return map;
-  }, [diarias, faltaTipoId]);
 
   const isPending =
     isFuncionariosPending || isDiariasPending || isLookupPending;
@@ -87,14 +71,19 @@ export default function DadosFuncionariosPage() {
         await refetch();
         await refetchDiarias();
       }}
-      stats={[
-        {
-          title: 'Total funcionários',
-          value: isPending ? '...' : funcionarios?.length?.toString() || '0',
-          icon: <Users className="h-5 w-5 text-primary" />,
-        },
-      ]}
     >
+      <div className="flex items-center gap-3">
+        <label className="text-sm font-medium" htmlFor="mes">
+          Mês
+        </label>
+        <input
+          id="mes"
+          type="month"
+          className="border rounded-md px-3 py-2 bg-background"
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(e.target.value)}
+        />
+      </div>
       {isError ? (
         <ErrorPanel message="erro ao carregar dados" />
       ) : isPending ? (
