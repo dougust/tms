@@ -55,6 +55,13 @@ export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({
     const fromStorage = safeParse(window.localStorage.getItem(STORAGE_KEY));
     return fromStorage ?? DEFAULT_SETTINGS;
   });
+
+  React.useEffect(() => {
+    if (settings.authContext) {
+      setAuthToken(settings.authContext?.accessToken);
+    }
+  }, [settings]);
+
   // Persist to localStorage whenever settings change
   React.useEffect(() => {
     try {
@@ -70,9 +77,6 @@ export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({
 
   const setSettings = React.useCallback((partial: Partial<AppSettings>) => {
     setSettingsState((prev) => ({ ...prev, ...partial }));
-    if (partial.authContext) {
-      setAuthToken(partial.authContext?.accessToken);
-    }
   }, []);
 
   const setDateHeaderFormat = React.useCallback((fmt: DateHeaderFormat) => {

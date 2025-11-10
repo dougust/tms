@@ -46,7 +46,6 @@ export default function RefreshAuthProvider({ children }: PropsWithChildren) {
       setIsLoading(false);
     }
 
-    console.log('Refreshing token in', expiryDuration / 1000, 'seconds');
     const timeout = setTimeout(() => {
       mutate({ data: { refreshToken } });
     }, Math.max(expiryDuration, 0));
