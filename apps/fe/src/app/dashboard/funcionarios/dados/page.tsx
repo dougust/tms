@@ -4,9 +4,10 @@ import {
   useFuncionariosControllerFindAll,
   FuncionarioDto,
   useDiariasControllerFindInRange,
-  useLookupsControllerFindAll,
+  useLookupsControllerFindByGroup,
   LookupDto,
   DiariaDto,
+  useLookupsControllerFindOne,
 } from '@dougust/clients';
 import { DataTable } from '@dougust/ui';
 import { ListPageLayout, ErrorPanel } from '../../../../components';
@@ -34,10 +35,9 @@ export default function DadosFuncionariosPage() {
     useFuncionariosControllerFindAll<FuncionarioDto[]>();
 
   // Load lookups and filter by grupo 'TipoDiaria' to find the id for 'falta'
-  const { data: lookups = [], isLoading: lookupsLoading } =
-    useLookupsControllerFindAll<LookupDto[]>();
+  const { data: tipos = [], isLoading: lookupsLoading } =
+    useLookupsControllerFindByGroup<LookupDto[]>('TipoDiaria');
 
-  const tipos = useMemo(() => (lookups || []).filter((l) => l.grupo === 'TipoDiaria'), [lookups]);
   const faltaTipoId = useMemo(() => {
     const falta = tipos.find((t) => t.nome?.toLowerCase?.() === 'falta');
     return falta?.id ?? null;
