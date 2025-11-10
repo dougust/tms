@@ -70,12 +70,18 @@ export const columns: ColumnDef<FuncionarioDto>[] = [
 
 export type DadosDatatableProps = {
   funcionarios: FuncionarioDto[];
+  filters: React.ReactNode;
 };
 
 export const DadosDatatable = (props: DadosDatatableProps) => {
-  const { funcionarios } = props;
+  const { funcionarios, filters } = props;
 
   return (
-    <DataTable columns={columns} data={funcionarios} showColumnsSelector />
+    <DataTable
+      filteringSection={filters}
+      columns={columns}
+      data={funcionarios}
+      showColumnsSelector
+    />
   );
 };

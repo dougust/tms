@@ -33,6 +33,7 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  filteringSection?: React.ReactNode;
   showColumnsSelector?: boolean;
   onRemoveClick?: (rowData: TData) => void;
 }
@@ -40,6 +41,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  filteringSection,
   showColumnsSelector,
   onRemoveClick,
 }: DataTableProps<TData, TValue>) {
@@ -82,6 +84,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="flex gap-4 py-4">
+        {filteringSection}
         {showColumnsSelector && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

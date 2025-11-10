@@ -72,18 +72,6 @@ export default function DadosFuncionariosPage() {
         await refetchDiarias();
       }}
     >
-      <div className="flex items-center gap-3">
-        <label className="text-sm font-medium" htmlFor="mes">
-          Mês
-        </label>
-        <input
-          id="mes"
-          type="month"
-          className="border rounded-md px-3 py-2 bg-background"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value)}
-        />
-      </div>
       {isError ? (
         <ErrorPanel message="erro ao carregar dados" />
       ) : isPending ? (
@@ -91,7 +79,23 @@ export default function DadosFuncionariosPage() {
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         </div>
       ) : (
-        <DadosDatatable funcionarios={funcionarios} />
+        <DadosDatatable
+          filters={
+            <div className="flex items-center gap-3">
+              <label className="text-sm font-medium" htmlFor="mes">
+                Mês
+              </label>
+              <input
+                id="mes"
+                type="month"
+                className="border rounded-md px-3 py-2 bg-background"
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+              />
+            </div>
+          }
+          funcionarios={funcionarios}
+        />
       )}
     </ListPageLayout>
   );
