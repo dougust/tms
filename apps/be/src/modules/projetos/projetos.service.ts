@@ -23,10 +23,10 @@ export class ProjetosService {
     const [projeto] = await this.db
       .insert(this.table)
       .values({
-        empresa_id: dto.empresa_id ?? null,
+        empresaId: dto.empresaId ?? null,
         nome: dto.nome,
-        inicio: dto.inicio as any,
-        fim: dto.fim as any,
+        inicio: dto.inicio,
+        fim: dto.fim,
       })
       .returning();
 
@@ -51,14 +51,15 @@ export class ProjetosService {
     return entity;
   }
 
+
   async update(id: string, dto: UpdateProjetoDto) {
     const [projeto] = await this.db
       .update(this.table)
       .set({
-        empresa_id: dto.empresa_id ?? undefined,
+        empresaId: dto.empresaId ?? undefined,
         nome: dto.nome ?? undefined,
-        inicio: (dto.inicio as any) ?? undefined,
-        fim: (dto.fim as any) ?? undefined,
+        inicio: (dto.inicio) ?? undefined,
+        fim: (dto.fim) ?? undefined,
         updatedAt: new Date(),
       })
       .where(eq(this.table.id, id))

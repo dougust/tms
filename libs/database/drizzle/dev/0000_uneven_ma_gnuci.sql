@@ -2,12 +2,21 @@ CREATE SCHEMA "dg_0001";
 --> statement-breakpoint
 CREATE TYPE "public"."subscription_tier" AS ENUM('trial', 'starter', 'professional', 'enterprise');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('owner', 'admin', 'agent', 'viewer');--> statement-breakpoint
+CREATE TABLE "dg_0001"."cad_beneficios" (
+	"beneficio_id" uuid DEFAULT gen_random_uuid(),
+	"funcionario_id" uuid,
+	"valor" numeric(15, 2),
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "pk_beneficios" PRIMARY KEY("beneficio_id")
+);
+--> statement-breakpoint
 CREATE TABLE "dg_0001"."cad_diarias" (
 	"diarias_id" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"dia" date NOT NULL,
 	"funcionario_id" uuid NOT NULL,
 	"projeto_id" uuid,
-	"tipo_diaria_id" uuid,
+	"tipo_diaria" uuid,
 	"observacoes" varchar(100),
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
@@ -38,12 +47,25 @@ CREATE TABLE "dg_0001"."cad_funcionarios" (
 	"phone" varchar(20),
 	"email" varchar(255) NOT NULL,
 	"rg" varchar(11),
+	"funcao" uuid,
+	"salario" numeric(15, 2),
+	"dependentes" integer,
 	"projeto_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now(),
 	CONSTRAINT "pk_funcionrio" PRIMARY KEY("funcionario_id"),
 	CONSTRAINT "cad_funcionarios_cpf_unique" UNIQUE("cpf"),
 	CONSTRAINT "cad_funcionarios_email_unique" UNIQUE("email")
+);
+--> statement-breakpoint
+CREATE TABLE "dg_0001"."cad_lookup" (
+	"lookup_id" uuid DEFAULT gen_random_uuid(),
+	"grupo" varchar(100),
+	"nome" varchar(100),
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "pk_lookup" PRIMARY KEY("grupo","nome"),
+	CONSTRAINT "cad_lookup_lookup_id_unique" UNIQUE("lookup_id")
 );
 --> statement-breakpoint
 CREATE TABLE "dg_0001"."cad_projetos" (
@@ -81,16 +103,10 @@ CREATE TABLE "tenants" (
 	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
-CREATE TABLE "dg_0001"."cad_tipo_diarias" (
-	"tipos_diaria_id" uuid DEFAULT gen_random_uuid(),
-	"nome" varchar(100),
-	"created_at" timestamp DEFAULT now(),
-	"updated_at" timestamp DEFAULT now(),
-	CONSTRAINT "pk_tipos_diaria" PRIMARY KEY("tipos_diaria_id")
-);
---> statement-breakpoint
+ALTER TABLE "dg_0001"."cad_beneficios" ADD CONSTRAINT "fk_funcionario_beneficios" FOREIGN KEY ("funcionario_id") REFERENCES "dg_0001"."cad_funcionarios"("funcionario_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_projetos" FOREIGN KEY ("projeto_id") REFERENCES "dg_0001"."cad_projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_funcionarios" FOREIGN KEY ("funcionario_id") REFERENCES "dg_0001"."cad_funcionarios"("funcionario_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_tipo_diaria" FOREIGN KEY ("tipo_diaria_id") REFERENCES "dg_0001"."cad_tipo_diarias"("tipos_diaria_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diaria_lookup" FOREIGN KEY ("tipo_diaria") REFERENCES "dg_0001"."cad_lookup"("lookup_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_funcionarios" ADD CONSTRAINT "fk_funcionarios_projetos" FOREIGN KEY ("projeto_id") REFERENCES "dg_0001"."cad_projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dg_0001"."cad_funcionarios" ADD CONSTRAINT "fk_funcionarios_funcao" FOREIGN KEY ("funcao") REFERENCES "dg_0001"."cad_lookup"("lookup_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_projetos" ADD CONSTRAINT "fk_projeto_empresa" FOREIGN KEY ("empresa_id") REFERENCES "dg_0001"."cad_empresas"("empresa_id") ON DELETE no action ON UPDATE no action;

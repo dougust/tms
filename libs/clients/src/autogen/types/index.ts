@@ -1,6 +1,7 @@
 export type { CreateDiariaDto } from './CreateDiariaDto.ts';
 export type { CreateEmpresaDto } from './CreateEmpresaDto.ts';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
+export type { CreateLookupDto } from './CreateLookupDto.ts';
 export type { CreateManyDiariasDto } from './CreateManyDiariasDto.ts';
 export type { CreateProjetoDto } from './CreateProjetoDto.ts';
 export type { DiariaDto } from './DiariaDto.ts';
@@ -98,6 +99,38 @@ export type {
   HealthControllerGetHealthQueryResponse,
   HealthControllerGetHealthQuery,
 } from './HealthControllerGetHealth.ts';
+export type { LookupDto } from './LookupDto.ts';
+export type {
+  LookupsControllerCreate201,
+  LookupsControllerCreateMutationRequest,
+  LookupsControllerCreateMutationResponse,
+  LookupsControllerCreateMutation,
+} from './LookupsControllerCreate.ts';
+export type {
+  LookupsControllerFindByGroupPathParams,
+  LookupsControllerFindByGroup200,
+  LookupsControllerFindByGroupQueryResponse,
+  LookupsControllerFindByGroupQuery,
+} from './LookupsControllerFindByGroup.ts';
+export type {
+  LookupsControllerFindOnePathParams,
+  LookupsControllerFindOne200,
+  LookupsControllerFindOneQueryResponse,
+  LookupsControllerFindOneQuery,
+} from './LookupsControllerFindOne.ts';
+export type {
+  LookupsControllerRemovePathParams,
+  LookupsControllerRemove200,
+  LookupsControllerRemoveMutationResponse,
+  LookupsControllerRemoveMutation,
+} from './LookupsControllerRemove.ts';
+export type {
+  LookupsControllerUpdatePathParams,
+  LookupsControllerUpdate200,
+  LookupsControllerUpdateMutationRequest,
+  LookupsControllerUpdateMutationResponse,
+  LookupsControllerUpdateMutation,
+} from './LookupsControllerUpdate.ts';
 export type { ProjetoDto } from './ProjetoDto.ts';
 export type {
   ProjetosControllerCreate201,
@@ -129,12 +162,7 @@ export type {
   ProjetosControllerUpdateMutationResponse,
   ProjetosControllerUpdateMutation,
 } from './ProjetosControllerUpdate.ts';
-export type { TipoDiariaDto } from './TipoDiariaDto.ts';
-export type {
-  TiposDiariaControllerFindAll200,
-  TiposDiariaControllerFindAllQueryResponse,
-  TiposDiariaControllerFindAllQuery,
-} from './TiposDiariaControllerFindAll.ts';
 export type { UpdateEmpresaDto } from './UpdateEmpresaDto.ts';
 export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto.ts';
+export type { UpdateLookupDto } from './UpdateLookupDto.ts';
 export type { UpdateProjetoDto } from './UpdateProjetoDto.ts';

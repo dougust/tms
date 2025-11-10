@@ -5,10 +5,6 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
-  DiariasControllerFindInRangeQueryResponse,
-  DiariasControllerFindInRangeQueryParams,
-} from '../../types/DiariasControllerFindInRange.ts';
-import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -18,6 +14,10 @@ import type {
   QueryObserverOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
+import type {
+  DiariasControllerFindInRangeQueryResponse,
+  DiariasControllerFindInRangeQueryParams,
+} from '../../types/DiariasControllerFindInRange.ts';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
 export const diariasControllerFindInRangeQueryKey = (

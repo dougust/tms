@@ -8,7 +8,7 @@ import { DatabaseUtilsModule } from './common/cadastros/database-utils.module';
 import { ProjetosModule } from './modules/projetos/projetos.module';
 import { EmpresasModule } from './modules/empresas/empresas.module';
 import { DiariasModule } from './modules/diarias/diarias.module';
-import { TiposDiariaModule } from './modules/tipos-diaria/tipos-diaria.module';
+import { LookupsModule } from './modules/lookups/lookups.module';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { TiposDiariaModule } from './modules/tipos-diaria/tipos-diaria.module';
     DatabaseUtilsModule,
     EmpresasModule,
     DiariasModule,
-    TiposDiariaModule,
+    LookupsModule,
   ],
   controllers: [],
   providers: [],

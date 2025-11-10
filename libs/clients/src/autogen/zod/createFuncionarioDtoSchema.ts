@@ -14,4 +14,6 @@ export const createFuncionarioDtoSchema = z.object({
   email: z.email(),
   projetoId: z.string(),
   rg: z.optional(z.string().min(0).max(11)),
+  funcao: z.string().min(0).max(30),
+  dependetes: z.number(),
 });

@@ -12,6 +12,8 @@
         "phone": { "type": "string" },
         "email": { "type": "string" },
         "rg": { "type": "string" },
+        "funcao": { "type": "string" },
+        "dependetes": { "type": "number" },
         "projetoId": { "type": "string" },
         "createdAt": { "format": "date-time", "type": "string" },
         "updatedAt": { "format": "date-time", "type": "string" }
@@ -25,6 +27,8 @@
         "phone",
         "email",
         "rg",
+        "funcao",
+        "dependetes",
         "projetoId",
         "createdAt",
         "updatedAt"

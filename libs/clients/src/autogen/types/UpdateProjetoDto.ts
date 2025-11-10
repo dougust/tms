@@ -7,7 +7,7 @@ export type UpdateProjetoDto = {
   /**
    * @type string | undefined
    */
-  empresa_id?: string;
+  empresaId?: string;
   /**
    * @minLength 1
    * @maxLength 100

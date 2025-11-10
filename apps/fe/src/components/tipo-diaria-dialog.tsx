@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useMemo } from "react";
 import { Button } from "@dougust/ui";
 import {
   Dialog,
@@ -10,12 +11,16 @@ import {
   DialogTitle,
   DialogClose,
 } from "@dougust/ui/components/dialog";
-import { TipoDiariaDto } from "@dougust/clients";
+import { LookupDto, useLookupsControllerFindAll } from "@dougust/clients";
 
 export type TipoDiariaDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  tipos: TipoDiariaDto[];
+  /**
+   * Lista opcional de tipos (lookups) a ser utilizada. Se não for fornecida,
+   * o componente buscará automaticamente os lookups do grupo 'TipoDiaria'.
+   */
+  tipos?: LookupDto[];
   selectedTipoDiariaId: string;
   onSelectedTipoDiariaIdChange: (id: string) => void;
   onConfirm: () => void;
@@ -34,6 +39,21 @@ export function TipoDiariaDialog(props: TipoDiariaDialogProps) {
     isSaving = false,
   } = props;
 
+  // Carrega todos os lookups e filtra pelo grupo 'TipoDiaria' quando a prop 'tipos' não é fornecida
+  const {
+    data: lookups = [],
+    isLoading: isLookupsLoading,
+    isError: isLookupsError,
+  } = useLookupsControllerFindAll<LookupDto[]>();
+
+  const tiposDiaria = useMemo<LookupDto[]>(() => {
+    if (tipos && tipos.length) return tipos;
+    return (lookups || []).filter((l) => l.grupo === "TipoDiaria");
+  }, [tipos, lookups]);
+
+  const isInternalLoading = !tipos && isLookupsLoading;
+  const isInternalError = !tipos && isLookupsError;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -46,16 +66,24 @@ export function TipoDiariaDialog(props: TipoDiariaDialogProps) {
             className="border rounded-md px-3 py-2 bg-background"
             value={selectedTipoDiariaId}
             onChange={(e) => onSelectedTipoDiariaIdChange(e.target.value)}
+            disabled={isInternalLoading || isInternalError}
           >
             <option value="" disabled>
-              Selecione um tipo
+              {isInternalLoading
+                ? "Carregando tipos..."
+                : isInternalError
+                ? "Erro ao carregar tipos"
+                : "Selecione um tipo"}
             </option>
-            {tipos.map((t) => (
+            {tiposDiaria.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.nome}
               </option>
             ))}
           </select>
+          {isInternalError && (
+            <span className="text-xs text-red-600">Não foi possível carregar os tipos de diária.</span>
+          )}
         </div>
         <DialogFooter>
           <DialogClose asChild>

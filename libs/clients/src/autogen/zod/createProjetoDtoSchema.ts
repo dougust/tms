@@ -6,7 +6,7 @@
 import { z } from 'zod/v4';
 
 export const createProjetoDtoSchema = z.object({
-  empresa_id: z.optional(z.string()),
+  empresaId: z.optional(z.string()),
   nome: z.string().min(1).max(100),
   inicio: z.string(),
   fim: z.string(),

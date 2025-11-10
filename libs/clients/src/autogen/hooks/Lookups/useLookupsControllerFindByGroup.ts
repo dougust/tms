@@ -4,7 +4,6 @@
  */
 
 import fetch from '@kubb/plugin-client/clients/axios';
-import type { TiposDiariaControllerFindAllQueryResponse } from '../../types/TiposDiariaControllerFindAll.ts';
 import type {
   RequestConfig,
   ResponseErrorConfig,
@@ -15,61 +14,70 @@ import type {
   QueryObserverOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
+import type {
+  LookupsControllerFindByGroupQueryResponse,
+  LookupsControllerFindByGroupPathParams,
+} from '../../types/LookupsControllerFindByGroup.ts';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
-export const tiposDiariaControllerFindAllQueryKey = () =>
-  [{ url: '/tipos-diarias' }] as const;
+export const lookupsControllerFindByGroupQueryKey = (
+  grupo: LookupsControllerFindByGroupPathParams['grupo']
+) => [{ url: '/lookups/:grupo', params: { grupo: grupo } }] as const;
 
-export type TiposDiariaControllerFindAllQueryKey = ReturnType<
-  typeof tiposDiariaControllerFindAllQueryKey
+export type LookupsControllerFindByGroupQueryKey = ReturnType<
+  typeof lookupsControllerFindByGroupQueryKey
 >;
 
 /**
- * {@link /tipos-diarias}
+ * {@link /lookups/:grupo}
  */
-export async function tiposDiariaControllerFindAll(
+export async function lookupsControllerFindByGroup(
+  grupo: LookupsControllerFindByGroupPathParams['grupo'],
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
   const { client: request = fetch, ...requestConfig } = config;
 
   const res = await request<
-    TiposDiariaControllerFindAllQueryResponse,
+    LookupsControllerFindByGroupQueryResponse,
     ResponseErrorConfig<Error>,
     unknown
-  >({ method: 'GET', url: `/tipos-diarias`, ...requestConfig });
+  >({ method: 'GET', url: `/lookups/${grupo}`, ...requestConfig });
   return res.data;
 }
 
-export function tiposDiariaControllerFindAllQueryOptions(
+export function lookupsControllerFindByGroupQueryOptions(
+  grupo: LookupsControllerFindByGroupPathParams['grupo'],
   config: Partial<RequestConfig> & { client?: typeof fetch } = {}
 ) {
-  const queryKey = tiposDiariaControllerFindAllQueryKey();
+  const queryKey = lookupsControllerFindByGroupQueryKey(grupo);
   return queryOptions<
-    TiposDiariaControllerFindAllQueryResponse,
+    LookupsControllerFindByGroupQueryResponse,
     ResponseErrorConfig<Error>,
-    TiposDiariaControllerFindAllQueryResponse,
+    LookupsControllerFindByGroupQueryResponse,
     typeof queryKey
   >({
+    enabled: !!grupo,
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal;
-      return tiposDiariaControllerFindAll(config);
+      return lookupsControllerFindByGroup(grupo, config);
     },
   });
 }
 
 /**
- * {@link /tipos-diarias}
+ * {@link /lookups/:grupo}
  */
-export function useTiposDiariaControllerFindAll<
-  TData = TiposDiariaControllerFindAllQueryResponse,
-  TQueryData = TiposDiariaControllerFindAllQueryResponse,
-  TQueryKey extends QueryKey = TiposDiariaControllerFindAllQueryKey
+export function useLookupsControllerFindByGroup<
+  TData = LookupsControllerFindByGroupQueryResponse,
+  TQueryData = LookupsControllerFindByGroupQueryResponse,
+  TQueryKey extends QueryKey = LookupsControllerFindByGroupQueryKey
 >(
+  grupo: LookupsControllerFindByGroupPathParams['grupo'],
   options: {
     query?: Partial<
       QueryObserverOptions<
-        TiposDiariaControllerFindAllQueryResponse,
+        LookupsControllerFindByGroupQueryResponse,
         ResponseErrorConfig<Error>,
         TData,
         TQueryData,
@@ -82,11 +90,11 @@ export function useTiposDiariaControllerFindAll<
   const { query: queryConfig = {}, client: config = {} } = options ?? {};
   const { client: queryClient, ...queryOptions } = queryConfig;
   const queryKey =
-    queryOptions?.queryKey ?? tiposDiariaControllerFindAllQueryKey();
+    queryOptions?.queryKey ?? lookupsControllerFindByGroupQueryKey(grupo);
 
   const query = useQuery(
     {
-      ...tiposDiariaControllerFindAllQueryOptions(config),
+      ...lookupsControllerFindByGroupQueryOptions(grupo, config),
       queryKey,
       ...queryOptions,
     } as unknown as QueryObserverOptions,

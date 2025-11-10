@@ -5,7 +5,7 @@ import { projetos } from '@dougust/database';
 export class CreateProjetoDto {
   @IsOptional()
   @IsString()
-  empresa_id?: string;
+  empresaId?: string;
 
   @IsString()
   @Length(1, 100)
