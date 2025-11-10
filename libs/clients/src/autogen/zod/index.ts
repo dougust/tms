@@ -91,10 +91,6 @@ export {
   lookupsControllerCreateMutationResponseSchema,
 } from './lookupsControllerCreateSchema.ts';
 export {
-  lookupsControllerFindAll200Schema,
-  lookupsControllerFindAllQueryResponseSchema,
-} from './lookupsControllerFindAllSchema.ts';
-export {
   lookupsControllerFindByGroupPathParamsSchema,
   lookupsControllerFindByGroup200Schema,
   lookupsControllerFindByGroupQueryResponseSchema,

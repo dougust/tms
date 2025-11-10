@@ -55,9 +55,5 @@ export type CreateFuncionarioDto = {
   /**
    * @type number
    */
-  dependetes: string;
-  /**
-   * @type number
-   */
-  salario: string;
+  dependetes: number;
 };

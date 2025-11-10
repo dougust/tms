@@ -607,28 +607,6 @@
         "tags": [
           "Lookups"
         ]
-      },
-      "get": {
-        "operationId": "LookupsController_findAll",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LookupDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Lookups"
-        ]
       }
     },
     "/lookups/{grupo}": {
@@ -1236,9 +1214,6 @@
           "grupo": {
             "type": "string"
           },
-          "id": {
-            "type": "string"
-          },
           "nome": {
             "type": "string"
           }
@@ -1279,9 +1254,6 @@
         "type": "object",
         "properties": {
           "grupo": {
-            "type": "string"
-          },
-          "id": {
             "type": "string"
           },
           "nome": {

@@ -9,10 +9,6 @@ export type CreateLookupDto = {
    */
   grupo: string;
   /**
-   * @type string | undefined
-   */
-  id?: string;
-  /**
    * @type string
    */
   nome: string;

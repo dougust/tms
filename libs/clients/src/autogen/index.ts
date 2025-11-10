@@ -14,7 +14,6 @@ export type { FuncionariosControllerRemoveMutationKey } from './hooks/Funcionari
 export type { FuncionariosControllerUpdateMutationKey } from './hooks/Funcionarios/useFuncionariosControllerUpdate.ts';
 export type { HealthControllerGetHealthQueryKey } from './hooks/Health/useHealthControllerGetHealth.ts';
 export type { LookupsControllerCreateMutationKey } from './hooks/Lookups/useLookupsControllerCreate.ts';
-export type { LookupsControllerFindAllQueryKey } from './hooks/Lookups/useLookupsControllerFindAll.ts';
 export type { LookupsControllerFindByGroupQueryKey } from './hooks/Lookups/useLookupsControllerFindByGroup.ts';
 export type { LookupsControllerFindOneQueryKey } from './hooks/Lookups/useLookupsControllerFindOne.ts';
 export type { LookupsControllerRemoveMutationKey } from './hooks/Lookups/useLookupsControllerRemove.ts';
@@ -132,11 +131,6 @@ export type {
   LookupsControllerCreateMutationResponse,
   LookupsControllerCreateMutation,
 } from './types/LookupsControllerCreate.ts';
-export type {
-  LookupsControllerFindAll200,
-  LookupsControllerFindAllQueryResponse,
-  LookupsControllerFindAllQuery,
-} from './types/LookupsControllerFindAll.ts';
 export type {
   LookupsControllerFindByGroupPathParams,
   LookupsControllerFindByGroup200,
@@ -294,12 +288,6 @@ export {
   useLookupsControllerCreate,
 } from './hooks/Lookups/useLookupsControllerCreate.ts';
 export {
-  lookupsControllerFindAllQueryKey,
-  lookupsControllerFindAll,
-  lookupsControllerFindAllQueryOptions,
-  useLookupsControllerFindAll,
-} from './hooks/Lookups/useLookupsControllerFindAll.ts';
-export {
   lookupsControllerFindByGroupQueryKey,
   lookupsControllerFindByGroup,
   lookupsControllerFindByGroupQueryOptions,
@@ -445,10 +433,6 @@ export {
   lookupsControllerCreateMutationRequestSchema,
   lookupsControllerCreateMutationResponseSchema,
 } from './zod/lookupsControllerCreateSchema.ts';
-export {
-  lookupsControllerFindAll200Schema,
-  lookupsControllerFindAllQueryResponseSchema,
-} from './zod/lookupsControllerFindAllSchema.ts';
 export {
   lookupsControllerFindByGroupPathParamsSchema,
   lookupsControllerFindByGroup200Schema,

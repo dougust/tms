@@ -14,7 +14,6 @@ export type { FuncionariosControllerRemoveMutationKey } from './Funcionarios/use
 export type { FuncionariosControllerUpdateMutationKey } from './Funcionarios/useFuncionariosControllerUpdate.ts';
 export type { HealthControllerGetHealthQueryKey } from './Health/useHealthControllerGetHealth.ts';
 export type { LookupsControllerCreateMutationKey } from './Lookups/useLookupsControllerCreate.ts';
-export type { LookupsControllerFindAllQueryKey } from './Lookups/useLookupsControllerFindAll.ts';
 export type { LookupsControllerFindByGroupQueryKey } from './Lookups/useLookupsControllerFindByGroup.ts';
 export type { LookupsControllerFindOneQueryKey } from './Lookups/useLookupsControllerFindOne.ts';
 export type { LookupsControllerRemoveMutationKey } from './Lookups/useLookupsControllerRemove.ts';
@@ -120,12 +119,6 @@ export {
   lookupsControllerCreateMutationOptions,
   useLookupsControllerCreate,
 } from './Lookups/useLookupsControllerCreate.ts';
-export {
-  lookupsControllerFindAllQueryKey,
-  lookupsControllerFindAll,
-  lookupsControllerFindAllQueryOptions,
-  useLookupsControllerFindAll,
-} from './Lookups/useLookupsControllerFindAll.ts';
 export {
   lookupsControllerFindByGroupQueryKey,
   lookupsControllerFindByGroup,

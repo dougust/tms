@@ -22,11 +22,6 @@ export class LookupsController {
     return this.service.create(dto);
   }
 
-  @Get()
-  findAll(): Promise<LookupDto[]> {
-    return this.service.findAll();
-  }
-
   @Get(':grupo')
   findByGroup(@Param('grupo') grupo: string): Promise<LookupDto[]> {
     return this.service.findByGroup(grupo);
@@ -35,7 +30,7 @@ export class LookupsController {
   @Get(':grupo/:id')
   async findOne(
     @Param('grupo') grupo: string,
-    @Param('id', new ParseIntPipe()) id: string
+    @Param('id') id: string
   ): Promise<{ lookup: LookupDto }> {
     return this.service.findOne(grupo, id);
   }
@@ -43,7 +38,7 @@ export class LookupsController {
   @Patch(':grupo/:id')
   update(
     @Param('grupo') grupo: string,
-    @Param('id', new ParseIntPipe()) id: string,
+    @Param('id') id: string,
     @Body() dto: UpdateLookupDto
   ) {
     return this.service.update(grupo, id, dto);

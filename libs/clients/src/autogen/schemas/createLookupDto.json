@@ -1,10 +1,6 @@
 {
   "type": "object",
-  "properties": {
-    "grupo": { "type": "string" },
-    "id": { "type": "string" },
-    "nome": { "type": "string" }
-  },
+  "properties": { "grupo": { "type": "string" }, "nome": { "type": "string" } },
   "required": ["grupo", "nome"],
   "x-readme-ref-name": "CreateLookupDto"
 }

@@ -107,11 +107,6 @@ export type {
   LookupsControllerCreateMutation,
 } from './LookupsControllerCreate.ts';
 export type {
-  LookupsControllerFindAll200,
-  LookupsControllerFindAllQueryResponse,
-  LookupsControllerFindAllQuery,
-} from './LookupsControllerFindAll.ts';
-export type {
   LookupsControllerFindByGroupPathParams,
   LookupsControllerFindByGroup200,
   LookupsControllerFindByGroupQueryResponse,

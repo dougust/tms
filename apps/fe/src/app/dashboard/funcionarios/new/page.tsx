@@ -24,8 +24,7 @@ const defaultValues: CreateFuncionarioDto = {
   rg: '',
   projetoId: '',
   funcao: '',
-  salario: '',
-  dependetes: '',
+  dependetes: 0,
 };
 
 export default function NewFuncionarioPage() {
