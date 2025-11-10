@@ -7,7 +7,7 @@ import { z } from 'zod/v4';
 
 export const projetoDtoSchema = z.object({
   id: z.string(),
-  empresa_id: z.string(),
+  empresaId: z.string(),
   nome: z.string(),
   inicio: z.string(),
   fim: z.string(),

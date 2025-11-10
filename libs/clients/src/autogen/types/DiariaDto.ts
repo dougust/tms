@@ -23,7 +23,7 @@ export type DiariaDto = {
   /**
    * @type string
    */
-  tipoDiariaId: string;
+  tipoDiaria: string;
   /**
    * @type string
    */

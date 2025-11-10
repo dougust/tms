@@ -30,6 +30,8 @@ export class FuncionariosService {
         email: dto.email,
         projetoId: dto.projetoId,
         rg: dto.rg ?? null,
+        funcao: dto.funcao ?? null,
+        dependetes: dto.dependetes ?? null,
       })
       .returning();
 
@@ -68,6 +70,8 @@ export class FuncionariosService {
           email: dto.email ?? undefined,
           rg: dto.rg ?? undefined,
           updatedAt: new Date(),
+          funcao: dto.funcao ?? null,
+          dependetes: dto.dependetes ?? undefined,
         })
         .where(eq(this.table.id, id))
         .returning();

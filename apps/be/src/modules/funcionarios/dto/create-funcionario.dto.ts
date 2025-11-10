@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsString,
   Length,
+  IsInt, IsDate,
 } from 'class-validator';
 import { IsUnique } from '../../../common/cadastros/isUniqueConstraint';
 import { funcionarios } from '@dougust/database';
@@ -44,4 +45,13 @@ export class CreateFuncionarioDto {
   @IsString()
   @Length(0, 11)
   rg?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(0, 30)
+  funcao: string;
+
+  @IsOptional()
+  @IsInt()
+  dependetes: number;
 }

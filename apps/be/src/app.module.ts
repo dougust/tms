@@ -9,7 +9,7 @@ import { DatabaseUtilsModule } from './common/cadastros/database-utils.module';
 import { ProjetosModule } from './modules/projetos/projetos.module';
 import { EmpresasModule } from './modules/empresas/empresas.module';
 import { DiariasModule } from './modules/diarias/diarias.module';
-import { TiposDiariaModule } from './modules/tipos-diaria/tipos-diaria.module';
+import { LookupsModule } from './modules/lookups/lookups.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthGuard, TenantGuard } from './common';
 
@@ -23,7 +23,7 @@ import { AuthGuard, TenantGuard } from './common';
     DatabaseUtilsModule,
     EmpresasModule,
     DiariasModule,
-    TiposDiariaModule,
+    LookupsModule,
     AuthModule,
   ],
   controllers: [],

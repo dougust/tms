@@ -53,6 +53,11 @@ const dataNavItems = [
     href: '/dashboard/funcionarios',
   },
   {
+    title: 'Dados Funcionários',
+    icon: FileText,
+    href: '/dashboard/funcionarios/dados',
+  },
+  {
     title: 'Empresas',
     icon: Building2,
     href: '/dashboard/empresas',

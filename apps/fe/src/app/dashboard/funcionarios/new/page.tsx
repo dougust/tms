@@ -4,6 +4,8 @@ import {
   CreateFuncionarioDto,
   createFuncionarioDtoSchema,
   useFuncionariosControllerCreate,
+  useProjetosControllerFindAll,
+  ProjetoDto,
 } from '@dougust/clients';
 import { Button } from '@dougust/ui';
 import { Loader2, Save } from 'lucide-react';
@@ -20,12 +22,17 @@ const defaultValues: CreateFuncionarioDto = {
   social: '',
   nascimento: '',
   phone: '',
-  rg: ''
+  rg: '',
+  projetoId: '',
+  funcao: '',
+  dependetes: 0,
 };
 
 export default function NewFuncionarioPage() {
   const router = useRouter();
   const createMutation = useFuncionariosControllerCreate();
+  const { data: projetos = [], isPending: isProjetosPending, isError: isProjetosError } =
+    useProjetosControllerFindAll<ProjetoDto[]>();
 
   const form = useForm({
     defaultValues,
@@ -39,7 +46,6 @@ export default function NewFuncionarioPage() {
           const errorMessage = error?.response?.data?.message;
           if (errorMessage) {
             return {
-              // The `form` key is optional
               fields: {
                 ...errorMessage,
               },
@@ -191,6 +197,62 @@ export default function NewFuncionarioPage() {
                   type="tel"
                   placeholder="(00) 00000-0000"
                   label="Telefone"
+                  state={field.state}
+                  handleChange={field.handleChange}
+                  handleBlur={field.handleBlur}
+                />
+              )}
+            />
+          </div>
+        </div>
+
+        {/* Projeto e Função */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold">Projeto e Função</h3>
+          <div className="grid gap-4 md:grid-cols-2">
+            {/* Projeto */}
+            <form.Field
+              name="projetoId"
+              children={(field) => (
+                <div className="space-y-2">
+                  <label htmlFor="projetoId" className="text-sm font-medium">
+                    Projeto
+                  </label>
+                  <select
+                    id="projetoId"
+                    className="border rounded-md px-3 py-2 bg-background"
+                    value={field.state.value || ''}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    disabled={isProjetosPending || isProjetosError}
+                  >
+                    <option value="">{isProjetosPending ? 'Carregando projetos...' : 'Selecione um projeto'}</option>
+                    {projetos.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.nome}
+                      </option>
+                    ))}
+                  </select>
+                  {field.state.meta.errors[0] && (
+                    <p className="text-xs text-red-600">
+                      {typeof field.state.meta.errors[0] === 'string'
+                        ? field.state.meta.errors[0]
+                        : (field.state.meta.errors[0] as any).message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
+
+            {/* Função */}
+            <form.Field
+              name="funcao"
+              children={(field) => (
+                <FormField
+                  id="funcao"
+                  label="Função"
+                  type="text"
+                  placeholder="Ex: Servente, Pedreiro, Mestre de obras"
                   state={field.state}
                   handleChange={field.handleChange}
                   handleBlur={field.handleBlur}

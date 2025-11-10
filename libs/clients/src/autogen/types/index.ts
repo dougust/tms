@@ -20,6 +20,7 @@ export type { AuthResponseDto } from './AuthResponseDto';
 export type { CreateDiariaDto } from './CreateDiariaDto';
 export type { CreateEmpresaDto } from './CreateEmpresaDto';
 export type { CreateFuncionarioDto } from './CreateFuncionarioDto';
+export type { CreateLookupDto } from './CreateLookupDto';
 export type { CreateManyDiariasDto } from './CreateManyDiariasDto';
 export type { CreateProjetoDto } from './CreateProjetoDto';
 export type { DiariaDto } from './DiariaDto';
@@ -119,6 +120,38 @@ export type {
 } from './HealthControllerGetHealth';
 export type { LoginDto } from './LoginDto';
 export type { LogoutDto } from './LogoutDto';
+export type { LookupDto } from './LookupDto';
+export type {
+  LookupsControllerCreate201,
+  LookupsControllerCreateMutationRequest,
+  LookupsControllerCreateMutationResponse,
+  LookupsControllerCreateMutation,
+} from './LookupsControllerCreate';
+export type {
+  LookupsControllerFindByGroupPathParams,
+  LookupsControllerFindByGroup200,
+  LookupsControllerFindByGroupQueryResponse,
+  LookupsControllerFindByGroupQuery,
+} from './LookupsControllerFindByGroup';
+export type {
+  LookupsControllerFindOnePathParams,
+  LookupsControllerFindOne200,
+  LookupsControllerFindOneQueryResponse,
+  LookupsControllerFindOneQuery,
+} from './LookupsControllerFindOne';
+export type {
+  LookupsControllerRemovePathParams,
+  LookupsControllerRemove200,
+  LookupsControllerRemoveMutationResponse,
+  LookupsControllerRemoveMutation,
+} from './LookupsControllerRemove';
+export type {
+  LookupsControllerUpdatePathParams,
+  LookupsControllerUpdate200,
+  LookupsControllerUpdateMutationRequest,
+  LookupsControllerUpdateMutationResponse,
+  LookupsControllerUpdateMutation,
+} from './LookupsControllerUpdate';
 export type { ProjetoDto } from './ProjetoDto';
 export type {
   ProjetosControllerCreate201,
@@ -151,12 +184,7 @@ export type {
   ProjetosControllerUpdateMutation,
 } from './ProjetosControllerUpdate';
 export type { RefreshDto } from './RefreshDto';
-export type { TipoDiariaDto } from './TipoDiariaDto';
-export type {
-  TiposDiariaControllerFindAll200,
-  TiposDiariaControllerFindAllQueryResponse,
-  TiposDiariaControllerFindAllQuery,
-} from './TiposDiariaControllerFindAll';
 export type { UpdateEmpresaDto } from './UpdateEmpresaDto';
 export type { UpdateFuncionarioDto } from './UpdateFuncionarioDto';
+export type { UpdateLookupDto } from './UpdateLookupDto';
 export type { UpdateProjetoDto } from './UpdateProjetoDto';

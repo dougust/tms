@@ -14,7 +14,7 @@ import {
   DiariasControllerFindInRangeQueryParams,
   FuncionarioDto,
   ProjetoDto,
-  TipoDiariaDto,
+  LookupDto,
 } from '@dougust/clients';
 import {
   useCreateDiaria,
@@ -30,7 +30,7 @@ export type DiariasCalendarProps = {
   funcionarios: FuncionarioDto[];
   projetos: ProjetoDto[];
   diarias: DiariaDto[];
-  tiposDiarias: TipoDiariaDto[];
+  tiposDiarias: LookupDto[];
   range: DiariasControllerFindInRangeQueryParams;
 };
 
@@ -83,8 +83,8 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
         funcionarioId: selectedDiaria.funcionarioId,
         projetoId: selectedDiaria.projetoId,
         dia: selectedDiaria.dia,
-        tipoDiariaId: selectedTipoDiariaId,
-      } as any,
+        tipoDiaria: selectedTipoDiariaId,
+      },
     });
     setTipoDialogOpen(false);
     setSelectedDiaria(null);
@@ -228,18 +228,18 @@ export function DiariasCalendar(props: DiariasCalendarProps) {
             <div className="flex flex-col gap-1">
               {diaria && (
                 <>
-                  {diaria?.tipoDiariaId ? (
+                  {diaria?.tipoDiaria ? (
                     <Badge
                       variant="destructive"
                       className="cursor-pointer"
                       onClick={() => {
                         if (!diaria) return;
                         setSelectedDiaria(diaria);
-                        setSelectedTipoDiariaId(diaria.tipoDiariaId ?? '');
+                        setSelectedTipoDiariaId(diaria.tipoDiaria ?? '');
                         setTipoDialogOpen(true);
                       }}
                     >
-                      {tiposRecord[diaria.tipoDiariaId]?.nome ?? 'com tipo'}
+                      {tiposRecord[diaria.tipoDiaria]?.nome ?? 'com tipo'}
                     </Badge>
                   ) : (
                     <Badge

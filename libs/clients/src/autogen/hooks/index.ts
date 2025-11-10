@@ -16,12 +16,16 @@ export type { FuncionariosControllerFindOneQueryKey } from './Funcionarios/useFu
 export type { FuncionariosControllerRemoveMutationKey } from './Funcionarios/useFuncionariosControllerRemove';
 export type { FuncionariosControllerUpdateMutationKey } from './Funcionarios/useFuncionariosControllerUpdate';
 export type { HealthControllerGetHealthQueryKey } from './Health/useHealthControllerGetHealth';
+export type { LookupsControllerCreateMutationKey } from './Lookups/useLookupsControllerCreate';
+export type { LookupsControllerFindByGroupQueryKey } from './Lookups/useLookupsControllerFindByGroup';
+export type { LookupsControllerFindOneQueryKey } from './Lookups/useLookupsControllerFindOne';
+export type { LookupsControllerRemoveMutationKey } from './Lookups/useLookupsControllerRemove';
+export type { LookupsControllerUpdateMutationKey } from './Lookups/useLookupsControllerUpdate';
 export type { ProjetosControllerCreateMutationKey } from './Projetos/useProjetosControllerCreate';
 export type { ProjetosControllerFindAllQueryKey } from './Projetos/useProjetosControllerFindAll';
 export type { ProjetosControllerFindOneQueryKey } from './Projetos/useProjetosControllerFindOne';
 export type { ProjetosControllerRemoveMutationKey } from './Projetos/useProjetosControllerRemove';
 export type { ProjetosControllerUpdateMutationKey } from './Projetos/useProjetosControllerUpdate';
-export type { TiposDiariaControllerFindAllQueryKey } from './TiposDiaria/useTiposDiariaControllerFindAll';
 export {
   authControllerLoginMutationKey,
   authControllerLogin,
@@ -131,6 +135,36 @@ export {
   useHealthControllerGetHealth,
 } from './Health/useHealthControllerGetHealth';
 export {
+  lookupsControllerCreateMutationKey,
+  lookupsControllerCreate,
+  lookupsControllerCreateMutationOptions,
+  useLookupsControllerCreate,
+} from './Lookups/useLookupsControllerCreate';
+export {
+  lookupsControllerFindByGroupQueryKey,
+  lookupsControllerFindByGroup,
+  lookupsControllerFindByGroupQueryOptions,
+  useLookupsControllerFindByGroup,
+} from './Lookups/useLookupsControllerFindByGroup';
+export {
+  lookupsControllerFindOneQueryKey,
+  lookupsControllerFindOne,
+  lookupsControllerFindOneQueryOptions,
+  useLookupsControllerFindOne,
+} from './Lookups/useLookupsControllerFindOne';
+export {
+  lookupsControllerRemoveMutationKey,
+  lookupsControllerRemove,
+  lookupsControllerRemoveMutationOptions,
+  useLookupsControllerRemove,
+} from './Lookups/useLookupsControllerRemove';
+export {
+  lookupsControllerUpdateMutationKey,
+  lookupsControllerUpdate,
+  lookupsControllerUpdateMutationOptions,
+  useLookupsControllerUpdate,
+} from './Lookups/useLookupsControllerUpdate';
+export {
   projetosControllerCreateMutationKey,
   projetosControllerCreate,
   projetosControllerCreateMutationOptions,
@@ -160,9 +194,3 @@ export {
   projetosControllerUpdateMutationOptions,
   useProjetosControllerUpdate,
 } from './Projetos/useProjetosControllerUpdate';
-export {
-  tiposDiariaControllerFindAllQueryKey,
-  tiposDiariaControllerFindAll,
-  tiposDiariaControllerFindAllQueryOptions,
-  useTiposDiariaControllerFindAll,
-} from './TiposDiaria/useTiposDiariaControllerFindAll';

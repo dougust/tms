@@ -1,9 +1,77 @@
 {
-  "id": "e9946c4c-a0cd-44cd-9d3d-2a39a12b70a5",
+  "id": "f0c733c0-cec0-4ab7-a5d7-0ee88b7dfb0c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "dg_0001.cad_beneficios": {
+      "name": "cad_beneficios",
+      "schema": "dg_0001",
+      "columns": {
+        "beneficio_id": {
+          "name": "beneficio_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "gen_random_uuid()"
+        },
+        "funcionario_id": {
+          "name": "funcionario_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "valor": {
+          "name": "valor",
+          "type": "numeric(15, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_funcionario_beneficios": {
+          "name": "fk_funcionario_beneficios",
+          "tableFrom": "cad_beneficios",
+          "tableTo": "cad_funcionarios",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "funcionario_id"
+          ],
+          "columnsTo": [
+            "funcionario_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_beneficios": {
+          "name": "pk_beneficios",
+          "columns": [
+            "beneficio_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "dg_0001.cad_diarias": {
       "name": "cad_diarias",
       "schema": "dg_0001",
@@ -33,8 +101,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "tipo_diaria_id": {
-          "name": "tipo_diaria_id",
+        "tipo_diaria": {
+          "name": "tipo_diaria",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -90,16 +158,16 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "fk_diarias_tipo_diaria": {
-          "name": "fk_diarias_tipo_diaria",
+        "fk_diaria_lookup": {
+          "name": "fk_diaria_lookup",
           "tableFrom": "cad_diarias",
-          "tableTo": "cad_tipo_diarias",
+          "tableTo": "cad_lookup",
           "schemaTo": "dg_0001",
           "columnsFrom": [
-            "tipo_diaria_id"
+            "tipo_diaria"
           ],
           "columnsTo": [
-            "tipos_diaria_id"
+            "lookup_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -263,6 +331,24 @@
           "primaryKey": false,
           "notNull": false
         },
+        "funcao": {
+          "name": "funcao",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salario": {
+          "name": "salario",
+          "type": "numeric(15, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dependentes": {
+          "name": "dependentes",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "projeto_id": {
           "name": "projeto_id",
           "type": "uuid",
@@ -299,6 +385,20 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
+        },
+        "fk_funcionarios_funcao": {
+          "name": "fk_funcionarios_funcao",
+          "tableFrom": "cad_funcionarios",
+          "tableTo": "cad_lookup",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "funcao"
+          ],
+          "columnsTo": [
+            "lookup_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -322,6 +422,68 @@
           "nullsNotDistinct": false,
           "columns": [
             "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "dg_0001.cad_lookup": {
+      "name": "cad_lookup",
+      "schema": "dg_0001",
+      "columns": {
+        "lookup_id": {
+          "name": "lookup_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "gen_random_uuid()"
+        },
+        "grupo": {
+          "name": "grupo",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nome": {
+          "name": "nome",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "pk_lookup": {
+          "name": "pk_lookup",
+          "columns": [
+            "grupo",
+            "nome"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "cad_lookup_lookup_id_unique": {
+          "name": "cad_lookup_lookup_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "lookup_id"
           ]
         }
       },
@@ -413,53 +575,6 @@
           ]
         }
       },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "dg_0001.cad_tipo_diarias": {
-      "name": "cad_tipo_diarias",
-      "schema": "dg_0001",
-      "columns": {
-        "tipos_diaria_id": {
-          "name": "tipos_diaria_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "gen_random_uuid()"
-        },
-        "nome": {
-          "name": "nome",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "pk_tipos_diaria": {
-          "name": "pk_tipos_diaria",
-          "columns": [
-            "tipos_diaria_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

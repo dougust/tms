@@ -46,4 +46,14 @@ export type UpdateFuncionarioDto = {
    * @type string | undefined
    */
   rg?: string;
+  /**
+   * @minLength 0
+   * @maxLength 30
+   * @type string | undefined
+   */
+  funcao?: string;
+  /**
+   * @type number | undefined
+   */
+  dependetes?: number;
 };

@@ -46,4 +46,14 @@ export type CreateFuncionarioDto = {
    * @type string | undefined
    */
   rg?: string;
+  /**
+   * @minLength 0
+   * @maxLength 30
+   * @type string
+   */
+  funcao: string;
+  /**
+   * @type number
+   */
+  dependetes: number;
 };

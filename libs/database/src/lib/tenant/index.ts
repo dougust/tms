@@ -1,11 +1,11 @@
 import {
-  boolean,
   date,
   foreignKey,
+  integer,
+  numeric,
   pgSchema,
   primaryKey,
   timestamp,
-  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
@@ -42,7 +42,7 @@ export const projetos = (tenantId: string) =>
     'cad_projetos',
     {
       id: uuid('projeto_id').defaultRandom(),
-      empresa_id: uuid('empresa_id'),
+      empresaId: uuid('empresa_id'),
       nome: varchar('nome', { length: 100 }).unique(),
       inicio: date('inicio').notNull(),
       fim: date('fim').notNull(),
@@ -56,11 +56,12 @@ export const projetos = (tenantId: string) =>
       }),
       foreignKey({
         name: 'fk_projeto_empresa',
-        columns: [t.empresa_id],
+        columns: [t.empresaId],
         foreignColumns: [empresas(tenantId).id],
       }),
     ]
   );
+
 export const projetosRelations = (tenantId: string) =>
   relations(projetos(tenantId), ({ many, one }) => ({
     funcionarios: many(funcionarios(tenantId)),
@@ -79,6 +80,9 @@ export const funcionarios = (tenantId: string) =>
       phone: varchar('phone', { length: 20 }),
       email: varchar('email', { length: 255 }).unique().notNull(),
       rg: varchar('rg', { length: 11 }),
+      funcao: uuid('funcao'),
+      salario: numeric('salario', { precision: 15, scale: 2, mode: 'number'}),
+      dependetes: integer('dependentes'),
       projetoId: uuid('projeto_id').notNull(),
       createdAt: timestamp('created_at').defaultNow(),
       updatedAt: timestamp('updated_at').defaultNow(),
@@ -93,8 +97,37 @@ export const funcionarios = (tenantId: string) =>
         columns: [t.projetoId],
         foreignColumns: [projetos(tenantId).id],
       }),
+      foreignKey({
+        name: 'fk_funcionarios_funcao',
+        columns: [t.funcao],
+        foreignColumns: [lookup(tenantId).id],
+      }),
     ]
   );
+
+export const beneficios = (tenantId: string) =>
+  pgSchema(tenantId).table(
+    'cad_beneficios',
+    {
+      id: uuid('beneficio_id').defaultRandom(),
+      funcionarioId: uuid('funcionario_id'),
+      valor: numeric('valor', { precision: 15, scale: 2, mode: 'number'}),
+      createdAt: timestamp('created_at').defaultNow(),
+      updatedAt: timestamp('updated_at').defaultNow(),
+    },
+    (t) => [
+      primaryKey({
+        columns: [t.id],
+        name: 'pk_beneficios',
+      }),
+      foreignKey({
+        name: 'fk_funcionario_beneficios',
+        columns: [t.funcionarioId],
+        foreignColumns: [funcionarios(tenantId).id],
+      }),
+    ]
+  );
+
 export const funcionariosRelations = (tenantId: string) =>
   relations(diarias(tenantId), ({ many }) => ({
     diarias: many(diarias(tenantId)),
@@ -108,7 +141,7 @@ export const diarias = (tenantId: string) =>
       dia: date('dia').notNull(),
       funcionarioId: uuid('funcionario_id').notNull(),
       projetoId: uuid('projeto_id'),
-      tipoDiariaId: uuid('tipo_diaria_id'),
+      tipoDiaria: uuid('tipo_diaria'),
       observacoes: varchar('observacoes', { length: 100 }),
       createdAt: timestamp('created_at').defaultNow(),
       updatedAt: timestamp('updated_at').defaultNow(),
@@ -129,26 +162,28 @@ export const diarias = (tenantId: string) =>
         foreignColumns: [funcionarios(tenantId).id],
       }),
       foreignKey({
-        name: 'fk_diarias_tipo_diaria',
-        columns: [t.tipoDiariaId],
-        foreignColumns: [tiposDiaria(tenantId).id],
+        name: 'fk_diaria_lookup',
+        columns: [t.tipoDiaria],
+        foreignColumns: [lookup(tenantId).id],
       }),
     ]
   );
 
-export const tiposDiaria = (tenantId: string) =>
+
+export const lookup = (tenantId: string) =>
   pgSchema(tenantId).table(
-    'cad_tipo_diarias',
+    'cad_lookup',
     {
-      id: uuid('tipos_diaria_id').defaultRandom(),
+      id: uuid('lookup_id').unique().defaultRandom(),
+      grupo: varchar('grupo', { length: 100 }),
       nome: varchar('nome', { length: 100 }),
       createdAt: timestamp('created_at').defaultNow(),
       updatedAt: timestamp('updated_at').defaultNow(),
     },
     (t) => [
       primaryKey({
-        columns: [t.id],
-        name: 'pk_tipos_diaria',
+        columns: [t.grupo, t.nome],
+        name: 'pk_lookup',
       }),
     ]
   );

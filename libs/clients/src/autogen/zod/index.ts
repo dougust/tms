@@ -17,6 +17,7 @@ export { authResponseDtoSchema } from './authResponseDtoSchema';
 export { createDiariaDtoSchema } from './createDiariaDtoSchema';
 export { createEmpresaDtoSchema } from './createEmpresaDtoSchema';
 export { createFuncionarioDtoSchema } from './createFuncionarioDtoSchema';
+export { createLookupDtoSchema } from './createLookupDtoSchema';
 export { createManyDiariasDtoSchema } from './createManyDiariasDtoSchema';
 export { createProjetoDtoSchema } from './createProjetoDtoSchema';
 export { diariaDtoSchema } from './diariaDtoSchema';
@@ -101,6 +102,33 @@ export {
 } from './healthControllerGetHealthSchema';
 export { loginDtoSchema } from './loginDtoSchema';
 export { logoutDtoSchema } from './logoutDtoSchema';
+export { lookupDtoSchema } from './lookupDtoSchema';
+export {
+  lookupsControllerCreate201Schema,
+  lookupsControllerCreateMutationRequestSchema,
+  lookupsControllerCreateMutationResponseSchema,
+} from './lookupsControllerCreateSchema';
+export {
+  lookupsControllerFindByGroupPathParamsSchema,
+  lookupsControllerFindByGroup200Schema,
+  lookupsControllerFindByGroupQueryResponseSchema,
+} from './lookupsControllerFindByGroupSchema';
+export {
+  lookupsControllerFindOnePathParamsSchema,
+  lookupsControllerFindOne200Schema,
+  lookupsControllerFindOneQueryResponseSchema,
+} from './lookupsControllerFindOneSchema';
+export {
+  lookupsControllerRemovePathParamsSchema,
+  lookupsControllerRemove200Schema,
+  lookupsControllerRemoveMutationResponseSchema,
+} from './lookupsControllerRemoveSchema';
+export {
+  lookupsControllerUpdatePathParamsSchema,
+  lookupsControllerUpdate200Schema,
+  lookupsControllerUpdateMutationRequestSchema,
+  lookupsControllerUpdateMutationResponseSchema,
+} from './lookupsControllerUpdateSchema';
 export { projetoDtoSchema } from './projetoDtoSchema';
 export {
   projetosControllerCreate201Schema,
@@ -128,11 +156,7 @@ export {
   projetosControllerUpdateMutationResponseSchema,
 } from './projetosControllerUpdateSchema';
 export { refreshDtoSchema } from './refreshDtoSchema';
-export { tipoDiariaDtoSchema } from './tipoDiariaDtoSchema';
-export {
-  tiposDiariaControllerFindAll200Schema,
-  tiposDiariaControllerFindAllQueryResponseSchema,
-} from './tiposDiariaControllerFindAllSchema';
 export { updateEmpresaDtoSchema } from './updateEmpresaDtoSchema';
 export { updateFuncionarioDtoSchema } from './updateFuncionarioDtoSchema';
+export { updateLookupDtoSchema } from './updateLookupDtoSchema';
 export { updateProjetoDtoSchema } from './updateProjetoDtoSchema';
