@@ -923,6 +923,9 @@
           "funcao": {
             "type": "string"
           },
+          "salario": {
+            "type": "number"
+          },
           "dependetes": {
             "type": "number"
           },
@@ -948,6 +951,7 @@
           "email",
           "rg",
           "funcao",
+          "salario",
           "dependetes",
           "projetoId",
           "createdAt",

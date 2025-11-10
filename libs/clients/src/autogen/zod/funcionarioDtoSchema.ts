@@ -15,6 +15,7 @@ export const funcionarioDtoSchema = z.object({
   email: z.string(),
   rg: z.string(),
   funcao: z.string(),
+  salario: z.number(),
   dependetes: z.number(),
   projetoId: z.string(),
   createdAt: z.string().datetime(),

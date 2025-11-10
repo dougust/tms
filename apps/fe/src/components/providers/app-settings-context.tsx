@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { DateHeaderFormat } from '../../lib';
 import { useCustomDateFormat } from '../../hooks';
 import { AuthResponseDto, setAuthToken } from '@dougust/clients';
@@ -48,9 +48,7 @@ const AppSettingsContext = React.createContext<
   AppSettingsContextValue | undefined
 >(undefined);
 
-export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({
-  children,
-}) => {
+export default function AppSettingsProvider({ children }: PropsWithChildren) {
   const [settings, setSettingsState] = React.useState<AppSettings>(() => {
     const fromStorage = safeParse(window.localStorage.getItem(STORAGE_KEY));
     return fromStorage ?? DEFAULT_SETTINGS;
@@ -93,7 +91,7 @@ export const AppSettingsProvider: React.FC<React.PropsWithChildren> = ({
       {children}
     </AppSettingsContext.Provider>
   );
-};
+}
 
 export function useAppSettings(): AppSettingsContextValue {
   const ctx = React.useContext(AppSettingsContext);

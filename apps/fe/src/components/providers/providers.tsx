@@ -2,8 +2,11 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setClientConfig } from '@dougust/clients';
-import { AppSettingsProvider } from './app-settings-context';
 import dynamic from 'next/dynamic';
+
+const AppSettingsProvider = dynamic(() => import('./app-settings-context'), {
+  ssr: false,
+});
 
 const RefreshAuthProvider = dynamic(() => import('./refresh-auth.provider'), {
   ssr: false,
