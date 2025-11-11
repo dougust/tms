@@ -5,11 +5,8 @@ export interface IClientConfig {
   accessToken?: string | null;
 }
 
-let _baseURL: string | undefined;
-
 export const setClientConfig = (config: IClientConfig) => {
   const { baseURL, accessToken } = config;
-  _baseURL = baseURL;
 
   fetch.setConfig({
     baseURL,
@@ -21,10 +18,11 @@ export const setClientConfig = (config: IClientConfig) => {
 };
 
 export const setAuthToken = (accessToken?: string | null) => {
+  const config = fetch.getConfig();
   fetch.setConfig({
-    baseURL: _baseURL,
+    ...config,
     headers: {
-      'Content-Type': 'application/json',
+      ...config.headers,
       ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     },
   });
