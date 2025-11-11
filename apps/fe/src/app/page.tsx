@@ -14,7 +14,7 @@ export default function Index() {
     } else {
       router.push('/login');
     }
-  }, [router]);
+  }, [router, authContext]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
