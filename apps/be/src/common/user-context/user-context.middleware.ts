@@ -7,16 +7,6 @@ export class UserContextMiddleware implements NestMiddleware {
   constructor(private readonly context: UserContextService) {}
 
   private resolveTenantId(req: Request): string | undefined {
-    const mode = (process.env.TENANT_DOMAIN_MODE || 'header').toLowerCase();
-    if (mode === 'domain') {
-      const host = (req.headers['x-forwarded-host'] || req.headers['host']) as
-        | string
-        | undefined;
-      if (!host) return undefined;
-      // Expect subdomain.ignored.tld - not implemented without a tenant slug/domain column
-      // For now, domain mode unsupported: return undefined -> will trigger 400
-      return undefined;
-    }
     const headerName = process.env.TENANT_HEADER_NAME || 'X-Tenant-Id';
     const value = (
       req.get ? req.get(headerName) : req.headers[headerName.toLowerCase()]
@@ -26,8 +16,6 @@ export class UserContextMiddleware implements NestMiddleware {
 
   async use(request: Request, res: Response, next: NextFunction) {
     const tenantId = this.resolveTenantId(request);
-
-    console.log(tenantId, 'tenantId');
 
     if (tenantId) {
       request['tenantId'] = tenantId;
