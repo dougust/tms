@@ -15,6 +15,7 @@ import { useForm } from '@tanstack/react-form';
 import { FormField, FormPageLayout } from '../../../../components';
 
 const defaultValues: CreateFuncionarioDto = {
+  projetoId: '',
   cpf: '',
   email: '',
   nome: '',

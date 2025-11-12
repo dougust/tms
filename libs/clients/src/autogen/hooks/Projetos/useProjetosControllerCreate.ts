@@ -5,6 +5,10 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
+  ProjetosControllerCreateMutationRequest,
+  ProjetosControllerCreateMutationResponse,
+} from '../../types/ProjetosControllerCreate';
+import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -13,10 +17,6 @@ import type {
   UseMutationResult,
   QueryClient,
 } from '@tanstack/react-query';
-import type {
-  ProjetosControllerCreateMutationRequest,
-  ProjetosControllerCreateMutationResponse,
-} from '../../types/ProjetosControllerCreate.ts';
 import { mutationOptions, useMutation } from '@tanstack/react-query';
 
 export const projetosControllerCreateMutationKey = () =>

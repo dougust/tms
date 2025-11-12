@@ -1,4 +1,2 @@
-
 export * from './enums';
-export { tenant } from './core-tables';
-
+export * from './core-tables';

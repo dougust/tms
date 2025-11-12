@@ -43,6 +43,10 @@ export type FuncionarioDto = {
   /**
    * @type number
    */
+  salario: number;
+  /**
+   * @type number
+   */
   dependetes: number;
   /**
    * @type string

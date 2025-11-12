@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import type { CreateDiariaDto } from './CreateDiariaDto.ts';
-import type { DiariaDto } from './DiariaDto.ts';
+import type { CreateDiariaDto } from './CreateDiariaDto';
+import type { DiariaDto } from './DiariaDto';
 
 export type DiariasControllerCreate201 = DiariaDto;
 

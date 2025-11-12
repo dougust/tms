@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { getEmpresaResponseDtoSchema } from './getEmpresaResponseDtoSchema.ts';
+import { getEmpresaResponseDtoSchema } from './getEmpresaResponseDtoSchema';
 import { z } from 'zod/v4';
 
 export const empresasControllerFindOnePathParamsSchema = z.object({

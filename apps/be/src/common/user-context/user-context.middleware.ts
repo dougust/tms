@@ -6,8 +6,21 @@ import { UserContextService } from './user-context.service';
 export class UserContextMiddleware implements NestMiddleware {
   constructor(private readonly context: UserContextService) {}
 
-  use(req: Request, res: Response, next: NextFunction) {
-    const businessId = process.env.TENANT_ID;
-    this.context.run({ businessId }, next);
+  private resolveTenantId(req: Request): string | undefined {
+    const headerName = process.env.TENANT_HEADER_NAME || 'X-Tenant-Id';
+    const value = (
+      req.get ? req.get(headerName) : req.headers[headerName.toLowerCase()]
+    ) as string | undefined;
+    return value?.trim() || process.env.TENANT_ID || undefined;
+  }
+
+  async use(request: Request, res: Response, next: NextFunction) {
+    const tenantId = this.resolveTenantId(request);
+
+    if (tenantId) {
+      request['tenantId'] = tenantId;
+    }
+
+    this.context.run({ businessId: tenantId }, next);
   }
 }

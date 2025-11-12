@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema.ts';
+import { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema';
 import { z } from 'zod/v4';
 
 export const funcionariosControllerFindOnePathParamsSchema = z.object({

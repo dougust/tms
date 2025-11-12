@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { createLookupDtoSchema } from './createLookupDtoSchema.ts';
+import { createLookupDtoSchema } from './createLookupDtoSchema';
 import { z } from 'zod/v4';
 
 export const lookupsControllerCreate201Schema = z.any();

@@ -1,30 +1,34 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { login } from '../../lib/auth';
 import { Button } from '@dougust/ui';
+import { useAuthControllerLogin } from '@dougust/clients';
+import { useAppSettings } from '../../components';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState('');
+  const { setSettings } = useAppSettings();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  const { mutate, isPending, error } = useAuthControllerLogin({
+    mutation: {
+      onSuccess: (data) => {
+        setSettings({ authContext: data });
+        router.push('/dashboard');
+      },
+    },
+  });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    const result = login({ username, password });
-
-    if (result.success) {
-      router.push('/dashboard');
-    } else {
-      setError(result.error || 'Login failed');
-      setLoading(false);
-    }
+    mutate({
+      data: {
+        email,
+        password,
+      },
+    });
   };
 
   return (
@@ -40,21 +44,18 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium mb-2"
-              >
-                Username
+              <label htmlFor="email" className="block text-sm font-medium mb-2">
+                Email
               </label>
               <input
-                id="username"
-                name="username"
-                type="text"
+                id="email"
+                name="email"
+                type="email"
                 required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
               />
             </div>
 
@@ -80,20 +81,16 @@ export default function LoginPage() {
 
           {error && (
             <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-              {error}
+              {error.message || 'An error occurred. Please try again.'}
             </div>
           )}
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full"
-          >
-            {loading ? 'Signing in...' : 'Sign In'}
+          <Button type="submit" disabled={isPending} className="w-full">
+            {isPending ? 'Signing in...' : 'Sign In'}
           </Button>
 
           <p className="text-center text-xs text-muted-foreground">
-            Demo credentials: admin / admin
+            Demo credentials: admin@admin.com / admin123456
           </p>
         </form>
       </div>

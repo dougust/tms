@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { UpdateFuncionarioDto } from './UpdateFuncionarioDto.ts';
+import type { UpdateFuncionarioDto } from './UpdateFuncionarioDto';
 
 export type FuncionariosControllerUpdatePathParams = {
   /**

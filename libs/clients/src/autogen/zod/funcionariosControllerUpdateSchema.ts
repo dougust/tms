@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { updateFuncionarioDtoSchema } from './updateFuncionarioDtoSchema.ts';
+import { updateFuncionarioDtoSchema } from './updateFuncionarioDtoSchema';
 import { z } from 'zod/v4';
 
 export const funcionariosControllerUpdatePathParamsSchema = z.object({

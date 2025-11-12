@@ -80,8 +80,19 @@ CREATE TABLE "dg_0001"."cad_projetos" (
 	CONSTRAINT "cad_projetos_nome_unique" UNIQUE("nome")
 );
 --> statement-breakpoint
-CREATE TABLE "tenants" (
+CREATE TABLE "auth_sessions" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" uuid NOT NULL,
+	"token_hash" varchar(255) NOT NULL,
+	"expires_at" timestamp NOT NULL,
+	"ip_address" varchar(64),
+	"user_agent" varchar(512),
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE "tenants" (
+	"tenant_id" varchar(255) PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"description" text,
 	"phone" varchar(20),
@@ -100,6 +111,28 @@ CREATE TABLE "tenants" (
 	"subscription_tier" "subscription_tier" DEFAULT 'starter',
 	"trial_ends_at" timestamp,
 	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "tenants_tenant_id_unique" UNIQUE("tenant_id")
+);
+--> statement-breakpoint
+CREATE TABLE "tenant_memberships" (
+	"tenant_id" varchar(255) NOT NULL,
+	"user_id" uuid NOT NULL,
+	"role" "user_role" DEFAULT 'viewer' NOT NULL,
+	"is_default" boolean DEFAULT false,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "pk_tenant_memberships" PRIMARY KEY("tenant_id","user_id")
+);
+--> statement-breakpoint
+CREATE TABLE "users" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"email" varchar(255) NOT NULL,
+	"password_hash" varchar(255) NOT NULL,
+	"full_name" varchar(255),
+	"is_active" boolean DEFAULT true,
+	"last_login_at" timestamp,
+	"created_at" timestamp DEFAULT now(),
 	"updated_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
@@ -109,4 +142,9 @@ ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_funcionarios" FOR
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diaria_lookup" FOREIGN KEY ("tipo_diaria") REFERENCES "dg_0001"."cad_lookup"("lookup_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_funcionarios" ADD CONSTRAINT "fk_funcionarios_projetos" FOREIGN KEY ("projeto_id") REFERENCES "dg_0001"."cad_projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_funcionarios" ADD CONSTRAINT "fk_funcionarios_funcao" FOREIGN KEY ("funcao") REFERENCES "dg_0001"."cad_lookup"("lookup_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "dg_0001"."cad_projetos" ADD CONSTRAINT "fk_projeto_empresa" FOREIGN KEY ("empresa_id") REFERENCES "dg_0001"."cad_empresas"("empresa_id") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "dg_0001"."cad_projetos" ADD CONSTRAINT "fk_projeto_empresa" FOREIGN KEY ("empresa_id") REFERENCES "dg_0001"."cad_empresas"("empresa_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "auth_sessions" ADD CONSTRAINT "fk_auth_sessions_user" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "tenant_memberships" ADD CONSTRAINT "fk_tenant_memberships_tenant" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("tenant_id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "tenant_memberships" ADD CONSTRAINT "fk_tenant_memberships_user" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "auth_sessions_user_token_unique" ON "auth_sessions" USING btree ("user_id","token_hash");--> statement-breakpoint
+CREATE UNIQUE INDEX "users_email_unique" ON "users" USING btree ("email");

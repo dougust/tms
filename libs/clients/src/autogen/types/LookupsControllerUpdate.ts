@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { UpdateLookupDto } from './UpdateLookupDto.ts';
+import type { UpdateLookupDto } from './UpdateLookupDto';
 
 export type LookupsControllerUpdatePathParams = {
   /**

@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import { createManyDiariasDtoSchema } from './createManyDiariasDtoSchema.ts';
-import { diariaDtoSchema } from './diariaDtoSchema.ts';
+import { createManyDiariasDtoSchema } from './createManyDiariasDtoSchema';
+import { diariaDtoSchema } from './diariaDtoSchema';
 import { z } from 'zod/v4';
 
 export const diariasControllerCreateMany201Schema = z.array(diariaDtoSchema);

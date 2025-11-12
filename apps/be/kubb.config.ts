@@ -13,6 +13,7 @@ export default defineConfig(() => {
     output: {
       path: '../../libs/clients/src/autogen',
       clean: true,
+      extension: '',
       format: 'prettier',
     },
     plugins: [

@@ -5,6 +5,10 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
+  EmpresasControllerFindOneQueryResponse,
+  EmpresasControllerFindOnePathParams,
+} from '../../types/EmpresasControllerFindOne';
+import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -14,10 +18,6 @@ import type {
   QueryObserverOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
-import type {
-  EmpresasControllerFindOneQueryResponse,
-  EmpresasControllerFindOnePathParams,
-} from '../../types/EmpresasControllerFindOne.ts';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
 export const empresasControllerFindOneQueryKey = (

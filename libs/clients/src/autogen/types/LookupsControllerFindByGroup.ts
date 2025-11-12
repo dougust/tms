@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { LookupDto } from './LookupDto.ts';
+import type { LookupDto } from './LookupDto';
 
 export type LookupsControllerFindByGroupPathParams = {
   /**

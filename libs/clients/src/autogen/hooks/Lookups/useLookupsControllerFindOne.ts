@@ -5,6 +5,10 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
+  LookupsControllerFindOneQueryResponse,
+  LookupsControllerFindOnePathParams,
+} from '../../types/LookupsControllerFindOne';
+import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -14,10 +18,6 @@ import type {
   QueryObserverOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
-import type {
-  LookupsControllerFindOneQueryResponse,
-  LookupsControllerFindOnePathParams,
-} from '../../types/LookupsControllerFindOne.ts';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
 export const lookupsControllerFindOneQueryKey = (

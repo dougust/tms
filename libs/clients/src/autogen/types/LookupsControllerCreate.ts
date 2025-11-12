@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { CreateLookupDto } from './CreateLookupDto.ts';
+import type { CreateLookupDto } from './CreateLookupDto';
 
 export type LookupsControllerCreate201 = any;
 

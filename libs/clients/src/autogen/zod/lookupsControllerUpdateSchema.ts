@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { updateLookupDtoSchema } from './updateLookupDtoSchema.ts';
+import { updateLookupDtoSchema } from './updateLookupDtoSchema';
 import { z } from 'zod/v4';
 
 export const lookupsControllerUpdatePathParamsSchema = z.object({

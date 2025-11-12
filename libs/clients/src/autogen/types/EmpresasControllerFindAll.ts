@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { EmpresaDto } from './EmpresaDto.ts';
+import type { EmpresaDto } from './EmpresaDto';
 
 export type EmpresasControllerFindAll200 = EmpresaDto[];
 

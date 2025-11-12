@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { lookupDtoSchema } from './lookupDtoSchema.ts';
+import { lookupDtoSchema } from './lookupDtoSchema';
 import { z } from 'zod/v4';
 
 export const lookupsControllerFindByGroupPathParamsSchema = z.object({

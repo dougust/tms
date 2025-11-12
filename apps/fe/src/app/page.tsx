@@ -1,19 +1,20 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { isAuthenticated } from '../lib/auth';
+import { useAppSettings } from '../components';
+import { useEffect } from 'react';
 
 export default function Index() {
   const router = useRouter();
+  const { authContext } = useAppSettings();
 
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (authContext?.accessToken) {
       router.push('/dashboard');
     } else {
       router.push('/login');
     }
-  }, [router]);
+  }, [router, authContext]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">

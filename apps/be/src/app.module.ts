@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { DrizzleModule } from './modules/database/database.module';
 import { FuncionariosModule } from './modules/funcionarios/funcionarios.module';
 import { UserContextModule } from './common/user-context/user-context.module';
@@ -9,6 +10,8 @@ import { ProjetosModule } from './modules/projetos/projetos.module';
 import { EmpresasModule } from './modules/empresas/empresas.module';
 import { DiariasModule } from './modules/diarias/diarias.module';
 import { LookupsModule } from './modules/lookups/lookups.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { AuthGuard, TenantGuard } from './common';
 
 @Module({
   imports: [
@@ -21,9 +24,13 @@ import { LookupsModule } from './modules/lookups/lookups.module';
     EmpresasModule,
     DiariasModule,
     LookupsModule,
+    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: TenantGuard },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

@@ -1,10 +1,11 @@
 import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
+import { IFuncionario } from '@dougust/database';
 
 export class GetFuncionarioResponseDto {
   funcionario: FuncionarioDto;
 }
 
-export class FuncionarioDto {
+export class FuncionarioDto implements IFuncionario {
   @IsString()
   id: string;
 
@@ -31,6 +32,9 @@ export class FuncionarioDto {
 
   @IsString()
   funcao: string;
+
+  @IsNumber()
+  salario: number;
 
   @IsNumber()
   dependetes: number;

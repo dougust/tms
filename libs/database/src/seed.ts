@@ -1,8 +1,9 @@
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { reset, seed } from 'drizzle-seed';
-import * as schemaDev from './lib/schema.dev';
+import * as devSchema from './lib/schema.dev';
+import * as argon2 from 'argon2';
 
-const { lookupTpl,...schema } = schemaDev;
+const { lookupTpl, tenant, users, tenantMemberships, authSessions, ...schema } = devSchema;
 
 async function createLookups (db : NodePgDatabase) {
   const tipoDiariaValues = [
@@ -34,10 +35,53 @@ async function createLookups (db : NodePgDatabase) {
   return { tiposDiaria, funcao, beneficio };
 }
 
+
+async function createDevTenant(
+  db: NodePgDatabase,
+  tenantId: string,
+  email: string,
+  password: string
+) {
+  const passwordHash = await argon2.hash(password);
+
+  const [createdTenant] = await db
+    .insert(tenant)
+    .values({ id: tenantId, name: tenantId, isActive: true })
+    .returning();
+
+  const [createdUser] = await db
+    .insert(users)
+    .values({
+      email,
+      passwordHash,
+      isActive: true,
+    })
+    .returning();
+
+  await db.insert(tenantMemberships).values({
+    tenantId: createdTenant.id,
+    userId: createdUser.id,
+    role: 'owner',
+    isDefault: true,
+  });
+}
+
 async function main() {
   const db = drizzle(process.env['DATABASE_URL']);
 
   await reset(db, schema);
+  await createDevTenant(
+    db,
+    process.env.TENANT_ID,
+    process.env.DEV_TENANT_USER_EMAIL,
+    process.env.USER_PASSWORD
+  );
+  await createDevTenant(
+    db,
+    process.env.TENANT_2_ID,
+    process.env.DEV_TENANT_2_USER_EMAIL,
+    process.env.USER_PASSWORD
+  );
   const  { tiposDiaria, funcao, beneficio } =  await createLookups(db);
   await seed(db, schema).refine((f) => {
 

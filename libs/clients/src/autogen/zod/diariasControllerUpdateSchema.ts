@@ -3,8 +3,8 @@
  * Do not edit manually.
  */
 
-import { createDiariaDtoSchema } from './createDiariaDtoSchema.ts';
-import { diariaDtoSchema } from './diariaDtoSchema.ts';
+import { createDiariaDtoSchema } from './createDiariaDtoSchema';
+import { diariaDtoSchema } from './diariaDtoSchema';
 import { z } from 'zod/v4';
 
 export const diariasControllerUpdatePathParamsSchema = z.object({

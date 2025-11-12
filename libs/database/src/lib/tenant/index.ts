@@ -1,14 +1,13 @@
 import {
-  boolean,
   date,
   foreignKey,
   integer,
+  numeric,
   pgSchema,
   primaryKey,
   timestamp,
   uuid,
   varchar,
-  numeric, uniqueIndex
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 

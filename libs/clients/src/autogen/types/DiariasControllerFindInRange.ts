@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { DiariaDto } from './DiariaDto.ts';
+import type { DiariaDto } from './DiariaDto';
 
 export type DiariasControllerFindInRangeQueryParams = {
   /**

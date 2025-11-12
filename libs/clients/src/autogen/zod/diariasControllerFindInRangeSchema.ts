@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { diariaDtoSchema } from './diariaDtoSchema.ts';
+import { diariaDtoSchema } from './diariaDtoSchema';
 import { z } from 'zod/v4';
 
 export const diariasControllerFindInRangeQueryParamsSchema = z.object({

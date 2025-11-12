@@ -12,7 +12,7 @@ import {
 import { pgSchema } from 'drizzle-orm/pg-core';
 
 export * from './enums';
-export { tenant } from './core-tables';
+export * from './core-tables';
 
 export const schema = pgSchema(process.env.TENANT_ID);
 

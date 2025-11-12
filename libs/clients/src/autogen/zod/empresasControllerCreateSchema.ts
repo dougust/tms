@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { createEmpresaDtoSchema } from './createEmpresaDtoSchema.ts';
+import { createEmpresaDtoSchema } from './createEmpresaDtoSchema';
 import { z } from 'zod/v4';
 
 export const empresasControllerCreate201Schema = z.object({});

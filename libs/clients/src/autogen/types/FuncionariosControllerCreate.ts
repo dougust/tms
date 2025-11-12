@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { CreateFuncionarioDto } from './CreateFuncionarioDto.ts';
+import type { CreateFuncionarioDto } from './CreateFuncionarioDto';
 
 export type FuncionariosControllerCreate201 = object;
 

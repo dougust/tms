@@ -2,7 +2,7 @@ import React from 'react';
 import { addDays, startOfWeekMonday } from '../lib';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@dougust/ui';
 import { ChevronLeft, ChevronRight, Settings } from 'lucide-react';
-import { useAppSettings} from './app-settings-context';
+import { useAppSettings} from './providers';
 import { dateFormatOptions } from '../lib';
 
 export type DateSelectorProps = {

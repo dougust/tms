@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto.ts';
+import type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto';
 
 export type FuncionariosControllerFindOnePathParams = {
   /**
