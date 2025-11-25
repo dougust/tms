@@ -3,25 +3,43 @@
   "compilerOptions": {
     "rootDir": ".",
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@dougust/database": ["libs/database/src/index.ts"],
-      "@dougust/ui": ["libs/ui/src/index.ts"],
-      "@dougust/ui/*": ["libs/ui/src/*"],
-      "@dougust/fe/*": ["apps/fe/src/*"],
-      "@dougust/clients": ["libs/clients/src/index.ts"],
-      "@dougust/types": ["libs/types/src/index.ts"]
+      "@dougust/database": [
+        "libs/database/src/index.ts"
+      ],
+      "@dougust/ui": [
+        "libs/ui/src/index.ts"
+      ],
+      "@dougust/ui/*": [
+        "libs/ui/src/*"
+      ],
+      "@dougust/fe/*": [
+        "apps/fe/src/*"
+      ],
+      "@dougust/clients": [
+        "libs/clients/src/index.ts"
+      ],
+      "@dougust/types": [
+        "libs/types/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
