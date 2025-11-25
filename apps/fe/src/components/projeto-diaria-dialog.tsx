@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { Button } from "@dougust/ui";
+import * as React from 'react';
+import { Button } from '@dougust/ui';
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@dougust/ui/components/dialog";
-import { ProjetoDto } from "@dougust/clients";
+} from '@dougust/ui/components/dialog';
+import { ProjetoDto } from '@dougust/clients';
 
 export type ProjetoDiariaDialogProps = {
   open: boolean;
@@ -38,7 +38,9 @@ export function ProjetoDiariaDialog(props: ProjetoDiariaDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{props.title ?? "Alterar projeto da diária"}</DialogTitle>
+          <DialogTitle>
+            {props.title ?? 'Alterar projeto da diária'}
+          </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-3">
           <label className="text-sm text-muted-foreground">Projeto</label>
@@ -62,7 +64,7 @@ export function ProjetoDiariaDialog(props: ProjetoDiariaDialogProps) {
             <Button variant="outline">Cancelar</Button>
           </DialogClose>
           <Button onClick={onConfirm} disabled={!selectedProjetoId || isSaving}>
-            {isSaving ? "Salvando..." : "Confirmar"}
+            {isSaving ? 'Salvando...' : 'Confirmar'}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -13,9 +13,7 @@
         "dev": true,
         "port": 4200
       },
-      "dependsOn": [
-        "clients:regenerate"
-      ]
+      "dependsOn": ["clients:regenerate"]
     }
   }
 }

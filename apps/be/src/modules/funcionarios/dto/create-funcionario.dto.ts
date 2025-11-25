@@ -4,7 +4,8 @@ import {
   IsOptional,
   IsString,
   Length,
-  IsInt, IsDate,
+  IsInt,
+  IsDate,
 } from 'class-validator';
 import { IsUnique } from '../../../common/cadastros/isUniqueConstraint';
 import { funcionarios } from '@dougust/database';

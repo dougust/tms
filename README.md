@@ -35,30 +35,35 @@ dougust/
 ## 🛠️ Technology Stack
 
 ### Backend (`apps/dougust`)
+
 - **Framework**: NestJS 11
 - **API Type**: REST API
 - **Validation**: class-validator, class-transformer
 - **Documentation**: Swagger/OpenAPI
 
 ### Frontend (`apps/fe`)
+
 - **Framework**: Next.js 15 (React 19)
 - **Styling**: Tailwind CSS 4
 - **Data Fetching**: TanStack React Query
 - **API Client**: Auto-generated from backend
 
 ### UI Library (`libs/ui`)
+
 - **Component Library**: ShadCN
 - **Base Components**: Radix UI
 - **Styling**: Tailwind CSS with class-variance-authority
 - **Icons**: Lucide React
 
 ### Database (`libs/database`)
+
 - **ORM**: Drizzle ORM
 - **Database**: PostgreSQL
 - **Container**: Docker Compose
 - **Migrations**: Drizzle Kit
 
 ### API Clients (`libs/autogen-clients`)
+
 - **Generator**: Kubb
 - **Type**: React Query hooks
 - **Source**: Auto-generated from backend OpenAPI spec
@@ -75,6 +80,7 @@ dougust/
 
 1. Clone the repository
 2. Install dependencies:
+
    ```sh
    npm install
    ```
@@ -88,16 +94,19 @@ dougust/
 ### Running the Applications
 
 **Backend (NestJS):**
+
 ```sh
 npx nx serve dougust
 ```
 
 **Frontend (Next.js):**
+
 ```sh
 npx nx serve fe
 ```
 
 **Development Mode (watch both):**
+
 ```sh
 npx nx run-many --target=serve --projects=dougust,fe
 ```
@@ -129,6 +138,7 @@ npx nx list
 ### Application-Specific Commands
 
 **Backend:**
+
 ```sh
 npx nx serve dougust      # Run dev server
 npx nx build dougust      # Build for production
@@ -136,6 +146,7 @@ npx nx test dougust       # Run tests
 ```
 
 **Frontend:**
+
 ```sh
 npx nx serve fe           # Run dev server
 npx nx build fe           # Build for production
@@ -143,6 +154,7 @@ npx nx test fe            # Run tests
 ```
 
 **E2E Tests:**
+
 ```sh
 npx nx e2e dougust-e2e    # Backend E2E tests
 npx nx e2e fe-e2e         # Frontend E2E tests
@@ -182,19 +194,23 @@ npm run db:restore     # Clean slate: down, up, migrate, seed
 Follow this order for full-stack features:
 
 1. **Database Schema** (`libs/database`)
+
    - Define/update schema in Drizzle
    - Generate and run migrations
 
 2. **Backend API** (`apps/dougust`)
+
    - Create/update NestJS controllers and services
    - Add validation with class-validator
    - Document with Swagger decorators
 
 3. **API Clients** (`libs/autogen-clients`)
+
    - Clients are auto-generated from backend OpenAPI spec
    - No manual changes needed
 
 4. **UI Components** (`libs/ui`)
+
    - Add ShadCN components as needed
    - **Important**: Always run ShadCN CLI from `libs/ui` directory
    - Example: `cd libs/ui && npx shadcn@latest add button`
@@ -206,12 +222,14 @@ Follow this order for full-stack features:
 ### Working with ShadCN Components
 
 **Adding components:**
+
 ```sh
 cd libs/ui
 npx shadcn@latest add <component-name>
 ```
 
 **Modifying components:**
+
 - UI components can be customized as needed
 - When modifying, add a comment at the top:
   ```typescript
@@ -257,12 +275,14 @@ If you're an AI agent working on this codebase, please read [`docs/AI_AGENT_GUID
 ### Adding Projects
 
 Generate new applications:
+
 ```sh
 npx nx g @nx/nest:app <app-name>    # NestJS app
 npx nx g @nx/next:app <app-name>    # Next.js app
 ```
 
 Generate new libraries:
+
 ```sh
 npx nx g @nx/node:lib <lib-name>    # Node.js library
 npx nx g @nx/react:lib <lib-name>   # React library
@@ -277,4 +297,3 @@ npx nx g @nx/react:lib <lib-name>   # React library
 ## 📄 License
 
 MIT
-

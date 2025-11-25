@@ -58,9 +58,7 @@ export default function DashboardPage() {
                 <p className="text-2xl font-bold">{stat.value}</p>
                 <p
                   className={`text-xs ${
-                    stat.trend === 'up'
-                      ? 'text-green-600'
-                      : 'text-red-600'
+                    stat.trend === 'up' ? 'text-green-600' : 'text-red-600'
                   }`}
                 >
                   {stat.change} from last month

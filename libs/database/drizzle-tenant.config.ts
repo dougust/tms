@@ -9,7 +9,7 @@ export default defineConfig({
     url: process.env.DATABASE_URL!,
   },
   migrations: {
-    table: "__drizzle_tenant_migrations",
+    table: '__drizzle_tenant_migrations',
   },
-  schemaFilter: ["__tenant"],
+  schemaFilter: ['__tenant'],
 });

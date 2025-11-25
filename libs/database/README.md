@@ -11,5 +11,4 @@ Deletar o folder drizzle
 
 Em package.json do root: rodar db:generate
 
-
 Para restaurar o banco de dados rodar db:restore

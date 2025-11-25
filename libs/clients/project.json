@@ -22,9 +22,7 @@
         "command": "kubb generate",
         "cwd": "apps/be"
       },
-      "dependsOn": [
-        "be:generate-open-api-specs"
-      ]
+      "dependsOn": ["be:generate-open-api-specs"]
     }
   }
 }

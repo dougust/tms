@@ -55,6 +55,7 @@ This document outlines the architecture and deployment strategy for deploying th
 ## Infrastructure Components
 
 ### 1. Network Layer (VPC)
+
 - **VPC**: Dedicated VPC with CIDR block (e.g., 10.0.0.0/16)
 - **Public Subnets**: 2 subnets across 2 AZs for Application Load Balancer
 - **Private Subnets**: 2 subnets across 2 AZs for ECS tasks
@@ -63,6 +64,7 @@ This document outlines the architecture and deployment strategy for deploying th
 - **Internet Gateway**: For public subnet internet access
 
 ### 2. Database Layer (RDS PostgreSQL)
+
 - **Engine**: PostgreSQL 15.x or later
 - **Deployment**: Multi-AZ deployment for high availability
 - **Instance Type**: Start with db.t3.medium (adjustable based on load)
@@ -73,6 +75,7 @@ This document outlines the architecture and deployment strategy for deploying th
 - **Security Group**: Only accessible from ECS tasks
 
 ### 3. Compute Layer (ECS Fargate)
+
 - **Cluster**: ECS cluster for running containerized application
 - **Launch Type**: Fargate (serverless containers)
 - **Task Definition**:
@@ -88,6 +91,7 @@ This document outlines the architecture and deployment strategy for deploying th
   - Deployment: Rolling updates with circuit breaker
 
 ### 4. Load Balancing (ALB)
+
 - **Type**: Application Load Balancer
 - **Scheme**: Internet-facing
 - **Listeners**:
@@ -98,17 +102,20 @@ This document outlines the architecture and deployment strategy for deploying th
 - **Stickiness**: Enabled for session management
 
 ### 5. Container Registry (ECR)
+
 - **Repository**: Private repository for Docker images
 - **Lifecycle Policy**: Keep last 10 images, delete untagged after 7 days
 - **Scan on Push**: Enabled for vulnerability scanning
 
 ### 6. Secrets Management
+
 - **Secrets Manager** stores:
   - `prod/dougust/database-url`: PostgreSQL connection string
   - `prod/dougust/jwt-secret`: JWT access token secret
   - `prod/dougust/jwt-refresh-secret`: JWT refresh token secret
 
 ### 7. Monitoring & Logging
+
 - **CloudWatch Logs**: Application and container logs
 - **CloudWatch Metrics**: CPU, Memory, Request count
 - **CloudWatch Alarms**:
@@ -141,11 +148,13 @@ infra/
 ## Environment Variables
 
 ### Required Secrets (Secrets Manager)
+
 - `DATABASE_URL`: PostgreSQL connection string (auto-generated from RDS)
 - `JWT_SECRET`: JWT access token secret
 - `JWT_REFRESH_SECRET`: JWT refresh token secret
 
 ### Environment Variables (ECS Task)
+
 - `NODE_ENV`: production
 - `PORT`: 3000
 - `JWT_ACCESS_TOKEN_TTL`: 15m (or as configured)
@@ -156,6 +165,7 @@ infra/
 ## CI/CD Pipeline (GitHub Actions)
 
 ### Workflow Overview
+
 ```
 ┌─────────────┐     ┌──────────────┐     ┌─────────────┐     ┌──────────────┐
 │   Push to   │────►│  Build &     │────►│  Push to    │────►│  Deploy to   │
@@ -166,6 +176,7 @@ infra/
 ### Pipeline Stages
 
 1. **Build & Test**
+
    - Checkout code
    - Setup Node.js
    - Install dependencies
@@ -174,6 +185,7 @@ infra/
    - Build application
 
 2. **Docker Build & Push**
+
    - Build Docker image
    - Tag with commit SHA and 'latest'
    - Push to ECR
@@ -185,6 +197,7 @@ infra/
    - Run smoke tests
 
 ### Required GitHub Secrets
+
 - `AWS_ACCOUNT_ID`: AWS account ID
 - `AWS_REGION`: Deployment region (e.g., us-east-1)
 - `AWS_ACCESS_KEY_ID`: IAM access key for deployment
@@ -196,6 +209,7 @@ infra/
 ### Phase 1: Infrastructure Setup (Week 1)
 
 1. **Create CDK Project**
+
    ```bash
    mkdir -p infra/backend
    cd infra/backend
@@ -205,6 +219,7 @@ infra/
    ```
 
 2. **Implement Infrastructure Stacks**
+
    - Network Stack (VPC, Subnets, NAT Gateway)
    - Secrets Stack (Create secrets for DB and JWT)
    - Database Stack (RDS PostgreSQL with Multi-AZ)
@@ -213,6 +228,7 @@ infra/
    - Monitoring Stack (CloudWatch dashboards and alarms)
 
 3. **Bootstrap CDK**
+
    ```bash
    npx cdk bootstrap aws://ACCOUNT-ID/REGION
    ```
@@ -225,6 +241,7 @@ infra/
 ### Phase 2: Application Containerization (Week 1)
 
 1. **Create Dockerfile**
+
    - Multi-stage build for optimization
    - Use node:18-alpine base image
    - Copy dist folder from NX build
@@ -232,6 +249,7 @@ infra/
    - Health check endpoint
 
 2. **Create .dockerignore**
+
    - Exclude node_modules, .git, tests, etc.
 
 3. **Local Testing**
@@ -243,11 +261,13 @@ infra/
 ### Phase 3: CI/CD Pipeline Setup (Week 2)
 
 1. **Create GitHub Actions Workflow**
+
    - `.github/workflows/deploy-backend.yml`
    - Trigger on push to main branch
    - Build, test, and deploy stages
 
 2. **Configure AWS Credentials**
+
    - Create IAM user for GitHub Actions
    - Grant necessary permissions (ECR, ECS, Secrets Manager)
    - Add secrets to GitHub repository
@@ -261,23 +281,27 @@ infra/
 ### Phase 4: Production Hardening (Week 2)
 
 1. **Security**
+
    - Enable encryption at rest for RDS
    - Configure security groups with least privilege
    - Enable AWS WAF on ALB (optional)
    - Implement VPC Flow Logs
 
 2. **Monitoring**
+
    - Set up CloudWatch dashboards
    - Configure alarms for critical metrics
    - Set up SNS for alert notifications
    - Enable Container Insights
 
 3. **Backup & Recovery**
+
    - Configure automated RDS snapshots
    - Document disaster recovery procedures
    - Test restore procedures
 
 4. **Performance**
+
    - Configure auto-scaling policies
    - Set up CloudFront CDN (optional)
    - Enable ALB access logs
@@ -291,6 +315,7 @@ infra/
 ## Cost Estimation (Monthly)
 
 ### Development Environment
+
 - **ECS Fargate** (2 tasks, 0.5 vCPU, 1GB): ~$30
 - **RDS PostgreSQL** (db.t3.medium, Multi-AZ): ~$120
 - **Application Load Balancer**: ~$20
@@ -300,6 +325,7 @@ infra/
 - **Total**: ~$250/month
 
 ### Production Environment
+
 - **ECS Fargate** (4 tasks, 1 vCPU, 2GB): ~$120
 - **RDS PostgreSQL** (db.t3.large, Multi-AZ): ~$240
 - **Application Load Balancer**: ~$20
@@ -308,43 +334,50 @@ infra/
 - **CloudWatch**: ~$20
 - **Total**: ~$510/month
 
-*Note: Actual costs will vary based on usage, data transfer, and scaling*
+_Note: Actual costs will vary based on usage, data transfer, and scaling_
 
 ## Scaling Strategy
 
 ### Horizontal Scaling (ECS Tasks)
+
 - **Metrics**: CPU > 70% or Memory > 80%
 - **Scale Up**: Add 1 task (max 10 tasks)
 - **Scale Down**: Remove 1 task (min 2 tasks)
 - **Cooldown**: 300 seconds
 
 ### Vertical Scaling (RDS)
+
 - Monitor database performance metrics
 - Upgrade instance type as needed
 - Enable read replicas for read-heavy workloads
 
 ### Database Connection Pooling
+
 - Configure Drizzle connection pool size
 - Recommended: 10-20 connections per ECS task
 
 ## Security Best Practices
 
 1. **Network Security**
+
    - Use private subnets for ECS and RDS
    - Security groups with least privilege
    - No direct database access from internet
 
 2. **Secrets Management**
+
    - Never hardcode credentials
    - Use Secrets Manager for all sensitive data
    - Rotate secrets regularly
 
 3. **Container Security**
+
    - Scan images for vulnerabilities
    - Use minimal base images (Alpine)
    - Run as non-root user
 
 4. **Access Control**
+
    - Use IAM roles for ECS tasks
    - Enable CloudTrail for audit logging
    - Implement MFA for AWS console access
@@ -357,12 +390,15 @@ infra/
 ## Monitoring & Alerting
 
 ### Key Metrics to Monitor
+
 1. **Application Metrics**
+
    - Request rate and latency
    - Error rates (4xx, 5xx)
    - Task count and health
 
 2. **Database Metrics**
+
    - CPU and memory utilization
    - Connection count
    - Query performance
@@ -374,6 +410,7 @@ infra/
    - NAT Gateway throughput
 
 ### Recommended Alarms
+
 - ECS Service: Unhealthy task count > 0
 - RDS: CPU > 80% for 5 minutes
 - RDS: Storage < 20% free
@@ -383,17 +420,21 @@ infra/
 ## Disaster Recovery
 
 ### Backup Strategy
+
 - **RDS Automated Backups**: Daily, 7-day retention
 - **RDS Manual Snapshots**: Before major deployments
 - **Database Export**: Weekly full backup to S3
 
 ### Recovery Procedures
+
 1. **Database Failure**
+
    - Automatic failover to standby (Multi-AZ)
    - RTO: < 2 minutes
    - RPO: < 5 minutes
 
 2. **Application Failure**
+
    - ECS auto-recovery of failed tasks
    - Rollback to previous ECS task definition
    - RTO: < 5 minutes
@@ -407,12 +448,14 @@ infra/
 ## Migration Strategy
 
 ### Database Migration
+
 1. **Setup RDS Instance**: Deploy via CDK
 2. **Run Migrations**: Use Drizzle migration tools
 3. **Seed Data**: Run seed scripts if needed
 4. **Verify Schema**: Check all tables and indexes
 
 ### Application Migration
+
 1. **Deploy to Staging**: Test full stack in AWS
 2. **Load Testing**: Verify performance under load
 3. **Blue/Green Deployment**: Deploy to production with rollback plan
@@ -422,6 +465,7 @@ infra/
 ## Maintenance Windows
 
 ### Recommended Schedule
+
 - **Database Maintenance**: Sunday 2-4 AM (your timezone)
 - **Application Updates**: Continuous deployment during business hours
 - **Infrastructure Updates**: Planned maintenance windows
@@ -429,12 +473,14 @@ infra/
 ## Support & Documentation
 
 ### Runbooks
+
 - Deployment procedures
 - Rollback procedures
 - Scaling procedures
 - Incident response
 
 ### Access Management
+
 - Document who has access to AWS console
 - Document who can approve deployments
 - Document on-call rotation

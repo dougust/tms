@@ -14,6 +14,7 @@ This repository splits the work into five focused plan documents. Start here, th
    - Create per-tenant schemas/tables and seed defaults.
 
 Notes:
+
 - Backend and database only. Frontend out of scope.
 - No SSO in these plans.
 - Provisioning is deliberately separate.
@@ -27,6 +28,7 @@ Plan to implement authentication and authorization for a multi-tenant SaaS with 
 ## Plan
 
 1. Database: Base schema additions (Drizzle + migrations)
+
    - Create users table (base schema)
      - id (uuid, pk, defaultRandom)
      - email (varchar 255, unique, not null)
@@ -74,7 +76,8 @@ Plan to implement authentication and authorization for a multi-tenant SaaS with 
    - Drizzle migrations: forward and down scripts to create/drop the above.
 
 2. Database: Per-tenant schema provisioning
-   - Standardize tenant schema name: use tenants.id as schema (already supported via libs/database/src/lib/tenant). Ensure naming is safe (UUIDs are valid identifiers when quoted; alternatively use t_<shortid>). Keep using id as schema name for simplicity.
+
+   - Standardize tenant schema name: use tenants.id as schema (already supported via libs/database/src/lib/tenant). Ensure naming is safe (UUIDs are valid identifiers when quoted; alternatively use t\_<shortid>). Keep using id as schema name for simplicity.
    - Implement a provisioning service that:
      - Creates schema if not exists for a given tenantId.
      - Creates tenant tables using existing factory functions in libs/database/src/lib/tenant (empresas, projetos, funcionarios, diarias, tiposDiaria).
@@ -82,6 +85,7 @@ Plan to implement authentication and authorization for a multi-tenant SaaS with 
    - Record provisioning status in tenants table (add provisionedAt timestamp) or keep it implicit by trying CREATE SCHEMA IF NOT EXISTS on every boot.
 
 3. Backend: Auth module (NestJS - apps/be)
+
    - Create AuthModule with:
      - LocalStrategy (email + password) using Passport
      - JwtStrategy for access tokens (short-lived, e.g., 15m)
@@ -101,6 +105,7 @@ Plan to implement authentication and authorization for a multi-tenant SaaS with 
      - POST /auth/verify-email, POST /auth/request-password-reset, POST /auth/reset-password
 
 4. Backend: Multi-tenant request resolution and enforcement
+
    - Add TenantResolverMiddleware
      - Resolves tenant from subdomain (e.g., acme.example.com -> acme) or header X-Tenant-Id for non-subdomain environments.
      - Looks up tenant in base schema by domain slug or id and attaches tenantId to request.
@@ -115,6 +120,7 @@ Plan to implement authentication and authorization for a multi-tenant SaaS with 
      - Keep schema.dev.ts for local single-tenant/dev convenience.
 
 5. Backend: Authorization (RBAC)
+
    - Define Role -> Permissions mapping in code (policy-based guard):
      - owner: all permissions within tenant, including members and billing
      - admin: manage tenant settings and all business data; cannot delete tenant
@@ -124,6 +130,7 @@ Plan to implement authentication and authorization for a multi-tenant SaaS with 
    - Optionally integrate CASL later; initial implementation uses code-based RBAC to minimize complexity.
 
 6. Tenant lifecycle flows
+
    - Signup flow (no existing user):
      - Create user (base schema) with hashed password
      - Create tenant (tenants table)
@@ -138,10 +145,12 @@ Plan to implement authentication and authorization for a multi-tenant SaaS with 
      - Endpoint to switch current tenant: validates membership and returns new access token with that tenantId claim.
 
 7. Tokens and claims
+
    - Access token (JWT) claims: sub (userId), email, currentTenantId, roles (map of tenantId -> role or just current role), iat, exp
    - Refresh token: opaque random string; store only hash in auth_sessions. Rotate on use (detect reuse). Bind to userId and optionally to tenantId for UX, but generally tenant-agnostic.
 
 8. Security hardening
+
    - Password hashing: argon2id with secure params
    - Rate limiting on login and sensitive endpoints
    - Account lockout after N failed attempts with exponential backoff
@@ -149,32 +158,38 @@ Plan to implement authentication and authorization for a multi-tenant SaaS with 
    - Optional MFA at later phase (table fields are present)
 
 9. Migrations and seeding
+
    - Add Drizzle schema definitions for new base tables and enums in libs/database
    - Generate Drizzle migrations to create them
    - Add a lightweight SeedService for dev that creates a sample tenant and user
 
 10. Testing
-   - Unit tests for AuthService, Jwt strategies, TenantGuard, RolesGuard
-   - E2E tests for signup -> login -> CRUD sample tenant data via empresas/projetos with tenant isolation
+
+- Unit tests for AuthService, Jwt strategies, TenantGuard, RolesGuard
+- E2E tests for signup -> login -> CRUD sample tenant data via empresas/projetos with tenant isolation
 
 11. Observability and auditing (backend only)
-   - Add structured logs for auth events (login, logout, token refresh, invite)
-   - Optionally add audit_logs table in base schema for critical admin actions (owner/admin)
+
+- Add structured logs for auth events (login, logout, token refresh, invite)
+- Optionally add audit_logs table in base schema for critical admin actions (owner/admin)
 
 12. Configuration
-   - New env vars:
-     - JWT_ACCESS_TOKEN_TTL, JWT_REFRESH_TOKEN_TTL
-     - JWT_SECRET, JWT_REFRESH_SECRET (or single secret with separate audiences)
-     - PASSWORD_HASH_MEMORY/COST if needed
-     - TENANT_DOMAIN_MODE=domain|header; TENANT_HEADER_NAME=X-Tenant-Id
+
+- New env vars:
+  - JWT_ACCESS_TOKEN_TTL, JWT_REFRESH_TOKEN_TTL
+  - JWT_SECRET, JWT_REFRESH_SECRET (or single secret with separate audiences)
+  - PASSWORD_HASH_MEMORY/COST if needed
+  - TENANT_DOMAIN_MODE=domain|header; TENANT_HEADER_NAME=X-Tenant-Id
 
 ## Decisions
 
 - Decision: Use JWT (access + refresh) with Argon2id and hashed refresh tokens stored in auth_sessions
+
   - Alternatives: Stateless JWT only (no refresh) or session cookies with server-side store
   - Rationale: Mobile/SPA-friendly, scalable horizontally, and hashed storage protects in case of DB leak. Rotation mitigates theft.
 
 - Decision: Code-based RBAC (owner/admin/member/viewer) enforced via Nest guards
+
   - Alternatives: Database-driven permissions table; CASL/OPA based fine-grained ABAC
   - Rationale: Simpler initial implementation; can evolve to policy engine later without breaking APIs.
 
