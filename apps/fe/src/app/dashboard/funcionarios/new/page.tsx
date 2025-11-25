@@ -23,7 +23,6 @@ const defaultValues: CreateFuncionarioDto = {
   nascimento: '',
   phone: '',
   rg: '',
-  projetoId: '',
   funcao: '',
   dependetes: 0,
 };
