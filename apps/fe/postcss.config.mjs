@@ -1,1 +1,1 @@
-export { default } from "../../libs/ui/postcss.config.mjs";
+export { default } from '../../libs/ui/postcss.config.mjs';

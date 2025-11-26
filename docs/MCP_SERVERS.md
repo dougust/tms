@@ -5,12 +5,14 @@ This repository includes MCP (Model Context Protocol) server configuration to en
 ## What are MCP Servers?
 
 MCP servers provide AI agents with access to specialized tools and context:
+
 - **NX MCP Server**: Provides accurate, up-to-date information about NX commands, configuration, and best practices
 - **ShadCN MCP Server**: Helps discover, add, and work with ShadCN UI components
 
 ## Setup Instructions
 
 ### Prerequisites
+
 - [Warp Terminal](https://www.warp.dev/) installed
 - Node.js and npm installed (for running MCP servers)
 
@@ -24,22 +26,25 @@ This repository includes MCP server configuration in `.mcp/servers.json`. Warp s
 2. **Start Agent Mode** (Cmd+Shift+P or use the AI agent feature)
 3. **Test the connection** by asking: "What NX commands are available?"
 
- If the MCP servers are working correctly, the AI agent will use the NX MCP tools to provide accurate information.
+If the MCP servers are working correctly, the AI agent will use the NX MCP tools to provide accurate information.
 
 ### Troubleshooting
 
 #### MCP Servers Not Loading
 
 1. **Check Warp is using the config**:
+
    - Warp should automatically detect `.mcp/servers.json` in the repository root
    - You may need to restart Warp after cloning the repository
 
 2. **Manually verify the configuration**:
+
    ```bash
    cat .mcp/servers.json
    ```
-   
+
    Should show:
+
    ```json
    {
      "mcpServers": {
@@ -56,10 +61,11 @@ This repository includes MCP server configuration in `.mcp/servers.json`. Warp s
    ```
 
 3. **Test MCP servers manually**:
+
    ```bash
    # Test NX MCP server
    npx -y @nx/mcp-server
-   
+
    # Test ShadCN MCP server
    npx -y @shadcn/mcp-server
    ```

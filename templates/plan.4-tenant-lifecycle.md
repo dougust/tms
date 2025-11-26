@@ -7,6 +7,7 @@ Scope: Backend and database (base schema) only.
 ## Database (base schema)
 
 1. tenant_memberships
+
    - tenantId (uuid fk -> tenants.id)
    - userId (uuid fk -> users.id)
    - role (enum: owner | admin | member | viewer)
@@ -27,11 +28,13 @@ Scope: Backend and database (base schema) only.
    - createdAt (timestamp, defaultNow)
 
 Notes:
+
 - Use enums.userRoleEnum already present, or create a separate role enum if needed. Map differences in code if DB enum values differ.
 
 ## Backend endpoints (NestJS)
 
 1. POST /auth/signup
+
    - Input: { fullName, email, password, tenantName }
    - Flow:
      - Create user (hash password)
@@ -41,12 +44,14 @@ Notes:
      - Issue access/refresh tokens (optionally include currentTenantId in claims)
 
 2. POST /auth/invite (owner/admin)
+
    - Input: { email, role }
    - Flow:
      - Create invite with token and expiry for current tenant
      - Email sending is out of scope; return token in response for dev
 
 3. POST /auth/accept-invite
+
    - Input: { token, fullName?, password? }
    - Flow:
      - Validate token; load tenant and role
@@ -61,17 +66,20 @@ Notes:
      - Return a new access token embedding currentTenantId=tenantId for convenience
 
 ## Business rules
+
 - A user can have multiple memberships (multi-tenant user)
 - Exactly one membership per (tenantId, userId) tuple
 - One default membership across user’s memberships (isDefault=true); maintain with transaction when flipping defaults
 - Owner can transfer ownership to another member (out of scope for now, but keep in mind for future)
 
 ## Security
+
 - All endpoints require JWT except signup and accept-invite
 - Enforce rate limiting on signup and invite endpoints
 - Token claims should not leak invite tokens or sensitive data
 
 ## Acceptance criteria
+
 - Users can sign up and become owner of a new tenant (without provisioning)
 - Admin/Owner can invite users; users can accept and gain membership
 - Users with multiple tenants can switch their current tenant context via a token refresh or dedicated endpoint

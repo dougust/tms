@@ -1,4 +1,10 @@
-import { IsDateString, IsEmail, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsDateString,
+  IsEmail,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 import { IsUnique } from '../../../common/cadastros/isUniqueConstraint';
 import { empresas } from '@dougust/database';
 

@@ -81,7 +81,7 @@ export const funcionarios = (tenantId: string) =>
       email: varchar('email', { length: 255 }).unique().notNull(),
       rg: varchar('rg', { length: 11 }),
       funcao: uuid('funcao'),
-      salario: numeric('salario', { precision: 15, scale: 2, mode: 'number'}),
+      salario: numeric('salario', { precision: 15, scale: 2, mode: 'number' }),
       dependetes: integer('dependentes'),
       projetoId: uuid('projeto_id').notNull(),
       createdAt: timestamp('created_at').defaultNow(),
@@ -111,7 +111,7 @@ export const beneficios = (tenantId: string) =>
     {
       id: uuid('beneficio_id').defaultRandom(),
       funcionarioId: uuid('funcionario_id'),
-      valor: numeric('valor', { precision: 15, scale: 2, mode: 'number'}),
+      valor: numeric('valor', { precision: 15, scale: 2, mode: 'number' }),
       createdAt: timestamp('created_at').defaultNow(),
       updatedAt: timestamp('updated_at').defaultNow(),
     },
@@ -168,7 +168,6 @@ export const diarias = (tenantId: string) =>
       }),
     ]
   );
-
 
 export const lookup = (tenantId: string) =>
   pgSchema(tenantId).table(

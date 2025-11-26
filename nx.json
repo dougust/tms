@@ -55,6 +55,20 @@
       "options": {
         "targetName": "e2e"
       }
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "tsc:build",
+          "configName": "tsconfig.lib.json",
+          "buildDepsName": "tsc:build-deps",
+          "watchDepsName": "tsc:watch-deps"
+        }
+      }
     }
   ],
   "targetDefaults": {

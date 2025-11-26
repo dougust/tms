@@ -23,7 +23,6 @@ const defaultValues: CreateFuncionarioDto = {
   nascimento: '',
   phone: '',
   rg: '',
-  projetoId: '',
   funcao: '',
   dependetes: 0,
 };
@@ -31,8 +30,11 @@ const defaultValues: CreateFuncionarioDto = {
 export default function NewFuncionarioPage() {
   const router = useRouter();
   const createMutation = useFuncionariosControllerCreate();
-  const { data: projetos = [], isPending: isProjetosPending, isError: isProjetosError } =
-    useProjetosControllerFindAll<ProjetoDto[]>();
+  const {
+    data: projetos = [],
+    isPending: isProjetosPending,
+    isError: isProjetosError,
+  } = useProjetosControllerFindAll<ProjetoDto[]>();
 
   const form = useForm({
     defaultValues,
@@ -226,7 +228,11 @@ export default function NewFuncionarioPage() {
                     onBlur={field.handleBlur}
                     disabled={isProjetosPending || isProjetosError}
                   >
-                    <option value="">{isProjetosPending ? 'Carregando projetos...' : 'Selecione um projeto'}</option>
+                    <option value="">
+                      {isProjetosPending
+                        ? 'Carregando projetos...'
+                        : 'Selecione um projeto'}
+                    </option>
                     {projetos.map((p) => (
                       <option key={p.id} value={p.id}>
                         {p.nome}

@@ -51,15 +51,14 @@ export class ProjetosService {
     return entity;
   }
 
-
   async update(id: string, dto: UpdateProjetoDto) {
     const [projeto] = await this.db
       .update(this.table)
       .set({
         empresaId: dto.empresaId ?? undefined,
         nome: dto.nome ?? undefined,
-        inicio: (dto.inicio) ?? undefined,
-        fim: (dto.fim) ?? undefined,
+        inicio: dto.inicio ?? undefined,
+        fim: dto.fim ?? undefined,
         updatedAt: new Date(),
       })
       .where(eq(this.table.id, id))

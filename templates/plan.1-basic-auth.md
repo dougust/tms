@@ -9,6 +9,7 @@ Scope: Backend and database only.
 Create minimal tables needed for login/logout and refresh token rotation. Keep user–tenant relationships out of scope for this plan (handled in Plans 2–4).
 
 1. users
+
    - id (uuid, pk, defaultRandom)
    - email (varchar 255, unique, not null)
    - passwordHash (varchar 255, not null)
@@ -30,18 +31,21 @@ Create minimal tables needed for login/logout and refresh token rotation. Keep u
    - unique index on (userId, tokenHash)
 
 Notes:
+
 - No SSO tables, no invites, no tenant_memberships in this plan.
 - Email verification/MFA are out of scope here (fields can be added later without breaking functionality).
 
 ## Backend (NestJS in apps/be)
 
 ### Recommended libraries
+
 - @nestjs/jwt — JWT issue/verify for access tokens
 - @nestjs/passport + passport-local — optional, but convenient for a LocalStrategy
 - argon2 — for password hashing/verification (argon2id)
 - class-validator / class-transformer — DTO input validation
 
 ### Module structure
+
 - AuthModule
   - Strategies
     - LocalStrategy (email + password)
@@ -71,6 +75,7 @@ Notes:
       - On success: 204 No Content
 
 ### Token strategy
+
 - Access Token (JWT)
   - Claims: sub (userId), email, iat, exp
   - TTL: 15 minutes (configurable: JWT_ACCESS_TOKEN_TTL)
@@ -80,21 +85,25 @@ Notes:
   - Rotate on refresh; revoke on logout
 
 ### Security
+
 - Hash passwords with argon2id (sensible parameters)
 - Rate limit login endpoint
 - Return uniform error messages for invalid credentials
 
 ### Configuration
+
 - JWT_SECRET
 - JWT_ACCESS_TOKEN_TTL (e.g., 15m)
 - JWT_REFRESH_TOKEN_TTL (e.g., 30d)
 
 ### DTOs
+
 - LoginDto: { email: string; password: string }
 - RefreshDto: { refreshToken: string }
 - LogoutDto: { refreshToken?: string }
 
 ### Acceptance criteria
+
 - Can log in an existing active user and get access/refresh tokens
 - Can refresh tokens (old refresh invalidated or marked used)
 - Can logout (session revoked)

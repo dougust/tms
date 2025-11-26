@@ -18,8 +18,8 @@ export function toRecordReducer<T extends IEntity>(
 
 export function reduceToRecordWithSelect<T extends object>(
   entities: T[],
-  selector: (entity: T) => string,
-){
+  selector: (entity: T) => string
+) {
   return entities.reduce((acc, entity): Record<string, T> => {
     const key = selector(entity);
     if (key) {
@@ -27,4 +27,4 @@ export function reduceToRecordWithSelect<T extends object>(
     }
     return acc;
   }, {} as Record<string, T>);
-};
+}

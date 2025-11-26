@@ -12,10 +12,7 @@ export const generateOpenApiSpecs = async <T>(
     .setVersion('1.0.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  const outPath = join(
-    __dirname,
-    '../../../apps/be/open-api-specs.json'
-  );
+  const outPath = join(__dirname, '../../../apps/be/open-api-specs.json');
   await writeFile(outPath, JSON.stringify(document, null, 2), 'utf8');
   await app.close();
   Logger.log(`✅ OpenAPI spec generated at ${outPath}`);
