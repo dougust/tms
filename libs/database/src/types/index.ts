@@ -11,8 +11,8 @@ import {
 export type IEmpresaTable = ReturnType<typeof empresas>;
 export type IFuncionarioTable = ReturnType<typeof funcionarios>;
 export type IProjetoTable = ReturnType<typeof projetos>;
-export type IDiariaTable = ReturnType<typeof lookup>;
-export type ILookupTable = ReturnType<typeof diarias>;
+export type IDiariaTable = ReturnType<typeof diarias>;
+export type ILookupTable = ReturnType<typeof lookup>;
 export type IBeneficiosTable = ReturnType<typeof beneficios>;
 
 export type IEmpresa = InferSelectModel<IEmpresaTable>;
