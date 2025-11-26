@@ -1,4 +1,10 @@
-import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { IFuncionario } from '@dougust/database';
 
 export class GetFuncionarioResponseDto {
@@ -47,4 +53,11 @@ export class FuncionarioDto implements IFuncionario {
 
   @IsDate()
   updatedAt: Date;
+
+  @IsNumber()
+  decimoTerceiro: number;
+
+  // Férias = salário / 9
+  @IsNumber()
+  ferias: number;
 }

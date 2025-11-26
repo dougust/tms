@@ -5,10 +5,6 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
-  AuthControllerLoginMutationRequest,
-  AuthControllerLoginMutationResponse,
-} from '../../types/AuthControllerLogin';
-import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -17,6 +13,10 @@ import type {
   UseMutationResult,
   QueryClient,
 } from '@tanstack/react-query';
+import type {
+  AuthControllerLoginMutationRequest,
+  AuthControllerLoginMutationResponse,
+} from '../../types/AuthControllerLogin';
 import { mutationOptions, useMutation } from '@tanstack/react-query';
 
 export const authControllerLoginMutationKey = () =>

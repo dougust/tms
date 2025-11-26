@@ -1,5 +1,5 @@
 {
-  "id": "f0c733c0-cec0-4ab7-a5d7-0ee88b7dfb0c",
+  "id": "98f49c40-e9ce-48e2-8919-0f68437f4cc7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -49,8 +49,12 @@
           "tableFrom": "cad_beneficios",
           "tableTo": "cad_funcionarios",
           "schemaTo": "dg_0001",
-          "columnsFrom": ["funcionario_id"],
-          "columnsTo": ["funcionario_id"],
+          "columnsFrom": [
+            "funcionario_id"
+          ],
+          "columnsTo": [
+            "funcionario_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -58,7 +62,9 @@
       "compositePrimaryKeys": {
         "pk_beneficios": {
           "name": "pk_beneficios",
-          "columns": ["beneficio_id"]
+          "columns": [
+            "beneficio_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -129,8 +135,12 @@
           "tableFrom": "cad_diarias",
           "tableTo": "cad_projetos",
           "schemaTo": "dg_0001",
-          "columnsFrom": ["projeto_id"],
-          "columnsTo": ["projeto_id"],
+          "columnsFrom": [
+            "projeto_id"
+          ],
+          "columnsTo": [
+            "projeto_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -139,8 +149,12 @@
           "tableFrom": "cad_diarias",
           "tableTo": "cad_funcionarios",
           "schemaTo": "dg_0001",
-          "columnsFrom": ["funcionario_id"],
-          "columnsTo": ["funcionario_id"],
+          "columnsFrom": [
+            "funcionario_id"
+          ],
+          "columnsTo": [
+            "funcionario_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -149,8 +163,12 @@
           "tableFrom": "cad_diarias",
           "tableTo": "cad_lookup",
           "schemaTo": "dg_0001",
-          "columnsFrom": ["tipo_diaria"],
-          "columnsTo": ["lookup_id"],
+          "columnsFrom": [
+            "tipo_diaria"
+          ],
+          "columnsTo": [
+            "lookup_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -158,7 +176,9 @@
       "compositePrimaryKeys": {
         "pk_diarias": {
           "name": "pk_diarias",
-          "columns": ["diarias_id"]
+          "columns": [
+            "diarias_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -233,19 +253,25 @@
       "compositePrimaryKeys": {
         "pk_empresa": {
           "name": "pk_empresa",
-          "columns": ["empresa_id"]
+          "columns": [
+            "empresa_id"
+          ]
         }
       },
       "uniqueConstraints": {
         "cad_empresas_cnpj_unique": {
           "name": "cad_empresas_cnpj_unique",
           "nullsNotDistinct": false,
-          "columns": ["cnpj"]
+          "columns": [
+            "cnpj"
+          ]
         },
         "cad_empresas_email_unique": {
           "name": "cad_empresas_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -351,8 +377,12 @@
           "tableFrom": "cad_funcionarios",
           "tableTo": "cad_projetos",
           "schemaTo": "dg_0001",
-          "columnsFrom": ["projeto_id"],
-          "columnsTo": ["projeto_id"],
+          "columnsFrom": [
+            "projeto_id"
+          ],
+          "columnsTo": [
+            "projeto_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -361,8 +391,12 @@
           "tableFrom": "cad_funcionarios",
           "tableTo": "cad_lookup",
           "schemaTo": "dg_0001",
-          "columnsFrom": ["funcao"],
-          "columnsTo": ["lookup_id"],
+          "columnsFrom": [
+            "funcao"
+          ],
+          "columnsTo": [
+            "lookup_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -370,19 +404,25 @@
       "compositePrimaryKeys": {
         "pk_funcionrio": {
           "name": "pk_funcionrio",
-          "columns": ["funcionario_id"]
+          "columns": [
+            "funcionario_id"
+          ]
         }
       },
       "uniqueConstraints": {
         "cad_funcionarios_cpf_unique": {
           "name": "cad_funcionarios_cpf_unique",
           "nullsNotDistinct": false,
-          "columns": ["cpf"]
+          "columns": [
+            "cpf"
+          ]
         },
         "cad_funcionarios_email_unique": {
           "name": "cad_funcionarios_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -432,14 +472,19 @@
       "compositePrimaryKeys": {
         "pk_lookup": {
           "name": "pk_lookup",
-          "columns": ["grupo", "nome"]
+          "columns": [
+            "grupo",
+            "nome"
+          ]
         }
       },
       "uniqueConstraints": {
         "cad_lookup_lookup_id_unique": {
           "name": "cad_lookup_lookup_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["lookup_id"]
+          "columns": [
+            "lookup_id"
+          ]
         }
       },
       "policies": {},
@@ -503,8 +548,12 @@
           "tableFrom": "cad_projetos",
           "tableTo": "cad_empresas",
           "schemaTo": "dg_0001",
-          "columnsFrom": ["empresa_id"],
-          "columnsTo": ["empresa_id"],
+          "columnsFrom": [
+            "empresa_id"
+          ],
+          "columnsTo": [
+            "empresa_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -512,14 +561,18 @@
       "compositePrimaryKeys": {
         "pk_projetos": {
           "name": "pk_projetos",
-          "columns": ["projeto_id"]
+          "columns": [
+            "projeto_id"
+          ]
         }
       },
       "uniqueConstraints": {
         "cad_projetos_nome_unique": {
           "name": "cad_projetos_nome_unique",
           "nullsNotDistinct": false,
-          "columns": ["nome"]
+          "columns": [
+            "nome"
+          ]
         }
       },
       "policies": {},
@@ -610,8 +663,12 @@
           "name": "fk_auth_sessions_user",
           "tableFrom": "auth_sessions",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -762,7 +819,9 @@
         "tenants_tenant_id_unique": {
           "name": "tenants_tenant_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["tenant_id"]
+          "columns": [
+            "tenant_id"
+          ]
         }
       },
       "policies": {},
@@ -821,8 +880,12 @@
           "name": "fk_tenant_memberships_tenant",
           "tableFrom": "tenant_memberships",
           "tableTo": "tenants",
-          "columnsFrom": ["tenant_id"],
-          "columnsTo": ["tenant_id"],
+          "columnsFrom": [
+            "tenant_id"
+          ],
+          "columnsTo": [
+            "tenant_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -830,8 +893,12 @@
           "name": "fk_tenant_memberships_user",
           "tableFrom": "tenant_memberships",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -839,7 +906,10 @@
       "compositePrimaryKeys": {
         "pk_tenant_memberships": {
           "name": "pk_tenant_memberships",
-          "columns": ["tenant_id", "user_id"]
+          "columns": [
+            "tenant_id",
+            "user_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -933,12 +1003,22 @@
     "public.subscription_tier": {
       "name": "subscription_tier",
       "schema": "public",
-      "values": ["trial", "starter", "professional", "enterprise"]
+      "values": [
+        "trial",
+        "starter",
+        "professional",
+        "enterprise"
+      ]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": ["owner", "admin", "agent", "viewer"]
+      "values": [
+        "owner",
+        "admin",
+        "agent",
+        "viewer"
+      ]
     }
   },
   "schemas": {

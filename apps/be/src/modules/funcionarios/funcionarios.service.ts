@@ -1,11 +1,12 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
-import { funcionarios } from '@dougust/database';
-import { eq } from 'drizzle-orm';
+import { funcionarios, IFuncionarioTable } from '@dougust/database';
+import { eq, getTableColumns, sql } from 'drizzle-orm';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
 import { UserContextService } from '../../common/user-context/user-context.service';
+import { FuncionarioDto } from './dto/get-funcionario.response.dto';
 
 @Injectable()
 export class FuncionariosService {
@@ -14,7 +15,7 @@ export class FuncionariosService {
     @Inject() private readonly userContext: UserContextService
   ) {}
 
-  get table() {
+  get table(): IFuncionarioTable {
     return funcionarios(this.userContext.businessId);
   }
 
@@ -38,15 +39,23 @@ export class FuncionariosService {
     return { funcionario };
   }
 
-  async findAll() {
-    return await this.db.select().from(this.table);
+  async findAll(): Promise<FuncionarioDto[]> {
+    return this.db
+      .select({
+        ...getTableColumns(this.table),
+        ...this.withCalculatedFields(),
+      })
+      .from(this.table);
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<FuncionarioDto> {
     const where = eq(this.table.id, id);
 
     const result = await this.db
-      .select({ funcionario: this.table })
+      .select({
+        ...getTableColumns(this.table),
+        ...this.withCalculatedFields(),
+      })
       .from(this.table)
       .where(where)
       .limit(1);
@@ -58,7 +67,6 @@ export class FuncionariosService {
 
   async update(id: string, dto: UpdateFuncionarioDto) {
     return await this.db.transaction(async (tx) => {
-      // Update cadastro if any cadastro fields are provided
       const [funcionario] = await tx
         .update(this.table)
         .set({
@@ -88,5 +96,13 @@ export class FuncionariosService {
     const [deleted] = await this.db.delete(this.table).where(where).returning();
     if (!deleted) throw new NotFoundException('Funcionario not found');
     return deleted;
+  }
+
+  private withCalculatedFields() {
+    const { salario } = this.table;
+    return {
+      decimoTerceiro: sql<number>`${salario} / 12`,
+      ferias: sql<number>`${salario} / 9`,
+    };
   }
 }
