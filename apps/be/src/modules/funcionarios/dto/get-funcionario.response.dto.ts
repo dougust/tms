@@ -57,7 +57,6 @@ export class FuncionarioDto implements IFuncionario {
   @IsNumber()
   decimoTerceiro: number;
 
-  // Férias = salário / 9
   @IsNumber()
   ferias: number;
 }
