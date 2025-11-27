@@ -1,5 +1,5 @@
 {
-  "id": "98f49c40-e9ce-48e2-8919-0f68437f4cc7",
+  "id": "610badc1-3a07-4a4e-904c-235f91149639",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -14,6 +14,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": "gen_random_uuid()"
+        },
+        "lookup_id": {
+          "name": "lookup_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
         },
         "funcionario_id": {
           "name": "funcionario_id",
@@ -54,6 +60,20 @@
           ],
           "columnsTo": [
             "funcionario_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fk_beneficios": {
+          "name": "fk_beneficios",
+          "tableFrom": "cad_beneficios",
+          "tableTo": "cad_lookup",
+          "schemaTo": "dg_0001",
+          "columnsFrom": [
+            "lookup_id"
+          ],
+          "columnsTo": [
+            "lookup_id"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"

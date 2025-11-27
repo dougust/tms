@@ -883,6 +883,21 @@
           },
           "dependetes": {
             "type": "number"
+          },
+          "valorCafe": {
+            "type": "number"
+          },
+          "valorSaudeOcupacional": {
+            "type": "number"
+          },
+          "valorSaudePlano": {
+            "type": "number"
+          },
+          "valorJanta": {
+            "type": "number"
+          },
+          "valorDescontoCasa": {
+            "type": "number"
           }
         },
         "required": [
@@ -1010,6 +1025,21 @@
             "maxLength": 30
           },
           "dependetes": {
+            "type": "number"
+          },
+          "valorCafe": {
+            "type": "number"
+          },
+          "valorSaudeOcupacional": {
+            "type": "number"
+          },
+          "valorSaudePlano": {
+            "type": "number"
+          },
+          "valorJanta": {
+            "type": "number"
+          },
+          "valorDescontoCasa": {
             "type": "number"
           }
         }
