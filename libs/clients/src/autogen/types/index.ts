@@ -112,7 +112,6 @@ export type {
   FuncionariosControllerUpdateMutation,
 } from './FuncionariosControllerUpdate';
 export type { GetEmpresaResponseDto } from './GetEmpresaResponseDto';
-export type { GetFuncionarioResponseDto } from './GetFuncionarioResponseDto';
 export type {
   HealthControllerGetHealth200,
   HealthControllerGetHealthQueryResponse,

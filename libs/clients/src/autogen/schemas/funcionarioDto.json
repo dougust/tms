@@ -14,7 +14,9 @@
     "dependetes": { "type": "number" },
     "projetoId": { "type": "string" },
     "createdAt": { "format": "date-time", "type": "string" },
-    "updatedAt": { "format": "date-time", "type": "string" }
+    "updatedAt": { "format": "date-time", "type": "string" },
+    "decimoTerceiro": { "type": "number" },
+    "ferias": { "type": "number" }
   },
   "required": [
     "id",
@@ -30,7 +32,9 @@
     "dependetes",
     "projetoId",
     "createdAt",
-    "updatedAt"
+    "updatedAt",
+    "decimoTerceiro",
+    "ferias"
   ],
   "x-readme-ref-name": "FuncionarioDto"
 }

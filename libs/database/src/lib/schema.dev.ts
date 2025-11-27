@@ -8,6 +8,7 @@ import {
   beneficios,
   lookup,
   diarias,
+  beneficiosRelations,
 } from './tenant';
 import { pgSchema } from 'drizzle-orm/pg-core';
 
@@ -28,5 +29,6 @@ export const funcionariosRelTpl = funcionariosRelations(process.env.TENANT_ID);
 export const diariasTpl = diarias(process.env.TENANT_ID);
 
 export const beneficiosTpl = beneficios(process.env.TENANT_ID);
+export const beneficiosRelTpl = beneficiosRelations(process.env.TENANT_ID);
 
 export const lookupTpl = lookup(process.env.TENANT_ID);

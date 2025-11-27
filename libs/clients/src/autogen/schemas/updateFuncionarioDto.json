@@ -10,7 +10,12 @@
     "projetoId": { "type": "string" },
     "rg": { "type": "string", "minLength": 0, "maxLength": 11 },
     "funcao": { "type": "string", "minLength": 0, "maxLength": 30 },
-    "dependetes": { "type": "number" }
+    "dependetes": { "type": "number" },
+    "valorCafe": { "type": "number" },
+    "valorSaudeOcupacional": { "type": "number" },
+    "valorSaudePlano": { "type": "number" },
+    "valorJanta": { "type": "number" },
+    "valorDescontoCasa": { "type": "number" }
   },
   "x-readme-ref-name": "UpdateFuncionarioDto"
 }

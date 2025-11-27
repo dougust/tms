@@ -4,6 +4,7 @@ CREATE TYPE "public"."subscription_tier" AS ENUM('trial', 'starter', 'profession
 CREATE TYPE "public"."user_role" AS ENUM('owner', 'admin', 'agent', 'viewer');--> statement-breakpoint
 CREATE TABLE "dg_0001"."cad_beneficios" (
 	"beneficio_id" uuid DEFAULT gen_random_uuid(),
+	"lookup_id" uuid,
 	"funcionario_id" uuid,
 	"valor" numeric(15, 2),
 	"created_at" timestamp DEFAULT now(),
@@ -137,6 +138,7 @@ CREATE TABLE "users" (
 );
 --> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_beneficios" ADD CONSTRAINT "fk_funcionario_beneficios" FOREIGN KEY ("funcionario_id") REFERENCES "dg_0001"."cad_funcionarios"("funcionario_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "dg_0001"."cad_beneficios" ADD CONSTRAINT "fk_beneficios" FOREIGN KEY ("lookup_id") REFERENCES "dg_0001"."cad_lookup"("lookup_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_projetos" FOREIGN KEY ("projeto_id") REFERENCES "dg_0001"."cad_projetos"("projeto_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diarias_funcionarios" FOREIGN KEY ("funcionario_id") REFERENCES "dg_0001"."cad_funcionarios"("funcionario_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "dg_0001"."cad_diarias" ADD CONSTRAINT "fk_diaria_lookup" FOREIGN KEY ("tipo_diaria") REFERENCES "dg_0001"."cad_lookup"("lookup_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint

@@ -16,4 +16,9 @@ export const createFuncionarioDtoSchema = z.object({
   rg: z.optional(z.string().min(0).max(11)),
   funcao: z.string().min(0).max(30),
   dependetes: z.number(),
+  valorCafe: z.optional(z.number()),
+  valorSaudeOcupacional: z.optional(z.number()),
+  valorSaudePlano: z.optional(z.number()),
+  valorJanta: z.optional(z.number()),
+  valorDescontoCasa: z.optional(z.number()),
 });

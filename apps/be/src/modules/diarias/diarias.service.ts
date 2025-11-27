@@ -9,6 +9,7 @@ import { FuncionariosService } from '../funcionarios/funcionarios.service';
 import { ProjetosService } from '../projetos/projetos.service';
 import { DiariaDto } from './dto/diaria.dto';
 import { CreateManyDiariasDto } from './dto/create-many-diarias.dto';
+import { diarias, IDiariaTable } from '@dougust/database';
 
 @Injectable()
 export class DiariasService {
@@ -19,16 +20,16 @@ export class DiariasService {
     private readonly projetosService: ProjetosService
   ) {}
 
-  get diarias() {
-    return schema.diarias(this.userContext.businessId);
+  get table(): IDiariaTable {
+    return diarias(this.userContext.businessId);
   }
 
   async findInRange(query: RangeQueryDto): Promise<DiariaDto[]> {
     return this.db
       .select()
-      .from(this.diarias)
+      .from(this.table)
       .where(
-        and(gte(this.diarias.dia, query.from), lte(this.diarias.dia, query.to))
+        and(gte(this.table.dia, query.from), lte(this.table.dia, query.to))
       );
   }
 
@@ -47,7 +48,7 @@ export class DiariasService {
     }
 
     const [created] = await this.db
-      .insert(this.diarias)
+      .insert(this.table)
       .values({
         funcionarioId: data.funcionarioId,
         projetoId: data.projetoId,
@@ -61,7 +62,6 @@ export class DiariasService {
 
   async createMany({ items }: CreateManyDiariasDto): Promise<DiariaDto[]> {
     if (!Array.isArray(items) || items.length === 0) return [];
-    // For minimal change and to reuse validation, call existing create sequentially
     const results: DiariaDto[] = [];
     for (const dto of items) {
       const created = await this.create(dto);
@@ -72,12 +72,12 @@ export class DiariasService {
 
   async update(id: string, data: CreateDiariaDto) {
     const [diaria] = await this.db
-      .update(this.diarias)
+      .update(this.table)
       .set({
         projetoId: data.projetoId,
         tipoDiaria: data.tipoDiaria ?? undefined,
       })
-      .where(eq(this.diarias.id, id))
+      .where(eq(this.table.id, id))
       .returning();
 
     return diaria;

@@ -95,7 +95,6 @@ export {
   funcionariosControllerUpdateMutationResponseSchema,
 } from './funcionariosControllerUpdateSchema';
 export { getEmpresaResponseDtoSchema } from './getEmpresaResponseDtoSchema';
-export { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema';
 export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,

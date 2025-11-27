@@ -63,7 +63,7 @@ export const projetos = (tenantId: string) =>
   );
 
 export const projetosRelations = (tenantId: string) =>
-  relations(projetos(tenantId), ({ many, one }) => ({
+  relations(projetos(tenantId), ({ many }) => ({
     funcionarios: many(funcionarios(tenantId)),
     diarias: many(diarias(tenantId)),
   }));
@@ -105,11 +105,17 @@ export const funcionarios = (tenantId: string) =>
     ]
   );
 
+export const funcionariosRelations = (tenantId: string) =>
+  relations(diarias(tenantId), ({ many }) => ({
+    diarias: many(diarias(tenantId)),
+  }));
+
 export const beneficios = (tenantId: string) =>
   pgSchema(tenantId).table(
     'cad_beneficios',
     {
       id: uuid('beneficio_id').defaultRandom(),
+      lookupId: uuid('lookup_id'),
       funcionarioId: uuid('funcionario_id'),
       valor: numeric('valor', { precision: 15, scale: 2, mode: 'number' }),
       createdAt: timestamp('created_at').defaultNow(),
@@ -125,12 +131,18 @@ export const beneficios = (tenantId: string) =>
         columns: [t.funcionarioId],
         foreignColumns: [funcionarios(tenantId).id],
       }),
+      foreignKey({
+        name: 'fk_beneficios',
+        columns: [t.lookupId],
+        foreignColumns: [lookup(tenantId).id],
+      }),
     ]
   );
 
-export const funcionariosRelations = (tenantId: string) =>
-  relations(diarias(tenantId), ({ many }) => ({
-    diarias: many(diarias(tenantId)),
+export const beneficiosRelations = (tenantId: string) =>
+  relations(beneficios(tenantId), ({ many }) => ({
+    funcionarios: many(funcionarios(tenantId)),
+    beneficios: many(lookup(tenantId)),
   }));
 
 export const diarias = (tenantId: string) =>
