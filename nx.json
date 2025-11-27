@@ -68,6 +68,16 @@
           "buildDepsName": "tsc:build-deps",
           "watchDepsName": "tsc:watch-deps"
         }
+      },
+      "exclude": ["infra/aws/*"]
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "include": ["infra/aws/*"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
       }
     }
   ],
