@@ -73,7 +73,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetFuncionarioResponseDto"
+                  "$ref": "#/components/schemas/FuncionarioDto"
                 }
               }
             }
@@ -939,6 +939,12 @@
           "updatedAt": {
             "format": "date-time",
             "type": "string"
+          },
+          "decimoTerceiro": {
+            "type": "number"
+          },
+          "ferias": {
+            "type": "number"
           }
         },
         "required": [
@@ -955,18 +961,9 @@
           "dependetes",
           "projetoId",
           "createdAt",
-          "updatedAt"
-        ]
-      },
-      "GetFuncionarioResponseDto": {
-        "type": "object",
-        "properties": {
-          "funcionario": {
-            "$ref": "#/components/schemas/FuncionarioDto"
-          }
-        },
-        "required": [
-          "funcionario"
+          "updatedAt",
+          "decimoTerceiro",
+          "ferias"
         ]
       },
       "UpdateFuncionarioDto": {

@@ -60,4 +60,12 @@ export type FuncionarioDto = {
    * @type string, date-time
    */
   updatedAt: string;
+  /**
+   * @type number
+   */
+  decimoTerceiro: number;
+  /**
+   * @type number
+   */
+  ferias: number;
 };
