@@ -34,10 +34,12 @@
     "@tanstack/react-table": "^8.21.3",
     "argon2": "^0.44.0",
     "axios": "^1.6.0",
+    "aws-cdk-lib": "2.215.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "constructs": "^10.0.0",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
     "lucide-react": "^0.552.0",
@@ -55,6 +57,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "aws-cdk": "2.1031.2",
     "@eslint/js": "^9.8.0",
     "@kubb/cli": "^4.4.1",
     "@kubb/core": "^4.4.1",
