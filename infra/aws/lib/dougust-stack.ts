@@ -129,8 +129,8 @@ export class DougustStack extends Stack {
       join(scriptsPath, 'deploy-app.sh'),
       'utf-8'
     )
-      .replace('{{BUCKET_NAME}}', deploymentBucket.bucketName)
-      .replace('{{ENV_FILE_CONTENT}}', envFileContent);
+      .replace(/\{\{BUCKET_NAME\}\}/g, deploymentBucket.bucketName)
+      .replace(/\{\{ENV_FILE_CONTENT\}\}/g, envFileContent);
 
     // 3. Setup Nginx reverse proxy
     const setupNginxScript = readFileSync(
