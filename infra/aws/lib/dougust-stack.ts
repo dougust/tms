@@ -1,17 +1,14 @@
 import * as cdk from 'aws-cdk-lib/core';
-import { Stack, StackProps, CfnOutput } from 'aws-cdk-lib/core';
+import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 export interface DougustStackProps extends StackProps {
   /**
    * Path to the built application (dist folder)
-   * If not provided, deployment will need to be done manually
    */
   distPath: string;
 
@@ -97,26 +94,22 @@ export class DougustStack extends Stack {
       iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
     );
 
-    // Create S3 bucket for application deployment (if distPath is provided)
-    let deploymentBucket: s3.Bucket | undefined;
-    if (distPath) {
-      deploymentBucket = new s3.Bucket(this, 'DougustDeploymentBucket', {
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-        autoDeleteObjects: true,
-        encryption: s3.BucketEncryption.S3_MANAGED,
-        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      });
+    const deploymentBucket = new s3.Bucket(this, 'DougustDeploymentBucket', {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    });
 
-      // Grant EC2 instance read access to the deployment bucket
-      deploymentBucket.grantRead(role);
+    // Grant EC2 instance read access to the deployment bucket
+    deploymentBucket.grantRead(role);
 
-      // Upload the built application to S3
-      new s3deploy.BucketDeployment(this, 'DeployApplication', {
-        sources: [s3deploy.Source.asset(distPath)],
-        destinationBucket: deploymentBucket,
-        destinationKeyPrefix: 'app',
-      });
-    }
+    // Upload the built application to S3
+    new s3deploy.BucketDeployment(this, 'DeployApplication', {
+      sources: [s3deploy.Source.asset(distPath)],
+      destinationBucket: deploymentBucket,
+      destinationKeyPrefix: 'app',
+    });
 
     // User Data script to set up the instance
     const userData = ec2.UserData.forLinux();
@@ -152,50 +145,27 @@ export class DougustStack extends Stack {
       'cd /home/ec2-user/app',
     ];
 
-    // If deployment bucket is provided, download the application from S3
-    if (deploymentBucket) {
-      commands.push(
-        '',
-        '# Download application from S3',
-        `aws s3 sync s3://${deploymentBucket.bucketName}/app/ /home/ec2-user/app/`,
-        '',
-        '# Install production dependencies',
-        'npm ci --production',
-        '',
-        '# Set environment variables',
-        `cat > /home/ec2-user/app/.env << 'EOF'`,
-        envFileContent,
-        'EOF',
-        '',
-        '# Change ownership to ec2-user',
-        'chown -R ec2-user:ec2-user /home/ec2-user/app',
-        '',
-        '# Start the application with PM2',
-        'su - ec2-user -c "cd /home/ec2-user/app && pm2 start main.js --name dougust-api"',
-        'su - ec2-user -c "pm2 startup systemd -u ec2-user --hp /home/ec2-user"',
-        'su - ec2-user -c "pm2 save"'
-      );
-    } else {
-      // Manual deployment instructions
-      commands.push(
-        '',
-        '# Application deployment placeholder',
-        '# To deploy your application:',
-        '# 1. Build: nx build be --configuration=production',
-        '# 2. Copy dist/apps/be contents to /home/ec2-user/app/',
-        '# 3. Run: npm ci --production',
-        '# 4. Start: pm2 start main.js --name dougust-api',
-        '',
-        '# Set environment variables template',
-        `cat > /home/ec2-user/app/.env << 'EOF'`,
-        envFileContent,
-        'EOF',
-        '',
-        '# Change ownership to ec2-user',
-        'chown -R ec2-user:ec2-user /home/ec2-user/app'
-      );
-    }
-
+    commands.push(
+      '',
+      '# Download application from S3',
+      `aws s3 sync s3://${deploymentBucket.bucketName}/app/ /home/ec2-user/app/`,
+      '',
+      '# Install production dependencies',
+      'npm ci --production',
+      '',
+      '# Set environment variables',
+      `cat > /home/ec2-user/app/.env << 'EOF'`,
+      envFileContent,
+      'EOF',
+      '',
+      '# Change ownership to ec2-user',
+      'chown -R ec2-user:ec2-user /home/ec2-user/app',
+      '',
+      '# Start the application with PM2',
+      'su - ec2-user -c "cd /home/ec2-user/app && pm2 start main.js --name dougust-api"',
+      'su - ec2-user -c "pm2 startup systemd -u ec2-user --hp /home/ec2-user"',
+      'su - ec2-user -c "pm2 save"'
+    );
     // Add Nginx configuration (common for both paths)
     commands.push(
       '',
