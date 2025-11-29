@@ -47,13 +47,6 @@ export class DougustStack extends Stack {
       allowAllOutbound: true,
     });
 
-    // Allow SSH access (port 22) - restrict to your IP in production
-    securityGroup.addIngressRule(
-      ec2.Peer.anyIpv4(),
-      ec2.Port.tcp(22),
-      'Allow SSH access'
-    );
-
     // Allow HTTP traffic (port 80)
     securityGroup.addIngressRule(
       ec2.Peer.anyIpv4(),
