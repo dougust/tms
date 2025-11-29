@@ -1,6 +1,3 @@
-#!/bin/bash
-set -e
-
 echo "Installing Nginx..."
 dnf install -y nginx
 

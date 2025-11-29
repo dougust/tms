@@ -1,10 +1,3 @@
-#!/bin/bash
-set -e
-
-# This script is templated by CDK - the following variables will be replaced:
-# {{BUCKET_NAME}} - S3 bucket containing the application
-# {{ENV_FILE_CONTENT}} - Environment variables content
-
 echo "Downloading application from S3..."
 aws s3 sync s3://{{BUCKET_NAME}}/app/ /home/ec2-user/app/
 
