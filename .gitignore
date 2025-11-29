@@ -50,3 +50,7 @@ out
 # CDK
 cdk.out
 .cdk.staging
+
+
+
+.env
