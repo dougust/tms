@@ -15,11 +15,6 @@ export interface DougustStackProps extends StackProps {
   distPath: string;
 
   /**
-   * SSH key pair name for EC2 access
-   */
-  keyName: string;
-
-  /**
    * Environment variables for the application
    */
   environmentVariables?: Record<string, string>;
@@ -29,7 +24,7 @@ export class DougustStack extends Stack {
   constructor(scope: Construct, id: string, props: DougustStackProps) {
     super(scope, id, props);
 
-    const { distPath, keyName, environmentVariables } = props;
+    const { distPath, environmentVariables } = props;
 
     // Create VPC with public subnet for the EC2 instance
     // Using a simple configuration to stay within free tier
@@ -191,7 +186,7 @@ export class DougustStack extends Stack {
       role,
       securityGroup,
       instanceType: ec2.InstanceType.of(
-        ec2.InstanceClass.T2,
+        ec2.InstanceClass.T3,
         ec2.InstanceSize.MICRO
       ),
       // Amazon Linux 2023 - free tier eligible
@@ -199,7 +194,6 @@ export class DougustStack extends Stack {
         generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2023,
         cpuType: ec2.AmazonLinuxCpuType.X86_64,
       }),
-      keyName,
       userData,
       // Use default EBS volume (30 GB gp2/gp3 is free tier eligible)
       blockDevices: [

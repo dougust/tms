@@ -5,10 +5,6 @@ import { join } from 'path';
 
 const app = new cdk.App();
 
-// Get configuration from environment variables or use defaults
-const keyName = process.env['EC2_KEY_NAME'] || 'dougust-key';
-const deployFromDist = process.env['DEPLOY_FROM_DIST'] === 'true';
-
 // Path to the built application (relative to this file: infra/aws/bin/dougust.ts)
 // Points to dist/apps/be in the root of the monorepo
 const distPath = join(__dirname, '..', '..', '..', 'dist', 'apps', 'be');
@@ -22,7 +18,6 @@ const environmentVariables = {
 };
 
 new DougustStack(app, 'DougustStack', {
-  keyName,
   distPath,
   environmentVariables,
 
