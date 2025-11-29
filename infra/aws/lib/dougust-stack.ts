@@ -5,6 +5,8 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 export interface DougustStackProps extends StackProps {
   /**
@@ -123,85 +125,62 @@ export class DougustStack extends Stack {
 
     const envFileContent = Object.entries(envVars)
       .map(([key, value]) => `${key}=${value}`)
-      .join('\\n');
+      .join('\n');
 
-    // Add commands to install and configure the application
-    const commands = [
+    // Read setup scripts from files
+    const scriptsPath = join(__dirname, '..', 'scripts');
+
+    // 1. Setup instance (install Node.js, PM2, etc.)
+    const setupInstanceScript = readFileSync(
+      join(scriptsPath, 'setup-instance.sh'),
+      'utf-8'
+    );
+
+    // 2. Deploy application from S3
+    const deployAppScript = readFileSync(
+      join(scriptsPath, 'deploy-app.sh'),
+      'utf-8'
+    )
+      .replace('{{BUCKET_NAME}}', deploymentBucket.bucketName)
+      .replace('{{ENV_FILE_CONTENT}}', envFileContent);
+
+    // 3. Setup Nginx reverse proxy
+    const setupNginxScript = readFileSync(
+      join(scriptsPath, 'setup-nginx.sh'),
+      'utf-8'
+    );
+
+    // Combine all scripts with logging
+    const fullScript = [
       '#!/bin/bash',
       'set -e',
       '',
-      '# Update system',
-      'yum update -y',
+      '# Log all output to a file for debugging',
+      'exec > >(tee -a /var/log/user-data.log)',
+      'exec 2>&1',
       '',
-      '# Install Node.js 20.x (LTS)',
-      'curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -',
-      'yum install -y nodejs',
+      'echo "========================================="',
+      'echo "Starting Dougust deployment"',
+      'echo "Time: $(date)"',
+      'echo "========================================="',
       '',
-      '# Install PM2 globally for process management',
-      'npm install -g pm2',
+      setupInstanceScript,
       '',
-      '# Create app directory',
-      'mkdir -p /home/ec2-user/app',
-      'cd /home/ec2-user/app',
-    ];
+      deployAppScript,
+      '',
+      setupNginxScript,
+      '',
+      'echo "========================================="',
+      'echo "Deployment complete!"',
+      'echo "Time: $(date)"',
+      'echo "========================================="',
+      '',
+      '# Create completion marker',
+      'echo "Instance setup complete!" > /home/ec2-user/setup-complete.txt',
+      'date >> /home/ec2-user/setup-complete.txt',
+    ].join('\n');
 
-    commands.push(
-      '',
-      '# Download application from S3',
-      `aws s3 sync s3://${deploymentBucket.bucketName}/app/ /home/ec2-user/app/`,
-      '',
-      '# Install production dependencies',
-      'npm ci --production',
-      '',
-      '# Set environment variables',
-      `cat > /home/ec2-user/app/.env << 'EOF'`,
-      envFileContent,
-      'EOF',
-      '',
-      '# Change ownership to ec2-user',
-      'chown -R ec2-user:ec2-user /home/ec2-user/app',
-      '',
-      '# Start the application with PM2',
-      'su - ec2-user -c "cd /home/ec2-user/app && pm2 start main.js --name dougust-api"',
-      'su - ec2-user -c "pm2 startup systemd -u ec2-user --hp /home/ec2-user"',
-      'su - ec2-user -c "pm2 save"'
-    );
-    // Add Nginx configuration (common for both paths)
-    commands.push(
-      '',
-      '# Install and configure Nginx as reverse proxy',
-      'dnf install -y nginx',
-      'systemctl start nginx',
-      'systemctl enable nginx',
-      '',
-      '# Configure Nginx (basic proxy to port 3000)',
-      'cat > /etc/nginx/conf.d/dougust.conf << EOF',
-      'server {',
-      '    listen 80;',
-      '    server_name _;',
-      '',
-      '    location / {',
-      '        proxy_pass http://localhost:3000;',
-      '        proxy_http_version 1.1;',
-      '        proxy_set_header Upgrade \\$http_upgrade;',
-      '        proxy_set_header Connection "upgrade";',
-      '        proxy_set_header Host \\$host;',
-      '        proxy_set_header X-Real-IP \\$remote_addr;',
-      '        proxy_set_header X-Forwarded-For \\$proxy_add_x_forwarded_for;',
-      '        proxy_set_header X-Forwarded-Proto \\$scheme;',
-      '        proxy_cache_bypass \\$http_upgrade;',
-      '    }',
-      '}',
-      'EOF',
-      '',
-      '# Restart Nginx',
-      'systemctl restart nginx',
-      '',
-      '# Log completion',
-      'echo "Instance setup complete!" > /home/ec2-user/setup-complete.txt'
-    );
-
-    userData.addCommands(...commands);
+    userData.addCommands(fullScript);
 
     // Create EC2 Instance - t2.micro is free tier eligible
     const instance = new ec2.Instance(this, 'DougustInstance', {

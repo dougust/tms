@@ -86,6 +86,10 @@ export PORT=3000
 
 - `lib/dougust-stack.ts` - CDK stack definition
 - `bin/dougust.ts` - CDK app entry point
+- `scripts/` - Shell scripts for EC2 user data
+  - `setup-instance.sh` - Installs Node.js, PM2, and dependencies
+  - `deploy-app.sh` - Downloads app from S3 and starts with PM2
+  - `setup-nginx.sh` - Configures Nginx reverse proxy
 - `deploy.sh` - Automated deployment script
 - `DEPLOYMENT.md` - Comprehensive deployment guide
 - `README.md` - This file
@@ -179,6 +183,33 @@ When `distPath` is not provided:
 
 3. **HTTPS**: Add SSL certificate using Let's Encrypt or AWS Certificate Manager.
 
+## Customizing Deployment Scripts
+
+The EC2 user data is built from modular shell scripts in the `scripts/` directory:
+
+1. **`setup-instance.sh`** - Base system setup
+   - Updates system packages
+   - Installs Node.js 20.x
+   - Installs PM2
+
+2. **`deploy-app.sh`** - Application deployment
+   - Downloads from S3 (bucket name is templated)
+   - Installs dependencies
+   - Sets environment variables (content is templated)
+   - Starts app with PM2
+
+3. **`setup-nginx.sh`** - Reverse proxy configuration
+   - Installs Nginx
+   - Configures proxy to port 3000
+
+To customize the deployment, edit these scripts directly. The CDK stack reads and combines them at synthesis time.
+
+### Template Variables
+
+The `deploy-app.sh` script uses these template variables (replaced by CDK):
+- `{{BUCKET_NAME}}` - S3 bucket containing the app
+- `{{ENV_FILE_CONTENT}}` - Environment variables from `bin/dougust.ts`
+
 ## Troubleshooting
 
 ### Can't SSH into instance
@@ -189,8 +220,9 @@ When `distPath` is not provided:
 ### Application not running
 ```bash
 ssh -i ~/.ssh/dougust-key.pem ec2-user@<ELASTIC_IP>
-pm2 status                    # Check status
-pm2 logs dougust-api          # View logs
+pm2 status                      # Check status
+pm2 logs dougust-api            # View logs
+sudo tail -f /var/log/user-data.log  # Check deployment logs
 sudo tail -f /var/log/cloud-init-output.log  # Check startup logs
 ```
 
