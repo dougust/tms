@@ -5,66 +5,61 @@ set -e
 exec > >(tee -a /var/log/user-data.log)
 exec 2>&1
 
-echo "========================================="
-echo "Starting Dougust deployment"
-echo "Time: $(date)"
-echo "========================================="
+echo "[USERDATA]: Starting Dougust deployment"
+echo "[USERDATA]: Time: $(date)"
 
-echo "Starting instance setup..."
+echo "[USERDATA]: Starting instance setup..."
 
 # Update system
-echo "Updating system packages..."
+echo "[USERDATA]: Updating system packages..."
 yum update -y
 
 # Install Node.js 20.x (LTS)
-echo "Installing Node.js 20.x..."
+echo "[USERDATA]: Installing Node.js 20.x..."
 curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
 yum install -y nodejs
 
 # Install PM2 globally for process management
-echo "Installing PM2..."
+echo "[USERDATA]: Installing PM2..."
 npm install -g pm2
 
 # Create app directory
-echo "Creating app directory..."
+echo "[USERDATA]: Creating app directory..."
 mkdir -p /home/ec2-user/app
 cd /home/ec2-user/app
 
 
-echo "========================================="
-echo "Instance setup complete!"
-echo "Time: $(date)"
-echo "========================================="
+echo "[USERDATA]: Instance setup complete!"
 
-echo "Downloading application from S3..."
+echo "[USERDATA]: Downloading application from S3..."
 aws s3 sync s3://{{BUCKET_NAME}}/app/ /home/ec2-user/app/
 
-echo "Installing production dependencies..."
+echo "[USERDATA]: Installing production dependencies..."
 cd /home/ec2-user/app
 npm ci --production
 
-echo "Setting up environment variables..."
+echo "[USERDATA]: Setting up environment variables..."
 cat > /home/ec2-user/app/.env << 'EOF'
 {{ENV_FILE_CONTENT}}
 EOF
 
-echo "Changing ownership to ec2-user..."
 chown -R ec2-user:ec2-user /home/ec2-user/app
 
-echo "Starting application with PM2..."
+echo "[USERDATA]: Starting application with PM2..."
 su - ec2-user -c "cd /home/ec2-user/app && pm2 start main.js --name dougust-api"
-su - ec2-user -c "pm2 startup systemd -u ec2-user --hp /home/ec2-user"
+
+echo "[USERDATA]: Configuring PM2 to start on boot..."
+env PATH=$PATH:/usr/bin pm2 startup systemd -u ec2-user --hp /home/ec2-user
+
+echo "[USERDATA]: Saving PM2 process list..."
 su - ec2-user -c "pm2 save"
 
-echo "========================================="
-echo "Application deployed and started successfully!"
-echo "Time: $(date)"
-echo "========================================="
+echo "[USERDATA]: Application deployed and started successfully!"
 
-echo "Installing Nginx..."
+echo "[USERDATA]: Installing Nginx..."
 dnf install -y nginx
 
-echo "Configuring Nginx as reverse proxy..."
+echo "[USERDATA]: Configuring Nginx as reverse proxy..."
 cat > /etc/nginx/conf.d/dougust.conf << 'EOF'
 server {
     listen 80;
@@ -84,17 +79,15 @@ server {
 }
 EOF
 
-echo "Starting and enabling Nginx..."
+echo "[USERDATA]: Starting and enabling Nginx..."
 systemctl start nginx
 systemctl enable nginx
 
 
-echo "========================================="
-echo "Nginx setup complete!"
-echo "Deployment complete!"
-echo "Time: $(date)"
-echo "========================================="
+echo "[USERDATA]: Nginx setup complete!"
+echo "[USERDATA]: Deployment complete!"
+echo "[USERDATA]: Time: $(date)"
 
 # Create completion marker
-echo "Instance setup complete!" > /home/ec2-user/setup-complete.txt
+echo "[USERDATA]: Instance setup complete!" > /home/ec2-user/setup-complete.txt
 date >> /home/ec2-user/setup-complete.txt
