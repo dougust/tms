@@ -257,6 +257,49 @@ For issues related to:
 5. **Monitoring**: Configure CloudWatch alarms
 
 ---
+## debuggin
+
+
+sudo cat /var/log/cloud-init-output.log
+
+cd /var/lib/cloud/instance/scripts
+
+sudo /var/lib/cloud/instance/scripts/part-001
+
+sudo su - ec2-user
+
+pm2 status
+
+curl http://localhost:3000/api/health
+
+```bash
+sudo bash -c 'cat > /etc/nginx/conf.d/dougust.conf << "EOF"
+server {
+  listen 80;
+  server_name _;
+
+  location / {
+    proxy_pass http://localhost:3000;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  proxy_cache_bypass $http_upgrade;
+}
+}
+EOF'
+```
+
+
+
+curl http://3.213.105.143/api/health
+
+
+sudo systemctl start nginx
+sudo systemctl enable nginx
 
 ## Running unit tests
 

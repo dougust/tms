@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 import IamConstruct from './iam-construct';
 import { S3DeploymentConstruct } from './s3-deployment-construct';
 import { VpcConstruct } from './vpc-construct';
-import { BeEc2Construct } from './be-ec2-construct';
+import BeEc2Construct from './be-ec2-construct';
 
 export interface DougustStackProps extends StackProps {
   /**
