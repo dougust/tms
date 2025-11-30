@@ -23,9 +23,9 @@ export class DougustStack extends Stack {
 
     const { distPath, environmentVariables } = props;
 
-    const { role } = new IamConstruct(scope, 'DougustIAMConstruct');
+    const { role } = new IamConstruct(this, 'DougustIAMConstruct');
     const { deploymentBucket } = new S3DeploymentConstruct(
-      scope,
+      this,
       'DougustDeploymentConstruct',
       {
         distPath,
@@ -35,9 +35,9 @@ export class DougustStack extends Stack {
     // Grant EC2 instance read access to the deployment bucket
     deploymentBucket.grantRead(role);
 
-    const { vpc } = new VpcConstruct(scope, 'DougustVPCConstruct');
+    const { vpc } = new VpcConstruct(this, 'DougustVPCConstruct');
 
-    new BeEc2Construct(scope, 'DougustEC2Construct', {
+    new BeEc2Construct(this, 'DougustEC2Construct', {
       environmentVariables,
       deploymentBucket,
       role,
