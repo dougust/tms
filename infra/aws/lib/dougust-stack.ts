@@ -1,12 +1,10 @@
-import * as cdk from 'aws-cdk-lib/core';
 import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import IAMConstruct from './IAMConstruct';
+import { S3DeploymentConstruct } from './S3DeploymentConstruct';
 
 export interface DougustStackProps extends StackProps {
   /**
@@ -25,6 +23,18 @@ export class DougustStack extends Stack {
     super(scope, id, props);
 
     const { distPath, environmentVariables } = props;
+
+    const iamConstruct = new IAMConstruct(scope, 'DougustIAMConstruct');
+    const s3DeloymnetConstruct = new S3DeploymentConstruct(
+      scope,
+      'DougustDeploymentConstruct',
+      {
+        distPath,
+      }
+    );
+
+    // Grant EC2 instance read access to the deployment bucket
+    s3DeloymnetConstruct.deploymentBucket.grantRead(iamConstruct.role);
 
     // Create VPC with public subnet for the EC2 instance
     // Using a simple configuration to stay within free tier
@@ -68,39 +78,6 @@ export class DougustStack extends Stack {
       'Allow NestJS application access'
     );
 
-    // IAM Role for EC2 instance
-    const role = new iam.Role(this, 'DougustEc2Role', {
-      assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
-      description: 'IAM role for Dougust EC2 instance',
-    });
-
-    // Add permissions for CloudWatch Logs (for monitoring)
-    role.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('CloudWatchAgentServerPolicy')
-    );
-
-    // Add permissions for SSM (Systems Manager) for easier instance management
-    role.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore')
-    );
-
-    const deploymentBucket = new s3.Bucket(this, 'DougustDeploymentBucket', {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    });
-
-    // Grant EC2 instance read access to the deployment bucket
-    deploymentBucket.grantRead(role);
-
-    // Upload the built application to S3
-    new s3deploy.BucketDeployment(this, 'DeployApplication', {
-      sources: [s3deploy.Source.asset(distPath)],
-      destinationBucket: deploymentBucket,
-      destinationKeyPrefix: 'app',
-    });
-
     // User Data script to set up the instance
     const userData = ec2.UserData.forLinux();
 
@@ -129,7 +106,10 @@ export class DougustStack extends Stack {
       join(scriptsPath, 'deploy-app.sh'),
       'utf-8'
     )
-      .replace(/\{\{BUCKET_NAME\}\}/g, deploymentBucket.bucketName)
+      .replace(
+        /\{\{BUCKET_NAME\}\}/g,
+        s3DeloymnetConstruct.deploymentBucket.bucketName
+      )
       .replace(/\{\{ENV_FILE_CONTENT\}\}/g, envFileContent);
 
     // 3. Setup Nginx reverse proxy
@@ -176,7 +156,7 @@ export class DougustStack extends Stack {
       vpcSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
       },
-      role,
+      role: iamConstruct.role,
       securityGroup,
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.T3,
@@ -236,11 +216,9 @@ export class DougustStack extends Stack {
       description: 'Direct URL to access the NestJS application',
     });
 
-    if (deploymentBucket) {
-      new CfnOutput(this, 'DeploymentBucket', {
-        value: deploymentBucket.bucketName,
-        description: 'S3 bucket containing the deployed application',
-      });
-    }
+    new CfnOutput(this, 'DeploymentBucket', {
+      value: s3DeloymnetConstruct.deploymentBucket.bucketName,
+      description: 'S3 bucket containing the deployed application',
+    });
   }
 }
