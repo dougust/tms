@@ -1,7 +1,7 @@
 import { Construct } from 'constructs';
 import { ManagedPolicy, ServicePrincipal, Role } from 'aws-cdk-lib/aws-iam';
 
-class IAMConstruct extends Construct {
+class IamConstruct extends Construct {
   public readonly role: Role;
 
   constructor(scope: Construct, id: string) {
@@ -25,4 +25,4 @@ class IAMConstruct extends Construct {
   }
 }
 
-export default IAMConstruct;
+export default IamConstruct;

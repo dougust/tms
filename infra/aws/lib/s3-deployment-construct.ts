@@ -3,6 +3,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib/core';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { CfnOutput } from 'aws-cdk-lib/core';
 
 interface IS3DeploymentConstructProps {
   distPath: string;
@@ -32,6 +33,11 @@ export class S3DeploymentConstruct extends Construct {
       sources: [s3deploy.Source.asset(distPath)],
       destinationBucket: this.deploymentBucket,
       destinationKeyPrefix: 'app',
+    });
+
+    new CfnOutput(scope, 'DeploymentBucket', {
+      value: this.deploymentBucket.bucketName,
+      description: 'S3 bucket containing the deployed application',
     });
   }
 }
