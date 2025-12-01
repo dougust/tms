@@ -1,4 +1,4 @@
-import { Stack, StackProps, CfnOutput } from 'aws-cdk-lib/core';
+import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import IamConstruct from './iam-construct';
 import { S3DeploymentConstruct } from './s3-deployment-construct';
@@ -7,8 +7,8 @@ import BeEc2Construct from './be-ec2-construct';
 import { SsmDeploymentConstruct } from './ssm-deployment-construct';
 import { RdsConstruct } from './rds-construct';
 import { DatabaseAccessLambdaConstruct } from './database-access-lambda-construct';
-import { Port } from 'aws-cdk-lib/aws-ec2';
-import { Environment } from './utils';
+import { Environment, generateConstructName } from './utils';
+import { AuthConstruct } from './auth-construct';
 
 export interface DougustStackProps extends StackProps {
   environment: Environment;
@@ -27,26 +27,40 @@ export class DougustStack extends Stack {
   constructor(scope: Construct, id: string, props: DougustStackProps) {
     super(scope, id, props);
 
-    const { distPath, environmentVariables } = props;
+    const { distPath, environmentVariables, environment } = props;
 
-    const { role } = new IamConstruct(this, 'DougustIAMConstruct');
+    const { role } = new IamConstruct(
+      this,
+      generateConstructName('iam-construct', environment),
+      { environment }
+    );
     const { deploymentBucket } = new S3DeploymentConstruct(
       this,
-      'DougustDeploymentConstruct',
+      generateConstructName('s3-construct', environment),
       {
         distPath,
+        environment,
       }
     );
 
     // Grant EC2 instance read access to the deployment bucket
     deploymentBucket.grantRead(role);
 
-    const { vpc } = new VpcConstruct(this, 'DougustVPCConstruct');
+    const { vpc } = new VpcConstruct(
+      this,
+      generateConstructName('vpc-construct', environment),
+      { environment }
+    );
 
     // Create RDS PostgreSQL database
-    const rdsConstruct = new RdsConstruct(this, 'DougustRDSConstruct', {
-      vpc,
-    });
+    const rdsConstruct = new RdsConstruct(
+      this,
+      generateConstructName('rds-construct', environment),
+      {
+        vpc,
+        environment,
+      }
+    );
 
     // Grant EC2 role permission to read the database secret
     rdsConstruct.secret.grantRead(role);
@@ -61,10 +75,11 @@ export class DougustStack extends Stack {
     };
 
     // Create EC2 instance with database connection string
-    const { instance, securityGroup: ec2SecurityGroup } = new BeEc2Construct(
+    const { instance } = new BeEc2Construct(
       this,
-      'DougustEC2Construct',
+      generateConstructName('ec2-construct', environment),
       {
+        databaseSecurityGroup: rdsConstruct.securityGroup,
         environmentVariables: envWithDatabase,
         deploymentBucket,
         role,
@@ -72,19 +87,13 @@ export class DougustStack extends Stack {
       }
     );
 
-    // Allow inbound connections from EC2 instance
-    rdsConstruct.securityGroup.addIngressRule(
-      ec2SecurityGroup,
-      Port.tcp(5432),
-      'Allow PostgreSQL access from EC2 instance'
-    );
-
     // Create migration Lambda function
     const migrationLambda = new DatabaseAccessLambdaConstruct(
       this,
-      'DougustMigrationLambda',
+      generateConstructName('database-functions-construct', environment),
       {
         vpc,
+        environment,
         databaseSecret: rdsConstruct.secret,
         databaseSecurityGroup: rdsConstruct.securityGroup,
         dbHost: rdsConstruct.dbEndpoint,
@@ -93,13 +102,27 @@ export class DougustStack extends Stack {
       }
     );
 
+    new AuthConstruct(
+      this,
+      generateConstructName('auth-construct', environment),
+      {
+        environment,
+        postRegistrationLambda: migrationLambda.authPostRegistrationLambda,
+      }
+    );
+
     // SSM deployment trigger - runs deployment script on every deploy
-    new SsmDeploymentConstruct(this, 'DougustDeploymentTrigger', {
-      instance,
-      deploymentBucket,
-      // Optional: Use a hash of the dist folder to trigger deployments only when code changes
-      deploymentVersion: Date.now().toString(),
-    });
+    new SsmDeploymentConstruct(
+      this,
+      generateConstructName('ssm-deployment-construct', environment),
+      {
+        instance,
+        deploymentBucket,
+        // Optional: Use a hash of the dist folder to trigger deployments only when code changes
+        deploymentVersion: Date.now().toString(),
+        environment,
+      }
+    );
 
     // Output the migration Lambda function name for manual invocation
     new CfnOutput(this, 'MigrationLambdaName', {
@@ -108,12 +131,9 @@ export class DougustStack extends Stack {
       exportName: `${this.stackName}-MigrationLambdaName`,
     });
 
-    // this.tags.setTag('Environment', props.environment);
+    this.tags.setTag('Environment', props.environment);
     this.tags.setTag('Project', 'Dougust');
     this.tags.setTag('ManagedBy', 'CDK');
-    // this.tags.setTag(
-    //   'CostCenter',
-    //   props.environment === 'prod' ? 'Production' : 'Development'
-    // );
+    this.tags.setTag('CostCenter', props.environment);
   }
 }

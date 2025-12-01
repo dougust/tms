@@ -1,9 +1,8 @@
 import { Construct } from 'constructs';
 import { UserPool, UserPoolClient } from 'aws-cdk-lib/aws-cognito';
 import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
-import { Environment } from './utils';
+import { Environment, generateConstructName } from './utils';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
-import { APP_NAME } from './constants';
 
 export interface AuthConstructProps {
   environment: Environment;
@@ -50,7 +49,7 @@ export class AuthConstruct extends Construct {
         ? RemovalPolicy.RETAIN
         : RemovalPolicy.DESTROY;
 
-    return new UserPool(this, `${APP_NAME}-user-pool-${environment}`, {
+    return new UserPool(this, generateConstructName('user-pool', environment), {
       selfSignUpEnabled: true,
       signInAliases: {
         username: true,
@@ -65,7 +64,7 @@ export class AuthConstruct extends Construct {
 
   private createUserPoolClient(environment: Environment) {
     return this.userPool.addClient(
-      `${APP_NAME}-user-pool-client-${environment}`,
+      generateConstructName('user-pool-client', environment),
       {
         authFlows: {
           adminUserPassword: true,

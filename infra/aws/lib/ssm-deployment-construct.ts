@@ -6,6 +6,7 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Instance } from 'aws-cdk-lib/aws-ec2';
+import { Environment, generateConstructName } from './utils';
 
 export interface SsmDeploymentConstructProps {
   /**
@@ -23,6 +24,8 @@ export interface SsmDeploymentConstructProps {
    * Change this value to trigger a new deployment
    */
   deploymentVersion?: string;
+
+  environment: Environment;
 }
 
 /**
@@ -38,7 +41,7 @@ export class SsmDeploymentConstruct extends Construct {
     // Lambda function that sends SSM Run Command
     const deploymentTriggerFn = new NodejsFunction(
       this,
-      'DeploymentTriggerFunction',
+      generateConstructName('deployment-trigger-lambda', props.environment),
       {
         entry: 'src/lambda/deployment-trigger.ts',
         handler: 'handler',

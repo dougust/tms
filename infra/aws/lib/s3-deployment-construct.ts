@@ -4,9 +4,12 @@ import * as cdk from 'aws-cdk-lib/core';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { CfnOutput } from 'aws-cdk-lib/core';
+import { Environment, generateConstructName } from './utils';
+import { BucketDeployment } from 'aws-cdk-lib/aws-s3-deployment';
 
 interface IS3DeploymentConstructProps {
   distPath: string;
+  environment: Environment;
 }
 
 export class S3DeploymentConstruct extends Construct {
@@ -19,21 +22,29 @@ export class S3DeploymentConstruct extends Construct {
   ) {
     super(scope, id);
 
-    const { distPath } = props;
+    const { distPath, environment } = props;
 
-    this.deploymentBucket = new Bucket(this, 'DougustDeploymentBucket', {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    });
+    this.deploymentBucket = new Bucket(
+      this,
+      generateConstructName('deployment-bucket', environment),
+      {
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        autoDeleteObjects: true,
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      }
+    );
 
     // Upload the built application to S3
-    new s3deploy.BucketDeployment(this, 'DeployApplication', {
-      sources: [s3deploy.Source.asset(distPath)],
-      destinationBucket: this.deploymentBucket,
-      destinationKeyPrefix: 'app',
-    });
+    new BucketDeployment(
+      this,
+      generateConstructName('deploy-app', environment),
+      {
+        sources: [s3deploy.Source.asset(distPath)],
+        destinationBucket: this.deploymentBucket,
+        destinationKeyPrefix: 'app',
+      }
+    );
 
     new CfnOutput(scope, 'DeploymentBucket', {
       value: this.deploymentBucket.bucketName,

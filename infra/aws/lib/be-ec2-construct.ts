@@ -28,6 +28,7 @@ export interface BeEc2ConstructProps {
   vpc: IVpc;
   environmentVariables?: Record<string, string>;
   deploymentBucket: IBucket;
+  databaseSecurityGroup: ISecurityGroup;
   role: IRole;
 }
 
@@ -38,7 +39,7 @@ class BeEc2Construct extends Construct {
   constructor(scope: Construct, id: string, props: BeEc2ConstructProps) {
     super(scope, id);
 
-    const { vpc, deploymentBucket, role, environmentVariables } = props;
+    const { vpc, deploymentBucket, role, databaseSecurityGroup, environmentVariables } = props;
 
     // Security Group for EC2 instance
     this.securityGroup = new SecurityGroup(this, 'DougustSecurityGroup', {
@@ -59,6 +60,12 @@ class BeEc2Construct extends Construct {
       Peer.anyIpv4(),
       Port.tcp(443),
       'Allow HTTPS access'
+    );
+
+    databaseSecurityGroup.addIngressRule(
+      this.securityGroup,
+      Port.tcp(5432),
+      'Allow PostgreSQL access from EC2 instance'
     );
 
     // User Data script to set up the instance

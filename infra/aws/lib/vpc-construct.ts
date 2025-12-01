@@ -1,15 +1,22 @@
 import { Construct } from 'constructs';
 import { IVpc, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Environment, generateConstructName } from './utils';
 
 export class VpcConstruct extends Construct {
   public readonly vpc: IVpc;
 
-  constructor(scope: Construct, id: string) {
+  constructor(
+    scope: Construct,
+    id: string,
+    props: { environment: Environment }
+  ) {
     super(scope, id);
+
+    const { environment } = props;
 
     // Create VPC with public and private subnets
     // Using a simple configuration to stay within free tier
-    this.vpc = new Vpc(this, 'DougustVpc', {
+    this.vpc = new Vpc(this, generateConstructName('vpc', environment), {
       maxAzs: 2, // RDS requires at least 2 AZs for subnet groups
       natGateways: 0, // No NAT gateway (costs money)
       subnetConfiguration: [

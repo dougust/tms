@@ -12,15 +12,16 @@ import {
   InstanceType,
   ISecurityGroup,
   IVpc,
-  Port,
   SecurityGroup,
   SubnetType,
 } from 'aws-cdk-lib/aws-ec2';
 import { Duration, RemovalPolicy } from 'aws-cdk-lib/core';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
+import { Environment, generateConstructName } from './utils';
 
 export interface RdsConstructProps {
   vpc: IVpc;
+  environment: Environment;
 }
 
 export class RdsConstruct extends Construct {
@@ -34,62 +35,74 @@ export class RdsConstruct extends Construct {
   constructor(scope: Construct, id: string, props: RdsConstructProps) {
     super(scope, id);
 
-    const { vpc } = props;
+    const { vpc, environment } = props;
 
     // Create a security group for the RDS instance
-    this.securityGroup = new SecurityGroup(this, 'DatabaseSecurityGroup', {
-      vpc,
-      description: 'Security group for PostgreSQL RDS instance',
-      allowAllOutbound: true,
-    });
+    this.securityGroup = new SecurityGroup(
+      this,
+      generateConstructName('rds-security-group', environment),
+      {
+        vpc,
+        description: 'Security group for PostgreSQL RDS instance',
+        allowAllOutbound: true,
+      }
+    );
 
     // Create secret for database credentials
-    this.secret = new Secret(this, 'DBCredentialsSecret', {
-      secretName: 'dougust-db-credentials',
-      generateSecretString: {
-        secretStringTemplate: JSON.stringify({
-          username: 'dougust',
-        }),
-        excludePunctuation: true,
-        includeSpace: false,
-        generateStringKey: 'password',
-      },
-    });
+    this.secret = new Secret(
+      this,
+      generateConstructName('db-credentials', environment),
+      {
+        secretName: 'dougust-db-credentials',
+        generateSecretString: {
+          secretStringTemplate: JSON.stringify({
+            username: 'dougust',
+          }),
+          excludePunctuation: true,
+          includeSpace: false,
+          generateStringKey: 'password',
+        },
+      }
+    );
 
     // Create RDS PostgreSQL instance
-    this.database = new DatabaseInstance(this, 'PostgresDatabase', {
-      engine: DatabaseInstanceEngine.postgres({
-        version: PostgresEngineVersion.VER_17_6,
-      }),
-      vpc,
-      vpcSubnets: {
-        subnetType: SubnetType.PRIVATE_ISOLATED,
-      },
-      securityGroups: [this.securityGroup],
-      credentials: Credentials.fromSecret(this.secret),
-      // Free tier eligible settings
-      instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.MICRO),
-      allocatedStorage: 20, // 20 GB is within free tier
-      storageType: StorageType.GP2,
-      maxAllocatedStorage: 100, // Auto-scaling limit
-      // Database settings
-      databaseName: 'dougust',
-      port: 5432,
-      // Backup and maintenance
-      backupRetention: Duration.days(1),
-      deleteAutomatedBackups: false,
-      // Public accessibility
-      publiclyAccessible: false,
-      // Multi-AZ for production (disabled for free tier)
-      multiAz: false,
-      // Auto minor version upgrade
-      autoMinorVersionUpgrade: true,
-      // Storage encryption
-      storageEncrypted: true,
-      // Deletion protection (disable for dev/test)
-      deletionProtection: false,
-      removalPolicy: RemovalPolicy.SNAPSHOT,
-    });
+    this.database = new DatabaseInstance(
+      this,
+      generateConstructName('db-instance', environment),
+      {
+        engine: DatabaseInstanceEngine.postgres({
+          version: PostgresEngineVersion.VER_17_6,
+        }),
+        vpc,
+        vpcSubnets: {
+          subnetType: SubnetType.PRIVATE_ISOLATED,
+        },
+        securityGroups: [this.securityGroup],
+        credentials: Credentials.fromSecret(this.secret),
+        // Free tier eligible settings
+        instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.MICRO),
+        allocatedStorage: 20, // 20 GB is within free tier
+        storageType: StorageType.GP2,
+        maxAllocatedStorage: 100, // Auto-scaling limit
+        // Database settings
+        databaseName: 'dougust',
+        port: 5432,
+        // Backup and maintenance
+        backupRetention: Duration.days(1),
+        deleteAutomatedBackups: false,
+        // Public accessibility
+        publiclyAccessible: false,
+        // Multi-AZ for production (disabled for free tier)
+        multiAz: false,
+        // Auto minor version upgrade
+        autoMinorVersionUpgrade: true,
+        // Storage encryption
+        storageEncrypted: true,
+        // Deletion protection (disable for dev/test)
+        deletionProtection: false,
+        removalPolicy: RemovalPolicy.SNAPSHOT,
+      }
+    );
 
     // Export database connection details (without sensitive credentials)
     this.dbEndpoint = this.database.dbInstanceEndpointAddress;

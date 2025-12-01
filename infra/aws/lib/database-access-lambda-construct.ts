@@ -1,13 +1,11 @@
 import { Construct } from 'constructs';
 import { Duration } from 'aws-cdk-lib/core';
-import { Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ISecurityGroup, IVpc, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
-import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { APP_NAME } from './constants';
-import { Environment } from './utils';
+import { Environment, generateConstructName } from './utils';
 import { NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs/lib/function';
 
 export interface DatabaseAcessLambdaConstructProps {
@@ -32,14 +30,17 @@ export class DatabaseAccessLambdaConstruct extends Construct {
   ) {
     super(scope, id);
 
-    const { vpc, databaseSecurityGroup } = props;
+    const { vpc, databaseSecurityGroup, environment } = props;
 
-    // Create security group for Lambda
-    this.securityGroup = new SecurityGroup(this, 'MigrationLambdaSG', {
-      vpc,
-      description: 'Security group for database migration Lambda',
-      allowAllOutbound: true,
-    });
+    this.securityGroup = new SecurityGroup(
+      this,
+      generateConstructName('db-lambdas-security-group', environment),
+      {
+        vpc,
+        description: 'Security group for lambdas that access the database.',
+        allowAllOutbound: true,
+      }
+    );
 
     // Allow Lambda to connect to RDS
     databaseSecurityGroup.addIngressRule(
@@ -68,12 +69,11 @@ export class DatabaseAccessLambdaConstruct extends Construct {
   }
 
   createPostRegistrationLambda() {
-    const { environment } =
-      this.props;
+    const { environment } = this.props;
 
     return new NodejsFunction(
       this,
-      `${APP_NAME}-auth-post-registration-lambda-${environment}`,
+      generateConstructName('auth-post-registration-lambda', environment),
       {
         entry: 'src/lambda/auth-post-registration.ts',
         handler: 'handler',
@@ -86,31 +86,34 @@ export class DatabaseAccessLambdaConstruct extends Construct {
 
   createMigrationLambda() {
     const { environment } = this.props;
-    return this.createLambda(`${APP_NAME}-migration-lambda-${environment}`, {
-      timeout: Duration.seconds(10),
-      handler: 'handler',
-      entry: 'src/lambda/migration.ts',
-      bundling: {
-        minify: true,
-        sourceMap: true,
-        commandHooks: {
-          beforeBundling(inputDir: string, outputDir: string): string[] {
-            return [];
-          },
-          beforeInstall(inputDir: string, outputDir: string): string[] {
-            return [];
-          },
-          afterBundling(inputDir: string, outputDir: string): string[] {
-            // Copy migration files to the Lambda bundle
-            return [
-              `mkdir -p ${outputDir}/drizzle`,
-              `cp -r ${inputDir}/libs/database/drizzle/* ${outputDir}/drizzle/ 2>/dev/null || echo "No migrations found, will be empty"`,
-            ];
+    return this.createLambda(
+      generateConstructName('migration-lambda', environment),
+      {
+        timeout: Duration.seconds(10),
+        handler: 'handler',
+        entry: 'src/lambda/migration.ts',
+        bundling: {
+          minify: true,
+          sourceMap: true,
+          commandHooks: {
+            beforeBundling(inputDir: string, outputDir: string): string[] {
+              return [];
+            },
+            beforeInstall(inputDir: string, outputDir: string): string[] {
+              return [];
+            },
+            afterBundling(inputDir: string, outputDir: string): string[] {
+              // Copy migration files to the Lambda bundle
+              return [
+                `mkdir -p ${outputDir}/drizzle`,
+                `cp -r ${inputDir}/libs/database/drizzle/* ${outputDir}/drizzle/ 2>/dev/null || echo "No migrations found, will be empty"`,
+              ];
+            },
           },
         },
-      },
-      description: 'Runs database migrations for Dougust application',
-    });
+        description: 'Runs database migrations for Dougust application',
+      }
+    );
   }
 
   createLambda(name: string, props: NodejsFunctionProps) {
