@@ -6,9 +6,11 @@ import { VpcConstruct } from './vpc-construct';
 import BeEc2Construct from './be-ec2-construct';
 import { SsmDeploymentConstruct } from './ssm-deployment-construct';
 import { RdsConstruct } from './rds-construct';
-import { SecurityGroup, Peer, Port, IVpc } from 'aws-cdk-lib/aws-ec2';
+import { Port } from 'aws-cdk-lib/aws-ec2';
+import { Environment } from '../utils';
 
 export interface DougustStackProps extends StackProps {
+  t: Environment;
   /**
    * Path to the built application (dist folder)
    */
