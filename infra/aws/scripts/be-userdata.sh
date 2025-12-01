@@ -5,7 +5,7 @@ set -e
 exec > >(tee -a /var/log/user-data.log)
 exec 2>&1
 
-echo "[USERDATA]: Starting Dougust deployment"
+echo "[USERDATA]: Starting Dougust deployment 1"
 echo "[USERDATA]: Time: $(date)"
 
 echo "[USERDATA]: Starting instance setup..."
@@ -36,7 +36,8 @@ aws s3 sync s3://{{BUCKET_NAME}}/app/ /home/ec2-user/app/
 
 echo "[USERDATA]: Installing production dependencies..."
 cd /home/ec2-user/app
-npm ci --production
+ls
+npm ci --omit=dev
 
 echo "[USERDATA]: Setting up environment variables..."
 cat > /home/ec2-user/app/.env << 'EOF'
