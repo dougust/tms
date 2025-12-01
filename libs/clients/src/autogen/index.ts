@@ -140,7 +140,6 @@ export type {
   FuncionariosControllerUpdateMutation,
 } from './types/FuncionariosControllerUpdate';
 export type { GetEmpresaResponseDto } from './types/GetEmpresaResponseDto';
-export type { GetFuncionarioResponseDto } from './types/GetFuncionarioResponseDto';
 export type {
   HealthControllerGetHealth200,
   HealthControllerGetHealthQueryResponse,
@@ -481,7 +480,6 @@ export {
   funcionariosControllerUpdateMutationResponseSchema,
 } from './zod/funcionariosControllerUpdateSchema';
 export { getEmpresaResponseDtoSchema } from './zod/getEmpresaResponseDtoSchema';
-export { getFuncionarioResponseDtoSchema } from './zod/getFuncionarioResponseDtoSchema';
 export {
   healthControllerGetHealth200Schema,
   healthControllerGetHealthQueryResponseSchema,

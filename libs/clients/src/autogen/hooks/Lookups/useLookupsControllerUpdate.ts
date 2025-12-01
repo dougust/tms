@@ -5,11 +5,6 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
-  LookupsControllerUpdateMutationRequest,
-  LookupsControllerUpdateMutationResponse,
-  LookupsControllerUpdatePathParams,
-} from '../../types/LookupsControllerUpdate';
-import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -18,6 +13,11 @@ import type {
   UseMutationResult,
   QueryClient,
 } from '@tanstack/react-query';
+import type {
+  LookupsControllerUpdateMutationRequest,
+  LookupsControllerUpdateMutationResponse,
+  LookupsControllerUpdatePathParams,
+} from '../../types/LookupsControllerUpdate';
 import { mutationOptions, useMutation } from '@tanstack/react-query';
 
 export const lookupsControllerUpdateMutationKey = () =>

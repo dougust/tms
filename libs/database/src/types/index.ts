@@ -8,9 +8,16 @@ import {
   beneficios,
 } from '../lib/tenant';
 
-export type IEmpresa = InferSelectModel<ReturnType<typeof empresas>>;
-export type IFuncionario = InferSelectModel<ReturnType<typeof funcionarios>>;
-export type IProjeto = InferSelectModel<ReturnType<typeof projetos>>;
-export type IDiaria = InferSelectModel<ReturnType<typeof diarias>>;
-export type ILookup = InferSelectModel<ReturnType<typeof lookup>>;
-export type Ibeneficios = InferSelectModel<ReturnType<typeof beneficios>>;
+export type IEmpresaTable = ReturnType<typeof empresas>;
+export type IFuncionarioTable = ReturnType<typeof funcionarios>;
+export type IProjetoTable = ReturnType<typeof projetos>;
+export type IDiariaTable = ReturnType<typeof diarias>;
+export type ILookupTable = ReturnType<typeof lookup>;
+export type IBeneficiosTable = ReturnType<typeof beneficios>;
+
+export type IEmpresa = InferSelectModel<IEmpresaTable>;
+export type IFuncionario = InferSelectModel<IFuncionarioTable>;
+export type IProjeto = InferSelectModel<IProjetoTable>;
+export type IDiaria = InferSelectModel<IDiariaTable>;
+export type ILookup = InferSelectModel<ILookupTable>;
+export type IBeneficios = InferSelectModel<IBeneficiosTable>;

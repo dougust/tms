@@ -20,4 +20,6 @@ export const funcionarioDtoSchema = z.object({
   projetoId: z.string(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
+  decimoTerceiro: z.number(),
+  ferias: z.number(),
 });

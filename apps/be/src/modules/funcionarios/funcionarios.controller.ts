@@ -10,10 +10,7 @@ import {
 import { FuncionariosService } from './funcionarios.service';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
-import {
-  FuncionarioDto,
-  GetFuncionarioResponseDto,
-} from './dto/get-funcionario.response.dto';
+import { FuncionarioDto } from './dto/get-funcionario.response.dto';
 import { CreateFuncionarioResultDto } from './dto/create-funcionario.result.dto';
 
 @Controller('funcionarios')
@@ -33,7 +30,7 @@ export class FuncionariosController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<GetFuncionarioResponseDto> {
+  findOne(@Param('id') id: string): Promise<FuncionarioDto> {
     return this.service.findOne(id);
   }
 
