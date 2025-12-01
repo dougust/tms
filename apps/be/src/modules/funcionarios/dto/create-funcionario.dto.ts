@@ -6,9 +6,10 @@ import {
   Length,
   IsInt,
   IsDate,
+  IsNumber,
 } from 'class-validator';
 import { IsUnique } from '../../../common/cadastros/isUniqueConstraint';
-import { funcionarios } from '@dougust/database';
+import { funcionarios, beneficios, lookup } from '@dougust/database';
 
 export class CreateFuncionarioDto {
   @IsOptional()
@@ -55,4 +56,24 @@ export class CreateFuncionarioDto {
   @IsOptional()
   @IsInt()
   dependetes: number;
+
+  @IsOptional()
+  @IsNumber()
+  valorCafe?: number;
+
+  @IsOptional()
+  @IsNumber()
+  valorSaudeOcupacional?: number;
+
+  @IsOptional()
+  @IsNumber()
+  valorSaudePlano?: number;
+
+  @IsOptional()
+  @IsNumber()
+  valorJanta?: number;
+
+  @IsOptional()
+  @IsNumber()
+  valorDescontoCasa?: number;
 }

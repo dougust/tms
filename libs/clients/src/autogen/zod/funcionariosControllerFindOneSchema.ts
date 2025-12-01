@@ -3,15 +3,14 @@
  * Do not edit manually.
  */
 
-import { getFuncionarioResponseDtoSchema } from './getFuncionarioResponseDtoSchema';
+import { funcionarioDtoSchema } from './funcionarioDtoSchema';
 import { z } from 'zod/v4';
 
 export const funcionariosControllerFindOnePathParamsSchema = z.object({
   id: z.string(),
 });
 
-export const funcionariosControllerFindOne200Schema =
-  getFuncionarioResponseDtoSchema;
+export const funcionariosControllerFindOne200Schema = funcionarioDtoSchema;
 
 export const funcionariosControllerFindOneQueryResponseSchema =
   funcionariosControllerFindOne200Schema;

@@ -5,10 +5,6 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
-  FuncionariosControllerFindOneQueryResponse,
-  FuncionariosControllerFindOnePathParams,
-} from '../../types/FuncionariosControllerFindOne';
-import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -18,6 +14,10 @@ import type {
   QueryObserverOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
+import type {
+  FuncionariosControllerFindOneQueryResponse,
+  FuncionariosControllerFindOnePathParams,
+} from '../../types/FuncionariosControllerFindOne';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
 export const funcionariosControllerFindOneQueryKey = (

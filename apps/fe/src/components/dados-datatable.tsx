@@ -5,6 +5,23 @@ import { formatCurrencyBRL, formatInteger } from '../lib';
 
 export const columns: ColumnDef<FuncionarioDto>[] = [
   { accessorKey: 'nome', header: 'Nome' },
+  { accessorKey: 'social', header: 'Apelido', cell: ({ row }) => row.original.social || '' },
+  { accessorKey: 'cpf', header: 'CPF' },
+  {
+    accessorKey: 'nascimento',
+    header: 'Nascimento',
+    cell: ({ row }) => {
+      const v = row.original.nascimento as unknown as string | null | undefined;
+      if (!v) return '';
+      // Expecting ISO date string (YYYY-MM-DD or date-time)
+      const d = new Date(v);
+      return isNaN(d.getTime()) ? v : d.toLocaleDateString();
+    },
+  },
+  { accessorKey: 'phone', header: 'Telefone', cell: ({ row }) => row.original.phone || '' },
+  { accessorKey: 'email', header: 'Email' },
+  { accessorKey: 'rg', header: 'RG', cell: ({ row }) => row.original.rg || '' },
+  { accessorKey: 'projetoId', header: 'Projeto' },
   { accessorKey: 'funcao', header: 'Função' },
   // {
   //   accessorKey: 'faltas',
@@ -64,6 +81,18 @@ export const columns: ColumnDef<FuncionarioDto>[] = [
     accessorKey: 'dependetes',
     header: 'Dependentes',
     cell: ({ row }) => formatInteger(row.original.dependetes),
+    meta: { className: 'text-right' },
+  },
+  {
+    accessorKey: 'decimoTerceiro',
+    header: '13º (calc.)',
+    cell: ({ row }) => formatCurrencyBRL(row.original.decimoTerceiro),
+    meta: { className: 'text-right' },
+  },
+  {
+    accessorKey: 'ferias',
+    header: 'Férias (calc.)',
+    cell: ({ row }) => formatCurrencyBRL(row.original.ferias),
     meta: { className: 'text-right' },
   },
 ];
