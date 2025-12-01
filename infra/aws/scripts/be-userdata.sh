@@ -36,7 +36,6 @@ aws s3 sync s3://{{BUCKET_NAME}}/app/ /home/ec2-user/app/
 
 echo "[USERDATA]: Installing production dependencies..."
 cd /home/ec2-user/app
-ls
 npm ci --omit=dev
 
 echo "[USERDATA]: Setting up environment variables..."
