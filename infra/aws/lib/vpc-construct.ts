@@ -7,16 +7,21 @@ export class VpcConstruct extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    // Create VPC with public subnet for the EC2 instance
+    // Create VPC with public and private subnets
     // Using a simple configuration to stay within free tier
     this.vpc = new Vpc(this, 'DougustVpc', {
-      maxAzs: 1, // Use only 1 AZ to minimize costs
+      maxAzs: 2, // RDS requires at least 2 AZs for subnet groups
       natGateways: 0, // No NAT gateway (costs money)
       subnetConfiguration: [
         {
           cidrMask: 24,
           name: 'Public',
           subnetType: SubnetType.PUBLIC,
+        },
+        {
+          cidrMask: 24,
+          name: 'Private',
+          subnetType: SubnetType.PRIVATE_ISOLATED,
         },
       ],
     });

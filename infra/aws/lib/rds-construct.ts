@@ -60,7 +60,7 @@ export class RdsConstruct extends Construct {
       }),
       vpc,
       vpcSubnets: {
-        subnetType: SubnetType.PRIVATE_WITH_EGRESS,
+        subnetType: SubnetType.PRIVATE_ISOLATED,
       },
       securityGroups: [this.securityGroup],
       credentials: Credentials.fromSecret(dbCredentialsSecret),
