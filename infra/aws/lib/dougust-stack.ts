@@ -5,6 +5,8 @@ import { S3DeploymentConstruct } from './s3-deployment-construct';
 import { VpcConstruct } from './vpc-construct';
 import BeEc2Construct from './be-ec2-construct';
 import { SsmDeploymentConstruct } from './ssm-deployment-construct';
+import { RdsConstruct } from './rds-construct';
+import { SecurityGroup, Peer, Port, IVpc } from 'aws-cdk-lib/aws-ec2';
 
 export interface DougustStackProps extends StackProps {
   /**
@@ -38,12 +40,36 @@ export class DougustStack extends Stack {
 
     const { vpc } = new VpcConstruct(this, 'DougustVPCConstruct');
 
-    const { instance } = new BeEc2Construct(this, 'DougustEC2Construct', {
-      environmentVariables,
-      deploymentBucket,
-      role,
-      vpc,
-    });
+    // Create RDS PostgreSQL database
+    const { connectionString, securityGroup: dbSecurityGroup } =
+      new RdsConstruct(this, 'DougustRDSConstruct', {
+        vpc,
+      });
+
+    // Merge DATABASE_URL into environment variables
+    const envWithDatabase = {
+      ...environmentVariables,
+      DATABASE_URL: connectionString,
+    };
+
+    // Create EC2 instance with database connection string
+    const { instance, securityGroup: ec2SecurityGroup } = new BeEc2Construct(
+      this,
+      'DougustEC2Construct',
+      {
+        environmentVariables: envWithDatabase,
+        deploymentBucket,
+        role,
+        vpc,
+      }
+    );
+
+    // Allow inbound connections from EC2 instance
+    dbSecurityGroup.addIngressRule(
+      ec2SecurityGroup,
+      Port.tcp(5432),
+      'Allow PostgreSQL access from EC2 instance'
+    );
 
     // SSM deployment trigger - runs deployment script on every deploy
     new SsmDeploymentConstruct(this, 'DougustDeploymentTrigger', {

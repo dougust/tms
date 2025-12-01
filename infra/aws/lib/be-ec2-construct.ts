@@ -10,6 +10,7 @@ import {
   InstanceClass,
   InstanceSize,
   InstanceType,
+  ISecurityGroup,
   IVpc,
   Peer,
   Port,
@@ -32,6 +33,7 @@ export interface BeEc2ConstructProps {
 
 class BeEc2Construct extends Construct {
   public readonly instance: Instance;
+  public readonly securityGroup: ISecurityGroup;
 
   constructor(scope: Construct, id: string, props: BeEc2ConstructProps) {
     super(scope, id);
@@ -39,21 +41,21 @@ class BeEc2Construct extends Construct {
     const { vpc, deploymentBucket, role, environmentVariables } = props;
 
     // Security Group for EC2 instance
-    const securityGroup = new SecurityGroup(this, 'DougustSecurityGroup', {
+    this.securityGroup = new SecurityGroup(this, 'DougustSecurityGroup', {
       vpc,
       description: 'Security group for Dougust NestJS application',
       allowAllOutbound: true,
     });
 
     // Allow HTTP traffic (port 80)
-    securityGroup.addIngressRule(
+    this.securityGroup.addIngressRule(
       Peer.anyIpv4(),
       Port.tcp(80),
       'Allow HTTP access'
     );
 
     // Allow HTTPS traffic (port 443)
-    securityGroup.addIngressRule(
+    this.securityGroup.addIngressRule(
       Peer.anyIpv4(),
       Port.tcp(443),
       'Allow HTTPS access'
@@ -93,7 +95,7 @@ class BeEc2Construct extends Construct {
         subnetType: SubnetType.PUBLIC,
       },
       role,
-      securityGroup,
+      securityGroup: this.securityGroup,
       instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.MICRO),
       // Amazon Linux 2023 - free tier eligible
       machineImage: new AmazonLinuxImage({
