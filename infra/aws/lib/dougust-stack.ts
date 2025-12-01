@@ -41,15 +41,20 @@ export class DougustStack extends Stack {
     const { vpc } = new VpcConstruct(this, 'DougustVPCConstruct');
 
     // Create RDS PostgreSQL database
-    const { connectionString, securityGroup: dbSecurityGroup } =
-      new RdsConstruct(this, 'DougustRDSConstruct', {
-        vpc,
-      });
+    const rdsConstruct = new RdsConstruct(this, 'DougustRDSConstruct', {
+      vpc,
+    });
 
-    // Merge DATABASE_URL into environment variables
+    // Grant EC2 role permission to read the database secret
+    rdsConstruct.secret.grantRead(role);
+
+    // Pass database connection info as environment variables (without credentials)
     const envWithDatabase = {
       ...environmentVariables,
-      DATABASE_URL: connectionString,
+      DB_SECRET_ARN: rdsConstruct.secret.secretArn,
+      DB_HOST: rdsConstruct.dbEndpoint,
+      DB_PORT: rdsConstruct.dbPort,
+      DB_NAME: rdsConstruct.dbName,
     };
 
     // Create EC2 instance with database connection string
@@ -65,7 +70,7 @@ export class DougustStack extends Stack {
     );
 
     // Allow inbound connections from EC2 instance
-    dbSecurityGroup.addIngressRule(
+    rdsConstruct.securityGroup.addIngressRule(
       ec2SecurityGroup,
       Port.tcp(5432),
       'Allow PostgreSQL access from EC2 instance'

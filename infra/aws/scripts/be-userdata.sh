@@ -121,9 +121,39 @@ cd /home/ec2-user/app
 npm ci --omit=dev
 
 echo "[USERDATA]: Setting up environment variables..."
+# First write the static environment variables
 cat > /home/ec2-user/app/.env << 'EOF'
 {{ENV_FILE_CONTENT}}
 EOF
+
+# If DB_SECRET_ARN is set, fetch database credentials from Secrets Manager
+if grep -q "DB_SECRET_ARN=" /home/ec2-user/app/.env; then
+  echo "[USERDATA]: Fetching database credentials from Secrets Manager..."
+
+  # Install jq for JSON parsing (if not already installed)
+  yum install -y jq
+
+  # Extract DB connection info from environment variables
+  DB_SECRET_ARN=$(grep DB_SECRET_ARN= /home/ec2-user/app/.env | cut -d= -f2)
+  DB_HOST=$(grep DB_HOST= /home/ec2-user/app/.env | cut -d= -f2)
+  DB_PORT=$(grep DB_PORT= /home/ec2-user/app/.env | cut -d= -f2)
+  DB_NAME=$(grep DB_NAME= /home/ec2-user/app/.env | cut -d= -f2)
+
+  # Fetch secret from Secrets Manager
+  SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "$DB_SECRET_ARN" --query SecretString --output text)
+
+  # Parse username and password from secret
+  DB_USERNAME=$(echo "$SECRET_JSON" | jq -r .username)
+  DB_PASSWORD=$(echo "$SECRET_JSON" | jq -r .password)
+
+  # Construct DATABASE_URL
+  DATABASE_URL="postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
+
+  # Append DATABASE_URL to .env file
+  echo "DATABASE_URL=${DATABASE_URL}" >> /home/ec2-user/app/.env
+
+  echo "[USERDATA]: Database credentials configured successfully"
+fi
 
 chown -R ec2-user:ec2-user /home/ec2-user/app
 

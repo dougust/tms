@@ -26,7 +26,10 @@ export interface RdsConstructProps {
 export class RdsConstruct extends Construct {
   public readonly database: DatabaseInstance;
   public readonly securityGroup: ISecurityGroup;
-  public readonly connectionString: string;
+  public readonly secret: Secret;
+  public readonly dbEndpoint: string;
+  public readonly dbPort: string;
+  public readonly dbName: string;
 
   constructor(scope: Construct, id: string, props: RdsConstructProps) {
     super(scope, id);
@@ -41,7 +44,7 @@ export class RdsConstruct extends Construct {
     });
 
     // Create secret for database credentials
-    const dbCredentialsSecret = new Secret(this, 'DBCredentialsSecret', {
+    this.secret = new Secret(this, 'DBCredentialsSecret', {
       secretName: 'dougust-db-credentials',
       generateSecretString: {
         secretStringTemplate: JSON.stringify({
@@ -63,7 +66,7 @@ export class RdsConstruct extends Construct {
         subnetType: SubnetType.PRIVATE_ISOLATED,
       },
       securityGroups: [this.securityGroup],
-      credentials: Credentials.fromSecret(dbCredentialsSecret),
+      credentials: Credentials.fromSecret(this.secret),
       // Free tier eligible settings
       instanceType: InstanceType.of(InstanceClass.T3, InstanceSize.MICRO),
       allocatedStorage: 20, // 20 GB is within free tier
@@ -73,7 +76,7 @@ export class RdsConstruct extends Construct {
       databaseName: 'dougust',
       port: 5432,
       // Backup and maintenance
-      backupRetention: Duration.days(7),
+      backupRetention: Duration.days(1),
       deleteAutomatedBackups: false,
       // Public accessibility
       publiclyAccessible: false,
@@ -88,15 +91,9 @@ export class RdsConstruct extends Construct {
       removalPolicy: RemovalPolicy.SNAPSHOT,
     });
 
-    // Build connection string using CDK tokens (will be resolved at deploy time)
-    // Format: postgresql://username:password@host:port/database
-    const username = dbCredentialsSecret
-      .secretValueFromJson('username')
-      .toString();
-    const password = dbCredentialsSecret
-      .secretValueFromJson('password')
-      .toString();
-
-    this.connectionString = `postgresql://${username}:${password}@${this.database.dbInstanceEndpointAddress}:${this.database.dbInstanceEndpointPort}/dougust`;
+    // Export database connection details (without sensitive credentials)
+    this.dbEndpoint = this.database.dbInstanceEndpointAddress;
+    this.dbPort = this.database.dbInstanceEndpointPort;
+    this.dbName = 'dougust';
   }
 }
