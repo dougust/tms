@@ -15,7 +15,7 @@ export class HealthController {
       await this.healthService.getCurrentlyRunningBusinessId();
     return {
       userContext,
-      status: db.status === 'up' ? 'ok' : 'degraded',
+      status: db.status === 'up' ? 'ok 5' : 'degraded 5',
       uptime: process.uptime(),
       responseTimeMs: Date.now() - started,
       timestamp: new Date().toISOString(),

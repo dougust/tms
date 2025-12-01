@@ -294,6 +294,20 @@ EOF'
 ```
 
 
+checking result of invocation command
+```bash
+aws ssm list-commands \
+--instance-id i-04e7164ec3dcfdb5c \
+--max-results 10 \
+--query 'Commands[*].{CommandId:CommandId,Status:Status,Time:RequestedDateTime,Comment:Comment}' \
+--output table
+```
+aws ssm get-command-invocation \
+--command-id 5f37a2d0-931f-4a91-bd98-71a7fdfddd13 \
+--instance-id i-04e7164ec3dcfdb5c \
+--output json
+
+
 
 curl http://3.213.105.143/api/health
 

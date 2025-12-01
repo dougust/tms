@@ -31,6 +31,8 @@ export interface BeEc2ConstructProps {
 }
 
 class BeEc2Construct extends Construct {
+  public readonly instance: Instance;
+
   constructor(scope: Construct, id: string, props: BeEc2ConstructProps) {
     super(scope, id);
 
@@ -85,7 +87,7 @@ class BeEc2Construct extends Construct {
     userData.addCommands(beUserdata);
 
     // Create EC2 Instance - t2.micro is free tier eligible
-    const instance = new Instance(this, 'DougustInstance', {
+    this.instance = new Instance(this, 'DougustInstance', {
       vpc,
       vpcSubnets: {
         subnetType: SubnetType.PUBLIC,
@@ -113,16 +115,16 @@ class BeEc2Construct extends Construct {
 
     // Allocate Elastic IP (one Elastic IP is free when associated with running instance)
     const eip = new CfnEIP(this, 'DougustEIP', {
-      instanceId: instance.instanceId,
+      instanceId: this.instance.instanceId,
     });
 
     new CfnOutput(scope, 'InstanceId', {
-      value: instance.instanceId,
+      value: this.instance.instanceId,
       description: 'EC2 Instance ID',
     });
 
     new CfnOutput(scope, 'InstancePublicIp', {
-      value: instance.instancePublicIp,
+      value: this.instance.instancePublicIp,
       description: 'Public IP address of the EC2 instance',
     });
 

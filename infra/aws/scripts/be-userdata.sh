@@ -5,10 +5,14 @@ set -e
 exec > >(tee -a /var/log/user-data.log)
 exec 2>&1
 
-echo "[USERDATA]: Starting Dougust deployment 1"
+echo "[USERDATA]: Starting Dougust instance setup"
 echo "[USERDATA]: Time: $(date)"
 
-echo "[USERDATA]: Starting instance setup..."
+# ============================================================================
+# ONE-TIME SYSTEM SETUP (only runs on instance creation)
+# ============================================================================
+
+echo "[USERDATA]: Starting one-time instance setup..."
 
 # Update system
 echo "[USERDATA]: Updating system packages..."
@@ -23,41 +27,14 @@ yum install -y nodejs
 echo "[USERDATA]: Installing PM2..."
 npm install -g pm2
 
+# Install Nginx
+echo "[USERDATA]: Installing Nginx..."
+dnf install -y nginx
+
 # Create app directory
 echo "[USERDATA]: Creating app directory..."
 mkdir -p /home/ec2-user/app
 cd /home/ec2-user/app
-
-
-echo "[USERDATA]: Instance setup complete!"
-
-echo "[USERDATA]: Downloading application from S3..."
-aws s3 sync s3://{{BUCKET_NAME}}/app/ /home/ec2-user/app/
-
-echo "[USERDATA]: Installing production dependencies..."
-cd /home/ec2-user/app
-npm ci --omit=dev
-
-echo "[USERDATA]: Setting up environment variables..."
-cat > /home/ec2-user/app/.env << 'EOF'
-{{ENV_FILE_CONTENT}}
-EOF
-
-chown -R ec2-user:ec2-user /home/ec2-user/app
-
-echo "[USERDATA]: Starting application with PM2..."
-su - ec2-user -c "cd /home/ec2-user/app && pm2 start main.js --name dougust-api"
-
-echo "[USERDATA]: Configuring PM2 to start on boot..."
-env PATH=$PATH:/usr/bin pm2 startup systemd -u ec2-user --hp /home/ec2-user
-
-echo "[USERDATA]: Saving PM2 process list..."
-su - ec2-user -c "pm2 save"
-
-echo "[USERDATA]: Application deployed and started successfully!"
-
-echo "[USERDATA]: Installing Nginx..."
-dnf install -y nginx
 
 echo "[USERDATA]: Configuring Nginx as reverse proxy..."
 cat > /etc/nginx/conf.d/dougust.conf << 'EOF'
@@ -83,9 +60,89 @@ echo "[USERDATA]: Starting and enabling Nginx..."
 systemctl start nginx
 systemctl enable nginx
 
+echo "[USERDATA]: One-time setup complete!"
 
-echo "[USERDATA]: Nginx setup complete!"
-echo "[USERDATA]: Deployment complete!"
+# ============================================================================
+# CREATE DEPLOYMENT SCRIPT (for future deployments via SSM)
+# ============================================================================
+
+echo "[USERDATA]: Creating deployment script..."
+cat > /home/ec2-user/deploy-app.sh << 'DEPLOY_SCRIPT'
+#!/bin/bash
+set -e
+
+# Log all output
+exec > >(tee -a /var/log/app-deployment.log)
+exec 2>&1
+
+echo "[DEPLOY]: Starting deployment at $(date)"
+
+BUCKET_NAME=$1
+APP_DIR="/home/ec2-user/app"
+
+if [ -z "$BUCKET_NAME" ]; then
+    echo "[DEPLOY]: ERROR - BUCKET_NAME not provided"
+    exit 1
+fi
+
+echo "[DEPLOY]: Stopping application..."
+su - ec2-user -c "pm2 stop dougust-api || true"
+
+echo "[DEPLOY]: Downloading latest application from S3..."
+aws s3 sync s3://${BUCKET_NAME}/app/ ${APP_DIR}/ --delete --exact-timestamps
+
+echo "[DEPLOY]: Installing/updating dependencies..."
+cd ${APP_DIR}
+npm ci --omit=dev
+
+echo "[DEPLOY]: Fixing permissions..."
+chown -R ec2-user:ec2-user ${APP_DIR}
+
+echo "[DEPLOY]: Restarting application..."
+su - ec2-user -c "cd ${APP_DIR} && pm2 restart dougust-api"
+
+echo "[DEPLOY]: Deployment completed successfully at $(date)"
+DEPLOY_SCRIPT
+
+chmod +x /home/ec2-user/deploy-app.sh
+chown ec2-user:ec2-user /home/ec2-user/deploy-app.sh
+
+# ============================================================================
+# INITIAL DEPLOYMENT
+# ============================================================================
+
+echo "[USERDATA]: Running initial deployment..."
+
+echo "[USERDATA]: Downloading application from S3..."
+aws s3 sync s3://{{BUCKET_NAME}}/app/ /home/ec2-user/app/
+
+echo "[USERDATA]: Installing production dependencies..."
+cd /home/ec2-user/app
+npm ci --omit=dev
+
+echo "[USERDATA]: Setting up environment variables..."
+cat > /home/ec2-user/app/.env << 'EOF'
+{{ENV_FILE_CONTENT}}
+EOF
+
+chown -R ec2-user:ec2-user /home/ec2-user/app
+
+echo "[USERDATA]: Starting application with PM2..."
+su - ec2-user -c "cd /home/ec2-user/app && pm2 start main.js --name dougust-api"
+
+echo "[USERDATA]: Configuring PM2 to start on boot..."
+env PATH=$PATH:/usr/bin pm2 startup systemd -u ec2-user --hp /home/ec2-user
+
+echo "[USERDATA]: Saving PM2 process list..."
+su - ec2-user -c "pm2 save"
+
+echo "[USERDATA]: Initial deployment complete!"
+
+# ============================================================================
+# COMPLETION
+# ============================================================================
+
+echo "[USERDATA]: All setup complete!"
 echo "[USERDATA]: Time: $(date)"
 
 # Create completion marker
