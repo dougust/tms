@@ -6,9 +6,9 @@ import { VpcConstruct } from './vpc-construct';
 import BeEc2Construct from './be-ec2-construct';
 import { SsmDeploymentConstruct } from './ssm-deployment-construct';
 import { RdsConstruct } from './rds-construct';
-import { MigrationLambdaConstruct } from './migration-lambda-construct';
+import { DatabaseAccessLambdaConstruct } from './database-access-lambda-construct';
 import { Port } from 'aws-cdk-lib/aws-ec2';
-import { Environment } from '../utils';
+import { Environment } from './utils';
 
 export interface DougustStackProps extends StackProps {
   environment: Environment;
@@ -80,7 +80,7 @@ export class DougustStack extends Stack {
     );
 
     // Create migration Lambda function
-    const migrationLambda = new MigrationLambdaConstruct(
+    const migrationLambda = new DatabaseAccessLambdaConstruct(
       this,
       'DougustMigrationLambda',
       {

@@ -15,6 +15,7 @@
   "private": true,
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.940.0",
+    "@aws-sdk/client-ssm": "^3.940.0",
     "@knaadh/nestjs-drizzle-pg": "^1.2.0",
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
@@ -88,6 +89,7 @@
     "@swc/helpers": "~0.5.11",
     "@tailwindcss/postcss": "^4.1.16",
     "@tailwindcss/typography": "^0.5.19",
+    "@types/aws-lambda": "^8.10.159",
     "@types/jest": "^30.0.0",
     "@types/node": "20.19.9",
     "@types/passport-local": "^1.0.38",

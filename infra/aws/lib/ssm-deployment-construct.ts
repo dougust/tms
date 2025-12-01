@@ -4,7 +4,6 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Provider } from 'aws-cdk-lib/custom-resources';
-import { join } from 'node:path';
 import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { Instance } from 'aws-cdk-lib/aws-ec2';
 
@@ -43,7 +42,7 @@ export class SsmDeploymentConstruct extends Construct {
       {
         entry: 'src/lambda/deployment-trigger.ts',
         handler: 'handler',
-        runtime: Runtime.NODEJS_20_X,
+        runtime: Runtime.NODEJS_22_X,
         timeout: Duration.seconds(60),
         description: 'Triggers application deployment via SSM Run Command',
       }

@@ -1,41 +1,38 @@
 import { Construct } from 'constructs';
 import { Duration } from 'aws-cdk-lib/core';
-import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { Function, IFunction, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { ISecurityGroup, IVpc, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 import { ISecret } from 'aws-cdk-lib/aws-secretsmanager';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { join } from 'path';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { APP_NAME } from './constants';
+import { Environment } from './utils';
+import { NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs/lib/function';
 
-export interface MigrationLambdaConstructProps {
+export interface DatabaseAcessLambdaConstructProps {
   vpc: IVpc;
   databaseSecret: ISecret;
   databaseSecurityGroup: ISecurityGroup;
+  environment: Environment;
   dbHost: string;
   dbPort: string;
   dbName: string;
 }
 
-export class MigrationLambdaConstruct extends Construct {
-  public readonly migrationFunction: Function;
+export class DatabaseAccessLambdaConstruct extends Construct {
+  public readonly migrationFunction: IFunction;
+  public readonly authPostRegistrationLambda: IFunction;
   public readonly securityGroup: ISecurityGroup;
 
   constructor(
     scope: Construct,
     id: string,
-    props: MigrationLambdaConstructProps
+    public readonly props: DatabaseAcessLambdaConstructProps
   ) {
     super(scope, id);
 
-    const {
-      vpc,
-      databaseSecret,
-      databaseSecurityGroup,
-      dbHost,
-      dbPort,
-      dbName,
-    } = props;
+    const { vpc, databaseSecurityGroup } = props;
 
     // Create security group for Lambda
     this.securityGroup = new SecurityGroup(this, 'MigrationLambdaSG', {
@@ -52,13 +49,49 @@ export class MigrationLambdaConstruct extends Construct {
     );
 
     // Lambda function for migrations
-    this.migrationFunction = new NodejsFunction(this, 'MigrationFunction', {
-      runtime: Runtime.NODEJS_22_X,
+    this.migrationFunction = this.createMigrationLambda();
+    this.authPostRegistrationLambda = this.createPostRegistrationLambda();
+
+    // Grant Lambda permission to execute in VPC (ENI creation)
+    this.migrationFunction.addToRolePolicy(
+      new PolicyStatement({
+        actions: [
+          'ec2:CreateNetworkInterface',
+          'ec2:DescribeNetworkInterfaces',
+          'ec2:DeleteNetworkInterface',
+          'ec2:AssignPrivateIpAddresses',
+          'ec2:UnassignPrivateIpAddresses',
+        ],
+        resources: ['*'],
+      })
+    );
+  }
+
+  createPostRegistrationLambda() {
+    const { environment } =
+      this.props;
+
+    return new NodejsFunction(
+      this,
+      `${APP_NAME}-auth-post-registration-lambda-${environment}`,
+      {
+        entry: 'src/lambda/auth-post-registration.ts',
+        handler: 'handler',
+        timeout: Duration.seconds(3),
+        description:
+          'Updates database after user registration with email verification token. Invoked by Cognito after user confirmation.',
+      }
+    );
+  }
+
+  createMigrationLambda() {
+    const { environment } = this.props;
+    return this.createLambda(`${APP_NAME}-migration-lambda-${environment}`, {
       timeout: Duration.seconds(10),
       handler: 'handler',
       entry: 'src/lambda/migration.ts',
       bundling: {
-        minify: false,
+        minify: true,
         sourceMap: true,
         commandHooks: {
           beforeBundling(inputDir: string, outputDir: string): string[] {
@@ -76,6 +109,16 @@ export class MigrationLambdaConstruct extends Construct {
           },
         },
       },
+      description: 'Runs database migrations for Dougust application',
+    });
+  }
+
+  createLambda(name: string, props: NodejsFunctionProps) {
+    const { vpc, databaseSecret, dbHost, dbPort, dbName, environment } =
+      this.props;
+
+    const lambdaFn = new NodejsFunction(this, name, {
+      runtime: Runtime.NODEJS_22_X,
       vpc,
       vpcSubnets: {
         // Use private subnets for Lambda (same as RDS)
@@ -87,27 +130,14 @@ export class MigrationLambdaConstruct extends Construct {
         DB_HOST: dbHost,
         DB_PORT: dbPort,
         DB_NAME: dbName,
-        NODE_ENV: 'production',
+        NODE_ENV: environment,
       },
-      logRetention: RetentionDays.ONE_WEEK,
-      description: 'Runs database migrations for Dougust application',
+      ...props,
     });
 
     // Grant Lambda permission to read the database secret
-    databaseSecret.grantRead(this.migrationFunction);
+    databaseSecret.grantRead(lambdaFn);
 
-    // Grant Lambda permission to execute in VPC (ENI creation)
-    this.migrationFunction.addToRolePolicy(
-      new PolicyStatement({
-        actions: [
-          'ec2:CreateNetworkInterface',
-          'ec2:DescribeNetworkInterfaces',
-          'ec2:DeleteNetworkInterface',
-          'ec2:AssignPrivateIpAddresses',
-          'ec2:UnassignPrivateIpAddresses',
-        ],
-        resources: ['*'],
-      })
-    );
+    return lambdaFn;
   }
 }

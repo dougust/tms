@@ -2,7 +2,7 @@
 import * as cdk from 'aws-cdk-lib/core';
 import { DougustStack } from '../lib/dougust-stack';
 import { join } from 'path';
-import { getEnvironment } from '../utils';
+import { getEnvironment } from '../lib/utils';
 
 const app = new cdk.App();
 
