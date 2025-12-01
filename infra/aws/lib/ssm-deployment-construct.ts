@@ -31,11 +31,7 @@ export interface SsmDeploymentConstructProps {
  * This allows deployments without replacing the EC2 instance
  */
 export class SsmDeploymentConstruct extends Construct {
-  constructor(
-    scope: Stack,
-    id: string,
-    props: SsmDeploymentConstructProps
-  ) {
+  constructor(scope: Stack, id: string, props: SsmDeploymentConstructProps) {
     super(scope, id);
 
     const { instance, deploymentBucket, deploymentVersion } = props;
@@ -45,7 +41,7 @@ export class SsmDeploymentConstruct extends Construct {
       this,
       'DeploymentTriggerFunction',
       {
-        entry: join(__dirname, '..', 'lambda', 'deployment-trigger.ts'),
+        entry: 'src/lambda/deployment-trigger.ts',
         handler: 'handler',
         runtime: Runtime.NODEJS_20_X,
         timeout: Duration.seconds(60),
@@ -53,31 +49,32 @@ export class SsmDeploymentConstruct extends Construct {
       }
     );
 
-    const instanceArn = Arn.format({
-      service: 'ec2',
-      resource: 'instance',
-      resourceName: instance.instanceId,
-    }, scope);
+    const instanceArn = Arn.format(
+      {
+        service: 'ec2',
+        resource: 'instance',
+        resourceName: instance.instanceId,
+      },
+      scope
+    );
 
     // Grant Lambda permission to send SSM commands to the instance
-    deploymentTriggerFn.addToRolePolicy(new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: ['ssm:SendCommand'],
-      resources: [
-        instanceArn,
-        'arn:aws:ssm:*:*:document/AWS-RunShellScript',
-      ],
-    }));
+    deploymentTriggerFn.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['ssm:SendCommand'],
+        resources: [instanceArn, 'arn:aws:ssm:*:*:document/AWS-RunShellScript'],
+      })
+    );
 
     // Grant permission to get command invocation details (requires wildcard resource)
-    deploymentTriggerFn.addToRolePolicy(new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: [
-        'ssm:GetCommandInvocation',
-        'ssm:ListCommandInvocations',
-      ],
-      resources: ['*'],
-    }));
+    deploymentTriggerFn.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['ssm:GetCommandInvocation', 'ssm:ListCommandInvocations'],
+        resources: ['*'],
+      })
+    );
 
     // Create Custom Resource Provider
     const provider = new Provider(this, 'DeploymentProvider', {

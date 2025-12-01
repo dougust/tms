@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib/core';
+import { Stack, StackProps, CfnOutput } from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
 import IamConstruct from './iam-construct';
 import { S3DeploymentConstruct } from './s3-deployment-construct';
@@ -6,11 +6,12 @@ import { VpcConstruct } from './vpc-construct';
 import BeEc2Construct from './be-ec2-construct';
 import { SsmDeploymentConstruct } from './ssm-deployment-construct';
 import { RdsConstruct } from './rds-construct';
+import { MigrationLambdaConstruct } from './migration-lambda-construct';
 import { Port } from 'aws-cdk-lib/aws-ec2';
 import { Environment } from '../utils';
 
 export interface DougustStackProps extends StackProps {
-  t: Environment;
+  environment: Environment;
   /**
    * Path to the built application (dist folder)
    */
@@ -78,12 +79,33 @@ export class DougustStack extends Stack {
       'Allow PostgreSQL access from EC2 instance'
     );
 
+    // Create migration Lambda function
+    const migrationLambda = new MigrationLambdaConstruct(
+      this,
+      'DougustMigrationLambda',
+      {
+        vpc,
+        databaseSecret: rdsConstruct.secret,
+        databaseSecurityGroup: rdsConstruct.securityGroup,
+        dbHost: rdsConstruct.dbEndpoint,
+        dbPort: rdsConstruct.dbPort,
+        dbName: rdsConstruct.dbName,
+      }
+    );
+
     // SSM deployment trigger - runs deployment script on every deploy
     new SsmDeploymentConstruct(this, 'DougustDeploymentTrigger', {
       instance,
       deploymentBucket,
       // Optional: Use a hash of the dist folder to trigger deployments only when code changes
       deploymentVersion: Date.now().toString(),
+    });
+
+    // Output the migration Lambda function name for manual invocation
+    new CfnOutput(this, 'MigrationLambdaName', {
+      value: migrationLambda.migrationFunction.functionName,
+      description: 'Lambda function name for running database migrations',
+      exportName: `${this.stackName}-MigrationLambdaName`,
     });
 
     // this.tags.setTag('Environment', props.environment);

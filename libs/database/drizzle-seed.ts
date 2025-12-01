@@ -1,6 +1,6 @@
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { reset, seed } from 'drizzle-seed';
-import * as devSchema from './lib/schema.dev';
+import * as devSchema from './src/lib/schema.dev';
 import * as argon2 from 'argon2';
 
 const { lookupTpl, tenant, users, tenantMemberships, authSessions, ...schema } =

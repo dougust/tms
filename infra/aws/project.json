@@ -15,14 +15,29 @@
         "command": "cdk synth"
       }
     },
+    "prepare-migrations": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bash scripts/prepare-migration-lambda.sh",
+        "cwd": "infra/aws"
+      }
+    },
     "deploy": {
       "executor": "nx:run-commands",
       "dependsOn": [
-        "be:build"
+        "be:build",
+        "prepare-migrations"
       ],
       "options": {
         "cwd": "infra/aws",
         "command": "cdk deploy --all --require-approval never"
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bash scripts/invoke-migration.sh",
+        "cwd": "infra/aws"
       }
     }
   }
