@@ -78,12 +78,19 @@ export const handler = async (_: Record<string, string>, context: Context) => {
     // Construct connection string
     const connectionString = `postgresql://${username}:${password}@${dbHost}:${dbPort}/${dbName}`;
 
-    // Create database connection pool
+    console.log('[Migration] Connecting to database with SSL encryption');
+
+    // Create database connection pool with SSL enabled (required by RDS)
     const pool = new Pool({
       connectionString,
       max: 1, // Lambda doesn't need many connections
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 10000,
+      ssl: {
+        rejectUnauthorized: false, // RDS uses AWS certificates, we trust them
+        // TODO: For production, you might want to use the RDS CA certificate
+        // and set rejectUnauthorized: true for additional security
+      },
     });
 
     // Create drizzle instance
