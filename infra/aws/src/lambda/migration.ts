@@ -7,35 +7,55 @@
  * 3. Runs Drizzle migrations against the RDS database
  */
 
-import { Handler } from 'aws-lambda';
-import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
+import { Context } from 'aws-lambda';
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from '@aws-sdk/client-secrets-manager';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 
-interface MigrationEvent {
-  secretArn: string;
-  dbHost: string;
-  dbPort: string;
-  dbName: string;
-}
-
-interface MigrationResponse {
-  statusCode: number;
-  body: string;
-}
-
 const secretsManager = new SecretsManagerClient({});
 
-export const handler: Handler<MigrationEvent, MigrationResponse> = async (event, context) => {
+export const handler = async (_: Record<string, string>, context: Context) => {
   console.log('[Migration] Starting database migration');
-  console.log('[Migration] Event:', JSON.stringify(event, null, 2));
+  console.log('[Migration] Lambda request ID:', context.awsRequestId);
 
-  const { secretArn, dbHost, dbPort, dbName } = event;
+  // Read configuration from environment variables
+  const secretArn = process.env['SECRET_ARN'];
+  const dbHost = process.env['DB_HOST'];
+  const dbPort = process.env['DB_PORT'];
+  const dbName = process.env['DB_NAME'];
+
+  // Validate required environment variables
+  if (!secretArn || !dbHost || !dbPort || !dbName) {
+    const missingVars = [];
+    if (!secretArn) missingVars.push('SECRET_ARN');
+    if (!dbHost) missingVars.push('DB_HOST');
+    if (!dbPort) missingVars.push('DB_PORT');
+    if (!dbName) missingVars.push('DB_NAME');
+
+    const errorMessage = `Missing required environment variables: ${missingVars.join(
+      ', '
+    )}`;
+    console.error('[Migration]', errorMessage);
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: 'Configuration error',
+        error: errorMessage,
+        timestamp: new Date().toISOString(),
+      }),
+    };
+  }
 
   try {
     // Fetch database credentials from Secrets Manager
-    console.log('[Migration] Fetching database credentials from Secrets Manager');
+    console.log(
+      '[Migration] Fetching database credentials from Secrets Manager'
+    );
     const secretResponse = await secretsManager.send(
       new GetSecretValueCommand({ SecretId: secretArn })
     );
@@ -48,7 +68,12 @@ export const handler: Handler<MigrationEvent, MigrationResponse> = async (event,
     const { username, password } = credentials;
 
     console.log('[Migration] Database credentials retrieved successfully');
-    console.log('[Migration] Connecting to database:', { dbHost, dbPort, dbName, username });
+    console.log('[Migration] Connecting to database:', {
+      dbHost,
+      dbPort,
+      dbName,
+      username,
+    });
 
     // Construct connection string
     const connectionString = `postgresql://${username}:${password}@${dbHost}:${dbPort}/${dbName}`;

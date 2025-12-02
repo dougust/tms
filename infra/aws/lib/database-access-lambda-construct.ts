@@ -89,7 +89,8 @@ export class DatabaseAccessLambdaConstruct extends Construct {
     return this.createLambda(
       generateConstructName('migration-lambda', environment),
       {
-        timeout: Duration.seconds(10),
+        timeout: Duration.minutes(1), // Increased timeout for migrations
+        memorySize: 512, // Adequate memory for database operations
         handler: 'handler',
         entry: 'src/lambda/migration.ts',
         bundling: {
