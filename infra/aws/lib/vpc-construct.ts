@@ -1,5 +1,11 @@
 import { Construct } from 'constructs';
-import { IVpc, SubnetType, Vpc } from 'aws-cdk-lib/aws-ec2';
+import {
+  IVpc,
+  SubnetType,
+  Vpc,
+  InterfaceVpcEndpoint,
+  InterfaceVpcEndpointAwsService,
+} from 'aws-cdk-lib/aws-ec2';
 import { Environment, generateConstructName } from './utils';
 
 export class VpcConstruct extends Construct {
@@ -32,5 +38,26 @@ export class VpcConstruct extends Construct {
         },
       ],
     });
+
+    // Create VPC endpoints for AWS services
+    // This allows private resources (Lambda, RDS) to access AWS services without internet
+    // VPC endpoints are free (no data transfer charges within same region)
+
+    // Secrets Manager endpoint - Required for Lambda to fetch database credentials
+    new InterfaceVpcEndpoint(
+      this,
+      generateConstructName('secrets-manager-endpoint', environment),
+      {
+        vpc: this.vpc,
+        service: InterfaceVpcEndpointAwsService.SECRETS_MANAGER,
+        privateDnsEnabled: true, // Enable private DNS so SDK uses the endpoint automatically
+      }
+    );
+
+    // Optional: Add other VPC endpoints as needed
+    // Examples:
+    // - S3 Gateway Endpoint (free)
+    // - ECR (for container images)
+    // - CloudWatch Logs (for Lambda logging from private subnet)
   }
 }
