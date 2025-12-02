@@ -32,7 +32,7 @@ export interface SsmDeploymentConstructProps {
  * Construct that triggers application deployments on EC2 via SSM Run Command
  * This allows deployments without replacing the EC2 instance
  */
-export class SsmDeploymentConstruct extends Construct {
+export class LambdaDeploymentConstruct extends Construct {
   constructor(scope: Stack, id: string, props: SsmDeploymentConstructProps) {
     super(scope, id);
 

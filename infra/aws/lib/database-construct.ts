@@ -24,7 +24,7 @@ export interface RdsConstructProps {
   environment: Environment;
 }
 
-export class RdsConstruct extends Construct {
+export class DatabaseConstruct extends Construct {
   public readonly database: DatabaseInstance;
   public readonly securityGroup: ISecurityGroup;
   public readonly secret: Secret;
@@ -40,7 +40,7 @@ export class RdsConstruct extends Construct {
     // Create a security group for the RDS instance
     this.securityGroup = new SecurityGroup(
       this,
-      generateConstructName('rds-security-group', environment),
+      generateConstructName('database-security-group', environment),
       {
         vpc,
         description: 'Security group for PostgreSQL RDS instance',
@@ -53,7 +53,7 @@ export class RdsConstruct extends Construct {
       this,
       generateConstructName('db-credentials', environment),
       {
-        secretName: 'dougust-db-credentials',
+        secretName: generateConstructName('db-credentials', environment),
         generateSecretString: {
           secretStringTemplate: JSON.stringify({
             username: 'dougust',
@@ -75,7 +75,10 @@ export class RdsConstruct extends Construct {
         }),
         vpc,
         vpcSubnets: {
-          subnetType: SubnetType.PRIVATE_ISOLATED,
+          subnetType:
+            environment === 'development'
+              ? SubnetType.PUBLIC
+              : SubnetType.PRIVATE_ISOLATED,
         },
         securityGroups: [this.securityGroup],
         credentials: Credentials.fromSecret(this.secret),
@@ -91,7 +94,7 @@ export class RdsConstruct extends Construct {
         backupRetention: Duration.days(1),
         deleteAutomatedBackups: false,
         // Public accessibility
-        publiclyAccessible: false,
+        publiclyAccessible: environment === 'development',
         // Multi-AZ for production (disabled for free tier)
         multiAz: false,
         // Auto minor version upgrade

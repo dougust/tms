@@ -4,9 +4,9 @@ import IamConstruct from './iam-construct';
 import { S3DeploymentConstruct } from './s3-deployment-construct';
 import { VpcConstruct } from './vpc-construct';
 import BeEc2Construct from './be-ec2-construct';
-import { SsmDeploymentConstruct } from './ssm-deployment-construct';
-import { RdsConstruct } from './rds-construct';
-import { DatabaseAccessLambdaConstruct } from './database-access-lambda-construct';
+import { LambdaDeploymentConstruct } from './lambda-deployment-construct';
+import { DatabaseConstruct } from './database-construct';
+import { LambdaWithDbAccessConstruct } from './lambda-with-db-access-construct';
 import { Environment, generateConstructName } from './utils';
 import { AuthConstruct } from './auth-construct';
 
@@ -53,9 +53,9 @@ export class DougustStack extends Stack {
     );
 
     // Create RDS PostgreSQL database
-    const rdsConstruct = new RdsConstruct(
+    const databaseConstruct = new DatabaseConstruct(
       this,
-      generateConstructName('rds-construct', environment),
+      generateConstructName('database-construct', environment),
       {
         vpc,
         environment,
@@ -63,15 +63,15 @@ export class DougustStack extends Stack {
     );
 
     // Grant EC2 role permission to read the database secret
-    rdsConstruct.secret.grantRead(role);
+    databaseConstruct.secret.grantRead(role);
 
     // Pass database connection info as environment variables (without credentials)
     const envWithDatabase = {
       ...environmentVariables,
-      DB_SECRET_ARN: rdsConstruct.secret.secretArn,
-      DB_HOST: rdsConstruct.dbEndpoint,
-      DB_PORT: rdsConstruct.dbPort,
-      DB_NAME: rdsConstruct.dbName,
+      DB_SECRET_ARN: databaseConstruct.secret.secretArn,
+      DB_HOST: databaseConstruct.dbEndpoint,
+      DB_PORT: databaseConstruct.dbPort,
+      DB_NAME: databaseConstruct.dbName,
     };
 
     // Create EC2 instance with database connection string
@@ -79,26 +79,27 @@ export class DougustStack extends Stack {
       this,
       generateConstructName('ec2-construct', environment),
       {
-        databaseSecurityGroup: rdsConstruct.securityGroup,
+        databaseSecurityGroup: databaseConstruct.securityGroup,
         environmentVariables: envWithDatabase,
         deploymentBucket,
         role,
         vpc,
+        environment,
       }
     );
 
     // Create migration Lambda function
-    const migrationLambda = new DatabaseAccessLambdaConstruct(
+    const migrationLambda = new LambdaWithDbAccessConstruct(
       this,
-      generateConstructName('database-functions-construct', environment),
+      generateConstructName('lambda-with-db-access-construct', environment),
       {
         vpc,
         environment,
-        databaseSecret: rdsConstruct.secret,
-        databaseSecurityGroup: rdsConstruct.securityGroup,
-        dbHost: rdsConstruct.dbEndpoint,
-        dbPort: rdsConstruct.dbPort,
-        dbName: rdsConstruct.dbName,
+        databaseSecret: databaseConstruct.secret,
+        databaseSecurityGroup: databaseConstruct.securityGroup,
+        dbHost: databaseConstruct.dbEndpoint,
+        dbPort: databaseConstruct.dbPort,
+        dbName: databaseConstruct.dbName,
       }
     );
 
@@ -112,9 +113,9 @@ export class DougustStack extends Stack {
     );
 
     // SSM deployment trigger - runs deployment script on every deploy
-    new SsmDeploymentConstruct(
+    new LambdaDeploymentConstruct(
       this,
-      generateConstructName('ssm-deployment-construct', environment),
+      generateConstructName('lambda-deployment-construct', environment),
       {
         instance,
         deploymentBucket,

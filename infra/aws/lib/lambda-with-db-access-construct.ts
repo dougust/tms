@@ -18,7 +18,7 @@ export interface DatabaseAcessLambdaConstructProps {
   dbName: string;
 }
 
-export class DatabaseAccessLambdaConstruct extends Construct {
+export class LambdaWithDbAccessConstruct extends Construct {
   public readonly migrationFunction: IFunction;
   public readonly authPostRegistrationLambda: IFunction;
   public readonly securityGroup: ISecurityGroup;
@@ -122,6 +122,7 @@ export class DatabaseAccessLambdaConstruct extends Construct {
       this.props;
 
     const lambdaFn = new NodejsFunction(this, name, {
+      functionName: name,
       runtime: Runtime.NODEJS_22_X,
       vpc,
       vpcSubnets: {
