@@ -272,41 +272,28 @@ pm2 status
 
 curl http://localhost:3000/api/health
 
-```bash
-sudo bash -c 'cat > /etc/nginx/conf.d/dougust.conf << "EOF"
-server {
-  listen 80;
-  server_name _;
-
-  location / {
-    proxy_pass http://localhost:3000;
-  proxy_http_version 1.1;
-  proxy_set_header Upgrade $http_upgrade;
-  proxy_set_header Connection "upgrade";
-  proxy_set_header Host $host;
-  proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto $scheme;
-  proxy_cache_bypass $http_upgrade;
-}
-}
-EOF'
-```
-
 
 checking result of invocation command
 ```bash
 aws ssm list-commands \
---instance-id i-04e7164ec3dcfdb5c \
+--instance-id i-0288f2d03f602b25d \
 --max-results 10 \
 --query 'Commands[*].{CommandId:CommandId,Status:Status,Time:RequestedDateTime,Comment:Comment}' \
 --output table
 ```
-aws ssm get-command-invocation \
---command-id 5f37a2d0-931f-4a91-bd98-71a7fdfddd13 \
---instance-id i-04e7164ec3dcfdb5c \
---output json
 
+```bash
+aws ssm get-command-invocation \
+--command-id 4dbc599a-b8bf-4fe5-a1a2-6b0bd1e494df \
+--instance-id i-0288f2d03f602b25d \
+--output json
+```
+
+## Debugging nest in the instance
+
+```bash
+sudo su - ec2-user
+```
 
 
 curl http://3.213.105.143/api/health

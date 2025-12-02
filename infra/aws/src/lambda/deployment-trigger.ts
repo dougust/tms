@@ -24,11 +24,7 @@ export const handler = async (
 ): Promise<CloudFormationCustomResourceResponse> => {
   console.log('Event:', JSON.stringify(event, null, 2));
 
-  const {
-    RequestType,
-    ResourceProperties: props,
-    PhysicalResourceId,
-  } = event;
+  const { RequestType, ResourceProperties: props } = event;
   const { InstanceId, BucketName, DeploymentVersion } =
     props as unknown as ResourceProperties;
 
@@ -80,7 +76,7 @@ export const handler = async (
 
       return {
         Status: 'SUCCESS',
-        PhysicalResourceId: PhysicalResourceId || `deployment-${Date.now()}`,
+        PhysicalResourceId: `deployment-${Date.now()}`,
         StackId: event.StackId,
         RequestId: event.RequestId,
         LogicalResourceId: event.LogicalResourceId,
@@ -95,8 +91,7 @@ export const handler = async (
     console.log('Delete operation - no action needed');
     return {
       Status: 'SUCCESS',
-      PhysicalResourceId:
-        PhysicalResourceId || `deployment-${Date.now()}`,
+      PhysicalResourceId: `deployment-${Date.now()}`,
       StackId: event.StackId,
       RequestId: event.RequestId,
       LogicalResourceId: event.LogicalResourceId,
@@ -107,8 +102,7 @@ export const handler = async (
     return {
       Status: 'FAILED',
       Reason: error instanceof Error ? error.message : 'Unknown error',
-      PhysicalResourceId:
-        PhysicalResourceId || `deployment-${Date.now()}`,
+      PhysicalResourceId: `deployment-${Date.now()}`,
       StackId: event.StackId,
       RequestId: event.RequestId,
       LogicalResourceId: event.LogicalResourceId,

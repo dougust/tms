@@ -126,6 +126,9 @@ cat > /home/ec2-user/app/.env << 'EOF'
 {{ENV_FILE_CONTENT}}
 EOF
 
+# Save a template copy for future deployments (without sensitive data)
+cp /home/ec2-user/app/.env /home/ec2-user/.env.template
+
 # If DB_SECRET_ARN is set, fetch database credentials from Secrets Manager
 if grep -q "DB_SECRET_ARN=" /home/ec2-user/app/.env; then
   echo "[USERDATA]: Fetching database credentials from Secrets Manager..."

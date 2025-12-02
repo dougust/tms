@@ -12,6 +12,11 @@ import * as schema from '@dougust/database';
             connection: 'pool',
             config: {
               connectionString: process.env.DATABASE_URL,
+              ssl: {
+                rejectUnauthorized: false, // Required for RDS SSL connections
+                // TODO: For production, consider using RDS CA certificate
+                // and set rejectUnauthorized: true for additional security
+              },
             },
           },
           config: { schema: { ...schema } },
