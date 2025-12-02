@@ -160,13 +160,20 @@ class BeEc2Construct extends Construct {
     // Read setup scripts from files
     const scriptsPath = join(__dirname, '..', 'scripts');
 
+    // Read the deployment script
+    const deployScript = readFileSync(
+      join(scriptsPath, 'deploy-app.sh'),
+      'utf-8'
+    );
+
     // 1. user data
     const beUserdata = readFileSync(
       join(scriptsPath, 'be-userdata.sh'),
       'utf-8'
     )
       .replace(/\{\{BUCKET_NAME\}\}/g, deploymentBucket.bucketName)
-      .replace(/\{\{ENV_FILE_CONTENT\}\}/g, envFileContent);
+      .replace(/\{\{ENV_FILE_CONTENT\}\}/g, envFileContent)
+      .replace(/\{\{DEPLOY_SCRIPT_CONTENT\}\}/g, deployScript);
 
     userData.addCommands(beUserdata);
 
