@@ -5,11 +5,20 @@ import {
   IsString,
   Length,
   IsInt,
-  IsDate,
   IsNumber,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { IsUnique } from '../../../common/cadastros/isUniqueConstraint';
-import { funcionarios, beneficios, lookup } from '@dougust/database';
+import { funcionarios } from '@dougust/database';
+
+export class FuncionarioBeneficioDto {
+  @IsString()
+  lookupId!: string;
+
+  @IsNumber()
+  valor!: number;
+}
 
 export class CreateFuncionarioDto {
   @IsOptional()
@@ -58,22 +67,7 @@ export class CreateFuncionarioDto {
   dependetes: number;
 
   @IsOptional()
-  @IsNumber()
-  valorCafe?: number;
-
-  @IsOptional()
-  @IsNumber()
-  valorSaudeOcupacional?: number;
-
-  @IsOptional()
-  @IsNumber()
-  valorSaudePlano?: number;
-
-  @IsOptional()
-  @IsNumber()
-  valorJanta?: number;
-
-  @IsOptional()
-  @IsNumber()
-  valorDescontoCasa?: number;
+  @ValidateNested({ each: true })
+  @Type(() => FuncionarioBeneficioDto)
+  beneficios?: FuncionarioBeneficioDto[];
 }

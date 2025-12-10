@@ -61,39 +61,30 @@ export class FuncionariosService {
         })
         .returning();
 
-      const benefits: { nome: string; valor: number }[] = [];
-      if (dto.valorCafe != null) benefits.push({ nome: 'valorCafe', valor: dto.valorCafe });
-      if (dto.valorSaudeOcupacional != null)
-        benefits.push({ nome: 'valorSaudeOcupacional', valor: dto.valorSaudeOcupacional });
-      if (dto.valorSaudePlano != null)
-        benefits.push({ nome: 'valorSaudePlano', valor: dto.valorSaudePlano });
-      if (dto.valorJanta != null) benefits.push({ nome: 'valorJanta', valor: dto.valorJanta });
-      if (dto.valorDescontoCasa != null)
-        benefits.push({ nome: 'valorDescontoCasa', valor: dto.valorDescontoCasa });
+      const benefitRows: { lookupId: string; funcionarioId: string; valor: number }[] = [];
 
-      if (benefits.length > 0) {
-        const nomes = benefits.map((b) => b.nome);
+      if (dto.beneficios && dto.beneficios.length > 0) {
+        const ids = dto.beneficios.map((b) => b.lookupId);
         const found = await tx
-          .select({ id: this.lookupTable.id, nome: this.lookupTable.nome })
+          .select({ id: this.lookupTable.id })
           .from(this.lookupTable)
-          .where(and(eq(this.lookupTable.grupo, 'Beneficio'), inArray(this.lookupTable.nome, nomes)));
+          .where(and(eq(this.lookupTable.grupo, 'beneficios'), inArray(this.lookupTable.id, ids)));
 
-        const mapNomeToId = new Map(found.map((r) => [r.nome, r.id] as const));
-
-        const missing = nomes.filter((n) => !mapNomeToId.get(n));
+        const validIds = new Set(found.map((r) => r.id as unknown as string));
+        const missing = ids.filter((id) => !validIds.has(id));
         if (missing.length) {
           throw new NotFoundException(
-            `Lookups não encontrados para benefícios: ${missing.join(', ')}`
+            `Lookups não encontrados (grupo 'beneficios') para os IDs: ${missing.join(', ')}`
           );
         }
 
-        const rows = benefits.map((b) => ({
-          lookupId: mapNomeToId.get(b.nome)!,
-          funcionarioId: funcionario.id,
-          valor: b.valor,
-        }));
+        for (const b of dto.beneficios) {
+          benefitRows.push({ lookupId: b.lookupId, funcionarioId: funcionario.id, valor: b.valor });
+        }
+      }
 
-        await tx.insert(this.beneficiosTable).values(rows);
+      if (benefitRows.length > 0) {
+        await tx.insert(this.beneficiosTable).values(benefitRows);
       }
 
       return { funcionario };

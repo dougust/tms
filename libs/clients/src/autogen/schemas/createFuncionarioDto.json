@@ -11,11 +11,18 @@
     "rg": { "type": "string", "minLength": 0, "maxLength": 11 },
     "funcao": { "type": "string", "minLength": 0, "maxLength": 30 },
     "dependetes": { "type": "number" },
-    "valorCafe": { "type": "number" },
-    "valorSaudeOcupacional": { "type": "number" },
-    "valorSaudePlano": { "type": "number" },
-    "valorJanta": { "type": "number" },
-    "valorDescontoCasa": { "type": "number" }
+    "beneficios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lookupId": { "type": "string" },
+          "valor": { "type": "number" }
+        },
+        "required": ["lookupId", "valor"],
+        "x-readme-ref-name": "FuncionarioBeneficioDto"
+      }
+    }
   },
   "required": ["cpf", "email", "projetoId", "funcao", "dependetes"],
   "x-readme-ref-name": "CreateFuncionarioDto"
