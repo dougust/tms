@@ -108,6 +108,7 @@ export type {
   EmpresasControllerUpdateMutationResponse,
   EmpresasControllerUpdateMutation,
 } from './types/EmpresasControllerUpdate';
+export type { FuncionarioBeneficioDto } from './types/FuncionarioBeneficioDto';
 export type { FuncionarioDto } from './types/FuncionarioDto';
 export type {
   FuncionariosControllerCreate201,
@@ -453,6 +454,7 @@ export {
   empresasControllerUpdateMutationRequestSchema,
   empresasControllerUpdateMutationResponseSchema,
 } from './zod/empresasControllerUpdateSchema';
+export { funcionarioBeneficioDtoSchema } from './zod/funcionarioBeneficioDtoSchema';
 export { funcionarioDtoSchema } from './zod/funcionarioDtoSchema';
 export {
   funcionariosControllerCreate201Schema,

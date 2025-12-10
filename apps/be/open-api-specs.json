@@ -838,6 +838,21 @@
   "servers": [],
   "components": {
     "schemas": {
+      "FuncionarioBeneficioDto": {
+        "type": "object",
+        "properties": {
+          "lookupId": {
+            "type": "string"
+          },
+          "valor": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "lookupId",
+          "valor"
+        ]
+      },
       "CreateFuncionarioDto": {
         "type": "object",
         "properties": {
@@ -884,20 +899,11 @@
           "dependetes": {
             "type": "number"
           },
-          "valorCafe": {
-            "type": "number"
-          },
-          "valorSaudeOcupacional": {
-            "type": "number"
-          },
-          "valorSaudePlano": {
-            "type": "number"
-          },
-          "valorJanta": {
-            "type": "number"
-          },
-          "valorDescontoCasa": {
-            "type": "number"
+          "beneficios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FuncionarioBeneficioDto"
+            }
           }
         },
         "required": [
@@ -1027,20 +1033,11 @@
           "dependetes": {
             "type": "number"
           },
-          "valorCafe": {
-            "type": "number"
-          },
-          "valorSaudeOcupacional": {
-            "type": "number"
-          },
-          "valorSaudePlano": {
-            "type": "number"
-          },
-          "valorJanta": {
-            "type": "number"
-          },
-          "valorDescontoCasa": {
-            "type": "number"
+          "beneficios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FuncionarioBeneficioDto"
+            }
           }
         }
       },

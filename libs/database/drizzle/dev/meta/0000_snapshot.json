@@ -1,5 +1,5 @@
 {
-  "id": "610badc1-3a07-4a4e-904c-235f91149639",
+  "id": "20523f95-3a7a-404f-92f5-7a7fb31d4818",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -175,7 +175,7 @@
           "columnsTo": [
             "funcionario_id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "fk_diaria_lookup": {

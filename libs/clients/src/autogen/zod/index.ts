@@ -68,6 +68,7 @@ export {
   empresasControllerUpdateMutationRequestSchema,
   empresasControllerUpdateMutationResponseSchema,
 } from './empresasControllerUpdateSchema';
+export { funcionarioBeneficioDtoSchema } from './funcionarioBeneficioDtoSchema';
 export { funcionarioDtoSchema } from './funcionarioDtoSchema';
 export {
   funcionariosControllerCreate201Schema,
