@@ -5,18 +5,16 @@ import { projetos } from '@dougust/database';
 import { eq } from 'drizzle-orm';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
-import { UserContextService } from '../../common/user-context/user-context.service';
 import { ProjetoDto } from './dto/projeto.dto';
 
 @Injectable()
 export class ProjetosService {
   constructor(
-    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService
+    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
 
   get table() {
-    return projetos(this.userContext.businessId);
+    return projetos;
   }
 
   async create(dto: CreateProjetoDto) {

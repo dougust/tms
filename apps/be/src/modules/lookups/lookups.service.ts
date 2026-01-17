@@ -5,17 +5,15 @@ import { lookup } from '@dougust/database';
 import { and, eq } from 'drizzle-orm';
 import { CreateLookupDto } from './dto/create-lookup.dto';
 import { UpdateLookupDto } from './dto/update-lookup.dto';
-import { UserContextService } from '../../common/user-context/user-context.service';
 
 @Injectable()
 class LookupsService {
   constructor(
-    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService
+    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
 
   get table() {
-    return lookup(this.userContext.businessId);
+    return lookup;
   }
 
   async findAll() {

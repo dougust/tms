@@ -5,26 +5,24 @@ import { funcionarios, IFuncionarioTable, beneficios as beneficiosTbl, lookup as
 import { and, eq, getTableColumns, inArray, sql } from 'drizzle-orm';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
-import { UserContextService } from '../../common/user-context/user-context.service';
 import { FuncionarioDto } from './dto/get-funcionario.response.dto';
 
 @Injectable()
 export class FuncionariosService {
   constructor(
-    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService
+    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
 
   get table(): IFuncionarioTable {
-    return funcionarios(this.userContext.businessId);
+    return funcionarios;
   }
 
   private get beneficiosTable() {
-    return beneficiosTbl(this.userContext.businessId);
+    return beneficiosTbl;
   }
 
   private get lookupTable() {
-    return lookupTbl(this.userContext.businessId);
+    return lookupTbl;
   }
 
   async create(dto: CreateFuncionarioDto) {

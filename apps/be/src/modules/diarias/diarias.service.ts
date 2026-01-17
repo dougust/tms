@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
-import { UserContextService } from '../../common/user-context/user-context.service';
 import { RangeQueryDto } from './dto/range-query.dto';
 import { and, eq, gte, lte } from 'drizzle-orm';
 import { CreateDiariaDto } from './dto/create-diaria.dto';
@@ -15,13 +14,12 @@ import { diarias, IDiariaTable } from '@dougust/database';
 export class DiariasService {
   constructor(
     @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService,
     private readonly funcionariosService: FuncionariosService,
     private readonly projetosService: ProjetosService
   ) {}
 
   get table(): IDiariaTable {
-    return diarias(this.userContext.businessId);
+    return diarias;
   }
 
   async findInRange(query: RangeQueryDto): Promise<DiariaDto[]> {
