@@ -6,6 +6,7 @@ import * as argon2 from 'argon2';
 const {
   lookup,
   users,
+  authSessions,
   // Exclude non-table exports from reset/seed
   userRoleEnum,
   empresasRelations,
@@ -81,7 +82,9 @@ async function createDevUser(
 async function main() {
   const db = drizzle(process.env['DATABASE_URL']!);
 
-  await reset(db, tables);
+  // Reset all tables including users, sessions, and lookup
+  await reset(db, { ...tables, users, authSessions, lookup });
+
   await createDevUser(
     db,
     process.env.DEV_TENANT_USER_EMAIL!,
@@ -93,6 +96,8 @@ async function main() {
     process.env.USER_PASSWORD!
   );
   const { tiposDiaria, funcao, beneficio } = await createLookups(db);
+
+  // Seed only the business tables (not users/sessions)
   await seed(db, tables).refine((f) => {
     return {
       funcionarios: {
