@@ -1,10 +1,25 @@
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { reset, seed } from 'drizzle-seed';
-import * as devSchema from './lib/schema.dev';
+import * as schema from './lib/schema';
 import * as argon2 from 'argon2';
 
-const { lookupTpl, tenant, users, tenantMemberships, authSessions, ...schema } =
-  devSchema;
+const {
+  lookup,
+  tenant,
+  users,
+  tenantMemberships,
+  // Exclude non-table exports from reset/seed
+  subscriptionTierEnum,
+  userRoleEnum,
+  empresasRelations,
+  projetosRelations,
+  funcionariosRelations,
+  beneficiosRelations,
+  usersRelations,
+  sessionsRelations,
+  tenantMembershipsRelations,
+  ...tables
+} = schema;
 
 async function createLookups(db: NodePgDatabase) {
   const tipoDiariaValues = [
@@ -17,17 +32,17 @@ async function createLookups(db: NodePgDatabase) {
     'outros',
   ];
   const tiposDiaria = await db
-    .insert(lookupTpl)
+    .insert(lookup)
     .values(
       tipoDiariaValues.map((value) => ({ nome: value, grupo: 'TipoDiaria' }))
     )
-    .returning({ id: lookupTpl.id });
+    .returning({ id: lookup.id });
 
   const funcaoValues = ['Encarregado', 'Peão', 'Outra função'];
   const funcao = await db
-    .insert(lookupTpl)
+    .insert(lookup)
     .values(funcaoValues.map((value) => ({ nome: value, grupo: 'Funcao' })))
-    .returning({ id: lookupTpl.id });
+    .returning({ id: lookup.id });
 
   const tipoBeneficioValues = [
     'valorDiaria',
@@ -39,11 +54,11 @@ async function createLookups(db: NodePgDatabase) {
     'valorDescontoCasa',
   ];
   const beneficio = await db
-    .insert(lookupTpl)
+    .insert(lookup)
     .values(
       tipoBeneficioValues.map((value) => ({ nome: value, grupo: 'Beneficio' }))
     )
-    .returning({ id: lookupTpl.id });
+    .returning({ id: lookup.id });
 
   return { tiposDiaria, funcao, beneficio };
 }
@@ -79,25 +94,25 @@ async function createDevTenant(
 }
 
 async function main() {
-  const db = drizzle(process.env['DATABASE_URL']);
+  const db = drizzle(process.env['DATABASE_URL']!);
 
-  await reset(db, schema);
+  await reset(db, tables);
   await createDevTenant(
     db,
-    process.env.TENANT_ID,
-    process.env.DEV_TENANT_USER_EMAIL,
-    process.env.USER_PASSWORD
+    process.env.TENANT_ID!,
+    process.env.DEV_TENANT_USER_EMAIL!,
+    process.env.USER_PASSWORD!
   );
   await createDevTenant(
     db,
-    process.env.TENANT_2_ID,
-    process.env.DEV_TENANT_2_USER_EMAIL,
-    process.env.USER_PASSWORD
+    process.env.TENANT_2_ID!,
+    process.env.DEV_TENANT_2_USER_EMAIL!,
+    process.env.USER_PASSWORD!
   );
   const { tiposDiaria, funcao, beneficio } = await createLookups(db);
-  await seed(db, schema).refine((f) => {
+  await seed(db, tables).refine((f) => {
     return {
-      funcionariosTpl: {
+      funcionarios: {
         count: 20,
         columns: {
           nome: f.fullName(),
@@ -109,7 +124,7 @@ async function main() {
           }),
         },
       },
-      empresasTpl: {
+      empresas: {
         count: 10,
         columns: {
           razao: f.companyName(),
@@ -118,22 +133,22 @@ async function main() {
           phone: f.phoneNumber({ template: '(47) ##### ####' }),
         },
         with: {
-          projetosTpl: [
+          projetos: [
             { weight: 0.8, count: [1, 2] },
             { weight: 0.2, count: [3, 4] },
           ],
         },
       },
-      projetosTpl: {
+      projetos: {
         columns: {
           nome: f.companyName(),
         },
         count: 1,
         with: {
-          diariasTpl: 10,
+          diarias: 10,
         },
       },
-      diariasTpl: {
+      diarias: {
         count: 1,
         columns: {
           tipoDiaria: f.valuesFromArray({
@@ -141,7 +156,7 @@ async function main() {
           }),
         },
       },
-      beneficiosTpl: {
+      beneficios: {
         count: 1,
         columns: {
           id: f.valuesFromArray({
