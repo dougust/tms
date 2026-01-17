@@ -5,7 +5,6 @@ import { projetos } from '@dougust/database';
 import { eq } from 'drizzle-orm';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
-import { ProjetoDto } from './dto/projeto.dto';
 
 @Injectable()
 export class ProjetosService {
@@ -27,18 +26,34 @@ export class ProjetosService {
     return { projeto };
   }
 
-  findAll(): Promise<ProjetoDto[]> {
-    return this.db.select().from(projetos);
+  async findAll() {
+    return this.db.query.projetos.findMany({
+      columns: {
+        id: true,
+        empresaId: true,
+        nome: true,
+        inicio: true,
+        fim: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
   async findOne(id: string) {
-    const result = await this.db
-      .select()
-      .from(projetos)
-      .where(eq(projetos.id, id))
-      .limit(1);
+    const entity = await this.db.query.projetos.findFirst({
+      where: eq(projetos.id, id),
+      columns: {
+        id: true,
+        empresaId: true,
+        nome: true,
+        inicio: true,
+        fim: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
-    const entity = result[0];
     if (!entity) throw new NotFoundException('Projeto not found');
     return entity;
   }

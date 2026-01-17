@@ -29,19 +29,39 @@ export class EmpresasService {
   }
 
   async findAll() {
-    return await this.db.select().from(empresas);
+    return this.db.query.empresas.findMany({
+      columns: {
+        id: true,
+        razao: true,
+        fantasia: true,
+        cnpj: true,
+        registro: true,
+        phone: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
   async findOne(id: string) {
-    const result = await this.db
-      .select({ empresa: empresas })
-      .from(empresas)
-      .where(eq(empresas.id, id))
-      .limit(1);
+    const entity = await this.db.query.empresas.findFirst({
+      where: eq(empresas.id, id),
+      columns: {
+        id: true,
+        razao: true,
+        fantasia: true,
+        cnpj: true,
+        registro: true,
+        phone: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
-    const entity = result[0];
     if (!entity) throw new NotFoundException('Empresa not found');
-    return entity;
+    return { empresa: entity };
   }
 
   async update(id: string, dto: UpdateEmpresaDto) {

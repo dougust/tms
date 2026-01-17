@@ -13,24 +13,22 @@ class LookupsService {
   ) {}
 
   async findAll() {
-    return this.db.select().from(lookup);
+    return this.db.query.lookup.findMany();
   }
 
   async findByGroup(grupo: string) {
-    return this.db.select().from(lookup).where(eq(lookup.grupo, grupo));
+    return this.db.query.lookup.findMany({
+      where: eq(lookup.grupo, grupo),
+    });
   }
 
   async findOne(grupo: string, id: string) {
-    const where = and(eq(lookup.grupo, grupo), eq(lookup.id, id));
-    const result = await this.db
-      .select({ lookup })
-      .from(lookup)
-      .where(where)
-      .limit(1);
+    const entity = await this.db.query.lookup.findFirst({
+      where: and(eq(lookup.grupo, grupo), eq(lookup.id, id)),
+    });
 
-    const entity = result[0];
     if (!entity) throw new NotFoundException('Lookup not found');
-    return entity;
+    return { lookup: entity };
   }
 
   async create(dto: CreateLookupDto) {

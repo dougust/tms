@@ -2,10 +2,9 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from '@dougust/database';
 import { funcionarios, beneficios, lookup } from '@dougust/database';
-import { and, eq, getTableColumns, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
-import { FuncionarioDto } from './dto/get-funcionario.response.dto';
 
 @Injectable()
 export class FuncionariosService {
@@ -18,11 +17,10 @@ export class FuncionariosService {
       let funcaoId: string | null = null;
       const funcaoNome = (dto.funcao ?? '').trim();
       if (funcaoNome) {
-        const [funcaoLookup] = await tx
-          .select({ id: lookup.id })
-          .from(lookup)
-          .where(and(eq(lookup.grupo, 'Funcao'), eq(lookup.nome, funcaoNome)))
-          .limit(1);
+        const funcaoLookup = await tx.query.lookup.findFirst({
+          where: and(eq(lookup.grupo, 'Funcao'), eq(lookup.nome, funcaoNome)),
+          columns: { id: true },
+        });
 
         if (!funcaoLookup) {
           throw new NotFoundException(`Lookup não encontrado para função: ${funcaoNome}`);
@@ -50,10 +48,10 @@ export class FuncionariosService {
 
       if (dto.beneficios && dto.beneficios.length > 0) {
         const ids = dto.beneficios.map((b) => b.lookupId);
-        const found = await tx
-          .select({ id: lookup.id })
-          .from(lookup)
-          .where(and(eq(lookup.grupo, 'beneficios'), inArray(lookup.id, ids)));
+        const found = await tx.query.lookup.findMany({
+          where: and(eq(lookup.grupo, 'beneficios'), inArray(lookup.id, ids)),
+          columns: { id: true },
+        });
 
         const validIds = new Set(found.map((r) => r.id as unknown as string));
         const missing = ids.filter((id) => !validIds.has(id));
@@ -76,26 +74,48 @@ export class FuncionariosService {
     });
   }
 
-  async findAll(): Promise<FuncionarioDto[]> {
-    return this.db
-      .select({
-        ...getTableColumns(funcionarios),
-        ...this.withCalculatedFields(),
-      })
-      .from(funcionarios);
+  async findAll() {
+    return this.db.query.funcionarios.findMany({
+      columns: {
+        id: true,
+        nome: true,
+        social: true,
+        cpf: true,
+        nascimento: true,
+        phone: true,
+        email: true,
+        rg: true,
+        funcao: true,
+        salario: true,
+        dependetes: true,
+        projetoId: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
-  async findOne(id: string): Promise<FuncionarioDto> {
-    const result = await this.db
-      .select({
-        ...getTableColumns(funcionarios),
-        ...this.withCalculatedFields(),
-      })
-      .from(funcionarios)
-      .where(eq(funcionarios.id, id))
-      .limit(1);
+  async findOne(id: string) {
+    const entity = await this.db.query.funcionarios.findFirst({
+      where: eq(funcionarios.id, id),
+      columns: {
+        id: true,
+        nome: true,
+        social: true,
+        cpf: true,
+        nascimento: true,
+        phone: true,
+        email: true,
+        rg: true,
+        funcao: true,
+        salario: true,
+        dependetes: true,
+        projetoId: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
-    const entity = result[0];
     if (!entity) throw new NotFoundException('Funcionario not found');
     return entity;
   }
@@ -108,11 +128,10 @@ export class FuncionariosService {
         if (!funcaoNome) {
           funcaoUpdate = null;
         } else {
-          const [funcaoLookup] = await tx
-            .select({ id: lookup.id })
-            .from(lookup)
-            .where(and(eq(lookup.grupo, 'Funcao'), eq(lookup.nome, funcaoNome)))
-            .limit(1);
+          const funcaoLookup = await tx.query.lookup.findFirst({
+            where: and(eq(lookup.grupo, 'Funcao'), eq(lookup.nome, funcaoNome)),
+            columns: { id: true },
+          });
           if (!funcaoLookup) {
             throw new NotFoundException(`Lookup não encontrado para função: ${funcaoNome}`);
           }
@@ -150,13 +169,5 @@ export class FuncionariosService {
       .returning();
     if (!deleted) throw new NotFoundException('Funcionario not found');
     return deleted;
-  }
-
-  private withCalculatedFields() {
-    const { salario } = funcionarios;
-    return {
-      decimoTerceiro: sql<number>`${salario} / 12`,
-      ferias: sql<number>`${salario} / 9`,
-    };
   }
 }

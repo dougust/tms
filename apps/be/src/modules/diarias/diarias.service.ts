@@ -19,10 +19,9 @@ export class DiariasService {
   ) {}
 
   async findInRange(query: RangeQueryDto): Promise<DiariaDto[]> {
-    return this.db
-      .select()
-      .from(diarias)
-      .where(and(gte(diarias.dia, query.from), lte(diarias.dia, query.to)));
+    return this.db.query.diarias.findMany({
+      where: and(gte(diarias.dia, query.from), lte(diarias.dia, query.to)),
+    });
   }
 
   async create(data: CreateDiariaDto) {
