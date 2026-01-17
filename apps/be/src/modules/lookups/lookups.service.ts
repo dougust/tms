@@ -12,23 +12,19 @@ class LookupsService {
     @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
 
-  get table() {
-    return lookup;
-  }
-
   async findAll() {
-    return this.db.select().from(this.table);
+    return this.db.select().from(lookup);
   }
 
   async findByGroup(grupo: string) {
-    return this.db.select().from(this.table).where(eq(this.table.grupo, grupo));
+    return this.db.select().from(lookup).where(eq(lookup.grupo, grupo));
   }
 
   async findOne(grupo: string, id: string) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
+    const where = and(eq(lookup.grupo, grupo), eq(lookup.id, id));
     const result = await this.db
-      .select({ lookup: this.table })
-      .from(this.table)
+      .select({ lookup })
+      .from(lookup)
       .where(where)
       .limit(1);
 
@@ -39,7 +35,7 @@ class LookupsService {
 
   async create(dto: CreateLookupDto) {
     const [created] = await this.db
-      .insert(this.table)
+      .insert(lookup)
       .values({
         grupo: dto.grupo,
         nome: dto.nome,
@@ -50,10 +46,10 @@ class LookupsService {
   }
 
   async update(grupo: string, id: string, dto: UpdateLookupDto) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
+    const where = and(eq(lookup.grupo, grupo), eq(lookup.id, id));
 
     const [updated] = await this.db
-      .update(this.table)
+      .update(lookup)
       .set({
         grupo: dto.grupo ?? undefined,
         nome: dto.nome ?? undefined,
@@ -68,8 +64,8 @@ class LookupsService {
   }
 
   async remove(grupo: string, id: string) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
-    const [deleted] = await this.db.delete(this.table).where(where).returning();
+    const where = and(eq(lookup.grupo, grupo), eq(lookup.id, id));
+    const [deleted] = await this.db.delete(lookup).where(where).returning();
     if (!deleted) throw new NotFoundException('Lookup not found');
     return deleted;
   }

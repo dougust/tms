@@ -12,13 +12,9 @@ export class EmpresasService {
     @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
 
-  get table() {
-    return empresas;
-  }
-
   async create(dto: CreateEmpresaDto) {
     const [empresa] = await this.db
-      .insert(this.table)
+      .insert(empresas)
       .values({
         razao: dto.razao ?? null,
         fantasia: dto.fantasia ?? null,
@@ -33,16 +29,14 @@ export class EmpresasService {
   }
 
   async findAll() {
-    return await this.db.select().from(this.table);
+    return await this.db.select().from(empresas);
   }
 
   async findOne(id: string) {
-    const where = eq(this.table.id, id);
-
     const result = await this.db
-      .select({ empresa: this.table })
-      .from(this.table)
-      .where(where)
+      .select({ empresa: empresas })
+      .from(empresas)
+      .where(eq(empresas.id, id))
       .limit(1);
 
     const entity = result[0];
@@ -52,7 +46,7 @@ export class EmpresasService {
 
   async update(id: string, dto: UpdateEmpresaDto) {
     const [empresa] = await this.db
-      .update(this.table)
+      .update(empresas)
       .set({
         razao: dto.razao ?? undefined,
         fantasia: dto.fantasia ?? undefined,
@@ -62,7 +56,7 @@ export class EmpresasService {
         email: dto.email ?? undefined,
         updatedAt: new Date(),
       })
-      .where(eq(this.table.id, id))
+      .where(eq(empresas.id, id))
       .returning();
 
     if (!empresa) throw new NotFoundException('Empresa not found');
@@ -71,9 +65,10 @@ export class EmpresasService {
   }
 
   async remove(id: string) {
-    const where = eq(this.table.id, id);
-
-    const [deleted] = await this.db.delete(this.table).where(where).returning();
+    const [deleted] = await this.db
+      .delete(empresas)
+      .where(eq(empresas.id, id))
+      .returning();
     if (!deleted) throw new NotFoundException('Empresa not found');
     return deleted;
   }

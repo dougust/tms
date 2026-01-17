@@ -8,7 +8,7 @@ import { FuncionariosService } from '../funcionarios/funcionarios.service';
 import { ProjetosService } from '../projetos/projetos.service';
 import { DiariaDto } from './dto/diaria.dto';
 import { CreateManyDiariasDto } from './dto/create-many-diarias.dto';
-import { diarias, IDiariaTable } from '@dougust/database';
+import { diarias } from '@dougust/database';
 
 @Injectable()
 export class DiariasService {
@@ -18,17 +18,11 @@ export class DiariasService {
     private readonly projetosService: ProjetosService
   ) {}
 
-  get table(): IDiariaTable {
-    return diarias;
-  }
-
   async findInRange(query: RangeQueryDto): Promise<DiariaDto[]> {
     return this.db
       .select()
-      .from(this.table)
-      .where(
-        and(gte(this.table.dia, query.from), lte(this.table.dia, query.to))
-      );
+      .from(diarias)
+      .where(and(gte(diarias.dia, query.from), lte(diarias.dia, query.to)));
   }
 
   async create(data: CreateDiariaDto) {
@@ -46,7 +40,7 @@ export class DiariasService {
     }
 
     const [created] = await this.db
-      .insert(this.table)
+      .insert(diarias)
       .values({
         funcionarioId: data.funcionarioId,
         projetoId: data.projetoId,
@@ -70,12 +64,12 @@ export class DiariasService {
 
   async update(id: string, data: CreateDiariaDto) {
     const [diaria] = await this.db
-      .update(this.table)
+      .update(diarias)
       .set({
         projetoId: data.projetoId,
         tipoDiaria: data.tipoDiaria ?? undefined,
       })
-      .where(eq(this.table.id, id))
+      .where(eq(diarias.id, id))
       .returning();
 
     return diaria;
