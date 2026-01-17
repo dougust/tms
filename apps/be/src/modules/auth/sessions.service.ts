@@ -85,11 +85,7 @@ export class SessionsService {
     const session = await this.db.query.authSessions.findFirst({
       where: (authSessions, { eq }) => eq(authSessions.tokenHash, tokenHash),
       with: {
-        user: {
-          with: {
-            tenants: true,
-          },
-        },
+        user: true,
       },
     });
 

@@ -5,11 +5,8 @@ import * as argon2 from 'argon2';
 
 const {
   lookup,
-  tenant,
   users,
-  tenantMemberships,
   // Exclude non-table exports from reset/seed
-  subscriptionTierEnum,
   userRoleEnum,
   empresasRelations,
   projetosRelations,
@@ -17,7 +14,6 @@ const {
   beneficiosRelations,
   usersRelations,
   sessionsRelations,
-  tenantMembershipsRelations,
   ...tables
 } = schema;
 
@@ -63,18 +59,12 @@ async function createLookups(db: NodePgDatabase) {
   return { tiposDiaria, funcao, beneficio };
 }
 
-async function createDevTenant(
+async function createDevUser(
   db: NodePgDatabase,
-  tenantId: string,
   email: string,
   password: string
 ) {
   const passwordHash = await argon2.hash(password);
-
-  const [createdTenant] = await db
-    .insert(tenant)
-    .values({ id: tenantId, name: tenantId, isActive: true })
-    .returning();
 
   const [createdUser] = await db
     .insert(users)
@@ -85,27 +75,20 @@ async function createDevTenant(
     })
     .returning();
 
-  await db.insert(tenantMemberships).values({
-    tenantId: createdTenant.id,
-    userId: createdUser.id,
-    role: 'owner',
-    isDefault: true,
-  });
+  return createdUser;
 }
 
 async function main() {
   const db = drizzle(process.env['DATABASE_URL']!);
 
   await reset(db, tables);
-  await createDevTenant(
+  await createDevUser(
     db,
-    process.env.TENANT_ID!,
     process.env.DEV_TENANT_USER_EMAIL!,
     process.env.USER_PASSWORD!
   );
-  await createDevTenant(
+  await createDevUser(
     db,
-    process.env.TENANT_2_ID!,
     process.env.DEV_TENANT_2_USER_EMAIL!,
     process.env.USER_PASSWORD!
   );

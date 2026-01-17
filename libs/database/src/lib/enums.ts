@@ -7,11 +7,3 @@ export const userRoleEnum = pgEnum('user_role', [
   'agent',
   'viewer',
 ]);
-
-// Subscription tier enum
-export const subscriptionTierEnum = pgEnum('subscription_tier', [
-  'trial',
-  'starter',
-  'professional',
-  'enterprise',
-]);

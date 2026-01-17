@@ -2,11 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { SessionsService } from './sessions.service';
-import { tenantMemberships, users as usersTable } from '@dougust/database';
+import { users as usersTable } from '@dougust/database';
 import { JwtUser } from '../../common';
 
 type User = typeof usersTable.$inferSelect;
-type TenantMembership = typeof tenantMemberships.$inferSelect;
 
 type Meta = { ipAddress?: string; userAgent?: string };
 
@@ -18,17 +17,10 @@ export class AuthService {
     private readonly jwt: JwtService
   ) {}
 
-  private generatePayload(
-    user: Pick<User, 'id' | 'email'> & { tenants: TenantMembership[] }
-  ): JwtUser {
+  private generatePayload(user: Pick<User, 'id' | 'email'>): JwtUser {
     return {
       sub: user.id,
       email: user.email,
-      tenants: user.tenants.map((t) => ({
-        tenantId: t.tenantId,
-        role: t.role,
-        isDefault: t.isDefault,
-      })),
     };
   }
 

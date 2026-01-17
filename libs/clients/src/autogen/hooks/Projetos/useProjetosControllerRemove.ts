@@ -5,6 +5,10 @@
 
 import fetch from '@kubb/plugin-client/clients/axios';
 import type {
+  ProjetosControllerRemoveMutationResponse,
+  ProjetosControllerRemovePathParams,
+} from '../../types/ProjetosControllerRemove';
+import type {
   RequestConfig,
   ResponseErrorConfig,
 } from '@kubb/plugin-client/clients/axios';
@@ -13,10 +17,6 @@ import type {
   UseMutationResult,
   QueryClient,
 } from '@tanstack/react-query';
-import type {
-  ProjetosControllerRemoveMutationResponse,
-  ProjetosControllerRemovePathParams,
-} from '../../types/ProjetosControllerRemove';
 import { mutationOptions, useMutation } from '@tanstack/react-query';
 
 export const projetosControllerRemoveMutationKey = () =>

@@ -14,9 +14,6 @@ export class UsersService {
   findByEmail(email: string) {
     return this.db.query.users.findFirst({
       where: (users, { eq }) => eq(users.email, email),
-      with: {
-        tenants: true,
-      },
     });
   }
 
