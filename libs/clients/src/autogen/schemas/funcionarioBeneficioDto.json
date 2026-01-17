@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "lookupId": { "type": "string" },
+    "valor": { "type": "number" }
+  },
+  "required": ["lookupId", "valor"],
+  "x-readme-ref-name": "FuncionarioBeneficioDto"
+}

@@ -3,6 +3,8 @@
  * Do not edit manually.
  */
 
+import type { FuncionarioBeneficioDto } from './FuncionarioBeneficioDto';
+
 export type UpdateFuncionarioDto = {
   /**
    * @minLength 1
@@ -57,23 +59,7 @@ export type UpdateFuncionarioDto = {
    */
   dependetes?: number;
   /**
-   * @type number | undefined
+   * @type array | undefined
    */
-  valorCafe?: number;
-  /**
-   * @type number | undefined
-   */
-  valorSaudeOcupacional?: number;
-  /**
-   * @type number | undefined
-   */
-  valorSaudePlano?: number;
-  /**
-   * @type number | undefined
-   */
-  valorJanta?: number;
-  /**
-   * @type number | undefined
-   */
-  valorDescontoCasa?: number;
+  beneficios?: FuncionarioBeneficioDto[];
 };

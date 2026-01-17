@@ -172,7 +172,7 @@ export const diarias = (tenantId: string) =>
         name: 'fk_diarias_funcionarios',
         columns: [t.funcionarioId],
         foreignColumns: [funcionarios(tenantId).id],
-      }),
+      }).onDelete('cascade'),
       foreignKey({
         name: 'fk_diaria_lookup',
         columns: [t.tipoDiaria],

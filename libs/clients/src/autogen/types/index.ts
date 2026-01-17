@@ -80,6 +80,7 @@ export type {
   EmpresasControllerUpdateMutationResponse,
   EmpresasControllerUpdateMutation,
 } from './EmpresasControllerUpdate';
+export type { FuncionarioBeneficioDto } from './FuncionarioBeneficioDto';
 export type { FuncionarioDto } from './FuncionarioDto';
 export type {
   FuncionariosControllerCreate201,

@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from '@tanstack/react-form';
 import { FormField, FormPageLayout } from '../../../../components';
+import { useState } from 'react';
 
 const defaultValues: CreateFuncionarioDto = {
   projetoId: '',
@@ -44,13 +45,36 @@ export default function NewFuncionarioPage() {
     isError: isFuncoesError,
   } = useLookupsControllerFindByGroup<LookupDto[]>('Funcao');
 
+  // Lookups para benefícios dinâmicos
+  const {
+    data: beneficiosLookups = [],
+    isPending: isBeneficiosPending,
+    isError: isBeneficiosError,
+  } = useLookupsControllerFindByGroup<LookupDto[]>('Beneficio');
+
+  // Benefícios totalmente dinâmicos: valores controlados por lookup.id
+  const [beneficiosValores, setBeneficiosValores] = useState<Record<string, number | undefined>>({});
+
   const form = useForm({
     defaultValues,
     validators: {
       onChange: createFuncionarioDtoSchema,
       onSubmitAsync: async ({ value }) => {
         try {
-          await createMutation.mutateAsync({ data: value });
+          // Montar beneficios dinamicamente a partir dos lookups retornados e dos valores informados
+          const beneficios = (beneficiosLookups || []).flatMap((lookup) => {
+            const valor = beneficiosValores[lookup.id!];
+            if (valor == null || Number.isNaN(valor)) return [] as any[];
+            return [{ lookupId: lookup.id!, valor }];
+          });
+
+          const payload: CreateFuncionarioDto = {
+            ...value,
+            // incluir array de benefícios apenas se tiver itens
+            ...(beneficios.length > 0 ? { beneficios } : {}),
+          } as CreateFuncionarioDto;
+
+          await createMutation.mutateAsync({ data: payload });
           router.push('/dashboard/funcionarios');
         } catch (error: any) {
           const errorMessage = error?.response?.data?.message;
@@ -299,177 +323,51 @@ export default function NewFuncionarioPage() {
         </div>
 
         {/* Benefícios (opcional) */}
-        <details className="space-y-4 border rounded-md p-4" open={false as any}>
+        <details className="space-y-4 border rounded-md p-4" open={false as never}>
           <summary className="cursor-pointer list-none text-sm font-semibold select-none">
             Benefícios
             <span className="ml-2 text-xs font-normal text-muted-foreground">(opcional)</span>
           </summary>
 
           <div className="grid gap-4 md:grid-cols-2">
-            {/* Valor Café */}
-            <form.Field
-              name="valorCafe"
-              children={(field) => (
-                <div className="space-y-2">
-                  <label htmlFor="valorCafe" className="text-sm font-medium">
-                    Valor Café
-                  </label>
-                  <input
-                    id="valorCafe"
-                    type="number"
-                    inputMode="decimal"
-                    step="0.01"
-                    min="0"
-                    className="border rounded-md px-3 py-2 bg-background"
-                    value={(field.state.value as any) ?? ''}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      field.handleChange((v === '' ? undefined : Number(v)) as any);
-                    }}
-                    onBlur={field.handleBlur}
-                  />
-                  {field.state.meta.errors[0] && (
-                    <p className="text-xs text-red-600">
-                      {typeof field.state.meta.errors[0] === 'string'
-                        ? field.state.meta.errors[0]
-                        : (field.state.meta.errors[0] as any).message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
 
-            {/* Valor Saúde Ocupacional */}
-            <form.Field
-              name="valorSaudeOcupacional"
-              children={(field) => (
-                <div className="space-y-2">
-                  <label htmlFor="valorSaudeOcupacional" className="text-sm font-medium">
-                    Valor Saúde Ocupacional
-                  </label>
-                  <input
-                    id="valorSaudeOcupacional"
-                    type="number"
-                    inputMode="decimal"
-                    step="0.01"
-                    min="0"
-                    className="border rounded-md px-3 py-2 bg-background"
-                    value={(field.state.value as any) ?? ''}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      field.handleChange((v === '' ? undefined : Number(v)) as any);
-                    }}
-                    onBlur={field.handleBlur}
-                  />
-                  {field.state.meta.errors[0] && (
-                    <p className="text-xs text-red-600">
-                      {typeof field.state.meta.errors[0] === 'string'
-                        ? field.state.meta.errors[0]
-                        : (field.state.meta.errors[0] as any).message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
-
-            {/* Valor Plano Saúde */}
-            <form.Field
-              name="valorSaudePlano"
-              children={(field) => (
-                <div className="space-y-2">
-                  <label htmlFor="valorSaudePlano" className="text-sm font-medium">
-                    Valor Plano Saúde
-                  </label>
-                  <input
-                    id="valorSaudePlano"
-                    type="number"
-                    inputMode="decimal"
-                    step="0.01"
-                    min="0"
-                    className="border rounded-md px-3 py-2 bg-background"
-                    value={(field.state.value as any) ?? ''}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      field.handleChange((v === '' ? undefined : Number(v)) as any);
-                    }}
-                    onBlur={field.handleBlur}
-                  />
-                  {field.state.meta.errors[0] && (
-                    <p className="text-xs text-red-600">
-                      {typeof field.state.meta.errors[0] === 'string'
-                        ? field.state.meta.errors[0]
-                        : (field.state.meta.errors[0] as any).message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
-
-            {/* Valor Janta */}
-            <form.Field
-              name="valorJanta"
-              children={(field) => (
-                <div className="space-y-2">
-                  <label htmlFor="valorJanta" className="text-sm font-medium">
-                    Valor Janta
-                  </label>
-                  <input
-                    id="valorJanta"
-                    type="number"
-                    inputMode="decimal"
-                    step="0.01"
-                    min="0"
-                    className="border rounded-md px-3 py-2 bg-background"
-                    value={(field.state.value as any) ?? ''}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      field.handleChange((v === '' ? undefined : Number(v)) as any);
-                    }}
-                    onBlur={field.handleBlur}
-                  />
-                  {field.state.meta.errors[0] && (
-                    <p className="text-xs text-red-600">
-                      {typeof field.state.meta.errors[0] === 'string'
-                        ? field.state.meta.errors[0]
-                        : (field.state.meta.errors[0] as any).message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
-
-            {/* Valor Desconto Casa */}
-            <form.Field
-              name="valorDescontoCasa"
-              children={(field) => (
-                <div className="space-y-2">
-                  <label htmlFor="valorDescontoCasa" className="text-sm font-medium">
-                    Valor Desconto Casa
-                  </label>
-                  <input
-                    id="valorDescontoCasa"
-                    type="number"
-                    inputMode="decimal"
-                    step="0.01"
-                    min="0"
-                    className="border rounded-md px-3 py-2 bg-background"
-                    value={(field.state.value as any) ?? ''}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      field.handleChange((v === '' ? undefined : Number(v)) as any);
-                    }}
-                    onBlur={field.handleBlur}
-                  />
-                  {field.state.meta.errors[0] && (
-                    <p className="text-xs text-red-600">
-                      {typeof field.state.meta.errors[0] === 'string'
-                        ? field.state.meta.errors[0]
-                        : (field.state.meta.errors[0] as any).message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
+            {/* Benefícios dinâmicos (grupo 'beneficios'): renderizados a partir dos lookups retornados */}
+            {isBeneficiosPending && (
+              <p className="text-sm text-muted-foreground col-span-2">Carregando benefícios...</p>
+            )}
+            {isBeneficiosError && (
+              <p className="text-sm text-red-600 col-span-2">Não foi possível carregar os benefícios.</p>
+            )}
+            {!isBeneficiosPending && !isBeneficiosError && beneficiosLookups.length === 0 && (
+              <p className="text-sm text-muted-foreground col-span-2">Nenhum benefício disponível.</p>
+            )}
+            {!isBeneficiosPending && !isBeneficiosError &&
+              (beneficiosLookups || []).map((lookup) => {
+                const inputId = `beneficio_${lookup.id}`;
+                return (
+                  <div key={lookup.id} className="space-y-2">
+                    <label htmlFor={inputId} className="text-sm font-medium">
+                      {lookup.nome}
+                    </label>
+                    <input
+                      id={inputId}
+                      type="number"
+                      inputMode="decimal"
+                      step="0.01"
+                      min="0"
+                      className="border rounded-md px-3 py-2 bg-background"
+                      value={beneficiosValores[lookup.id!] ?? ''}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setBeneficiosValores((prev) => ({
+                          ...prev,
+                          [lookup.id!]: v === '' ? undefined : Number(v),
+                        }));
+                      }}
+                    />
+                  </div>
+                );
+              })}
           </div>
         </details>
 
