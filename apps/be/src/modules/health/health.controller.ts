@@ -9,10 +9,7 @@ export class HealthController {
   async getHealth() {
     const started = Date.now();
     const db = await this.healthService.checkDatabase();
-    const userContext =
-      await this.healthService.getCurrentlyRunningBusinessId();
     return {
-      userContext,
       status: db.status === 'up' ? 'ok' : 'degraded',
       uptime: process.uptime(),
       responseTimeMs: Date.now() - started,

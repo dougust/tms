@@ -5,22 +5,16 @@ import { empresas } from '@dougust/database';
 import { eq } from 'drizzle-orm';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
-import { UserContextService } from '../../common/user-context/user-context.service';
 
 @Injectable()
 export class EmpresasService {
   constructor(
-    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService
+    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
-
-  get table() {
-    return empresas(this.userContext.businessId);
-  }
 
   async create(dto: CreateEmpresaDto) {
     const [empresa] = await this.db
-      .insert(this.table)
+      .insert(empresas)
       .values({
         razao: dto.razao ?? null,
         fantasia: dto.fantasia ?? null,
@@ -35,26 +29,44 @@ export class EmpresasService {
   }
 
   async findAll() {
-    return await this.db.select().from(this.table);
+    return this.db.query.empresas.findMany({
+      columns: {
+        id: true,
+        razao: true,
+        fantasia: true,
+        cnpj: true,
+        registro: true,
+        phone: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
   async findOne(id: string) {
-    const where = eq(this.table.id, id);
+    const entity = await this.db.query.empresas.findFirst({
+      where: eq(empresas.id, id),
+      columns: {
+        id: true,
+        razao: true,
+        fantasia: true,
+        cnpj: true,
+        registro: true,
+        phone: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
-    const result = await this.db
-      .select({ empresa: this.table })
-      .from(this.table)
-      .where(where)
-      .limit(1);
-
-    const entity = result[0];
     if (!entity) throw new NotFoundException('Empresa not found');
-    return entity;
+    return { empresa: entity };
   }
 
   async update(id: string, dto: UpdateEmpresaDto) {
     const [empresa] = await this.db
-      .update(this.table)
+      .update(empresas)
       .set({
         razao: dto.razao ?? undefined,
         fantasia: dto.fantasia ?? undefined,
@@ -64,7 +76,7 @@ export class EmpresasService {
         email: dto.email ?? undefined,
         updatedAt: new Date(),
       })
-      .where(eq(this.table.id, id))
+      .where(eq(empresas.id, id))
       .returning();
 
     if (!empresa) throw new NotFoundException('Empresa not found');
@@ -73,9 +85,10 @@ export class EmpresasService {
   }
 
   async remove(id: string) {
-    const where = eq(this.table.id, id);
-
-    const [deleted] = await this.db.delete(this.table).where(where).returning();
+    const [deleted] = await this.db
+      .delete(empresas)
+      .where(eq(empresas.id, id))
+      .returning();
     if (!deleted) throw new NotFoundException('Empresa not found');
     return deleted;
   }

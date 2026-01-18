@@ -5,23 +5,16 @@ import { projetos } from '@dougust/database';
 import { eq } from 'drizzle-orm';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
-import { UserContextService } from '../../common/user-context/user-context.service';
-import { ProjetoDto } from './dto/projeto.dto';
 
 @Injectable()
 export class ProjetosService {
   constructor(
-    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService
+    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
-
-  get table() {
-    return projetos(this.userContext.businessId);
-  }
 
   async create(dto: CreateProjetoDto) {
     const [projeto] = await this.db
-      .insert(this.table)
+      .insert(projetos)
       .values({
         empresaId: dto.empresaId ?? null,
         nome: dto.nome,
@@ -33,27 +26,41 @@ export class ProjetosService {
     return { projeto };
   }
 
-  findAll(): Promise<ProjetoDto[]> {
-    return this.db.select().from(this.table);
+  async findAll() {
+    return this.db.query.projetos.findMany({
+      columns: {
+        id: true,
+        empresaId: true,
+        nome: true,
+        inicio: true,
+        fim: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   }
 
   async findOne(id: string) {
-    const where = eq(this.table.id, id);
+    const entity = await this.db.query.projetos.findFirst({
+      where: eq(projetos.id, id),
+      columns: {
+        id: true,
+        empresaId: true,
+        nome: true,
+        inicio: true,
+        fim: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
 
-    const result = await this.db
-      .select()
-      .from(this.table)
-      .where(where)
-      .limit(1);
-
-    const entity = result[0];
     if (!entity) throw new NotFoundException('Projeto not found');
     return entity;
   }
 
   async update(id: string, dto: UpdateProjetoDto) {
     const [projeto] = await this.db
-      .update(this.table)
+      .update(projetos)
       .set({
         empresaId: dto.empresaId ?? undefined,
         nome: dto.nome ?? undefined,
@@ -61,7 +68,7 @@ export class ProjetosService {
         fim: dto.fim ?? undefined,
         updatedAt: new Date(),
       })
-      .where(eq(this.table.id, id))
+      .where(eq(projetos.id, id))
       .returning();
 
     if (!projeto) throw new NotFoundException('Projeto not found');
@@ -70,9 +77,10 @@ export class ProjetosService {
   }
 
   async remove(id: string) {
-    const where = eq(this.table.id, id);
-
-    const [deleted] = await this.db.delete(this.table).where(where).returning();
+    const [deleted] = await this.db
+      .delete(projetos)
+      .where(eq(projetos.id, id))
+      .returning();
     if (!deleted) throw new NotFoundException('Projeto not found');
     return deleted;
   }

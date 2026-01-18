@@ -2,18 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { sql } from 'drizzle-orm';
 import * as schema from '@dougust/database';
-import { UserContextService } from '../../common/user-context/user-context.service';
 
 @Injectable()
 export class HealthService {
   constructor(
-    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService
+    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
-
-  async getCurrentlyRunningBusinessId(): Promise<string | undefined> {
-    return this.userContext.businessId;
-  }
 
   async checkDatabase(): Promise<{
     status: 'up' | 'down';

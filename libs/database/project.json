@@ -19,48 +19,28 @@
     "push": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx drizzle-kit push --config=drizzle-dev.config.ts",
+        "command": "npx drizzle-kit push",
         "cwd": "libs/database"
       }
     },
     "generate": {
       "executor": "nx:run-commands",
-      "defaultConfiguration": "dev",
       "options": {
         "command": "npx drizzle-kit generate",
         "cwd": "libs/database"
-      },
-      "configurations": {
-        "core": {},
-        "tenant": {
-          "command": "npx drizzle-kit generate --config=drizzle-tenant.config.ts"
-        },
-        "dev": {
-          "command": "npx drizzle-kit generate --config=drizzle-dev.config.ts"
-        }
       }
     },
     "migrate": {
       "executor": "nx:run-commands",
-      "defaultConfiguration": "dev",
       "options": {
         "command": "npx drizzle-kit migrate",
         "cwd": "libs/database"
-      },
-      "configurations": {
-        "core": {},
-        "tenant": {
-          "command": "npx drizzle-kit generate --config=drizzle-tenant.config.ts"
-        },
-        "dev": {
-          "command": "npx drizzle-kit migrate --config=drizzle-dev.config.ts"
-        }
       }
     },
     "seed": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsx libs/database/src/seed.ts --config=drizzle-dev.config.ts"
+        "command": "tsx libs/database/src/seed.ts"
       }
     },
     "db": {

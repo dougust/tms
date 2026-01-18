@@ -10,35 +10,28 @@ import {
 import { FuncionariosService } from './funcionarios.service';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from './dto/update-funcionario.dto';
-import { FuncionarioDto } from './dto/get-funcionario.response.dto';
-import { CreateFuncionarioResultDto } from './dto/create-funcionario.result.dto';
 
 @Controller('funcionarios')
 export class FuncionariosController {
   constructor(private readonly service: FuncionariosService) {}
 
   @Post()
-  create(
-    @Body() dto: CreateFuncionarioDto
-  ): Promise<CreateFuncionarioResultDto> {
+  create(@Body() dto: CreateFuncionarioDto) {
     return this.service.create(dto);
   }
 
   @Get()
-  findAll(): Promise<FuncionarioDto[]> {
+  findAll() {
     return this.service.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<FuncionarioDto> {
+  findOne(@Param('id') id: string) {
     return this.service.findOne(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() dto: UpdateFuncionarioDto
-  ): Promise<CreateFuncionarioResultDto> {
+  update(@Param('id') id: string, @Body() dto: UpdateFuncionarioDto) {
     return this.service.update(id, dto);
   }
 

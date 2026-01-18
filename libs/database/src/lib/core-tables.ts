@@ -2,40 +2,12 @@ import {
   boolean,
   foreignKey,
   pgTable,
-  primaryKey,
-  text,
   timestamp,
   uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
-import { subscriptionTierEnum, userRoleEnum } from './enums';
 import { relations } from 'drizzle-orm';
-
-// tenant table - multi-tenant tenant accounts
-export const tenant = pgTable('tenants', {
-  id: varchar('tenant_id', { length: 255 }).primaryKey().unique(),
-  name: varchar('name', { length: 255 }).notNull(),
-  description: text('description'),
-  phone: varchar('phone', { length: 20 }),
-  email: varchar('email', { length: 255 }),
-  website: varchar('website', { length: 500 }),
-  addressLine1: varchar('address_line1', { length: 255 }),
-  addressLine2: varchar('address_line2', { length: 255 }),
-  city: varchar('city', { length: 100 }),
-  state: varchar('state', { length: 100 }),
-  postalCode: varchar('postal_code', { length: 20 }),
-  country: varchar('country', { length: 2 }).default('US'),
-  timezone: varchar('timezone', { length: 50 }).default('UTC'),
-  currency: varchar('currency', { length: 3 }).default('USD'),
-  logoUrl: varchar('logo_url', { length: 500 }),
-  isActive: boolean('is_active').default(true),
-  subscriptionTier:
-    subscriptionTierEnum('subscription_tier').default('starter'),
-  trialEndsAt: timestamp('trial_ends_at'),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-});
 
 // users table - base schema
 export const users = pgTable(
@@ -53,7 +25,6 @@ export const users = pgTable(
   (t) => [uniqueIndex('users_email_unique').on(t.email)]
 );
 export const usersRelations = relations(users, ({ many }) => ({
-  tenants: many(tenantMemberships),
   sessions: many(authSessions),
 }));
 
@@ -82,41 +53,3 @@ export const authSessions = pgTable(
 export const sessionsRelations = relations(authSessions, ({ one }) => ({
   user: one(users, { fields: [authSessions.userId], references: [users.id] }),
 }));
-
-// tenant_memberships table - user membership and role within a tenant
-export const tenantMemberships = pgTable(
-  'tenant_memberships',
-  {
-    tenantId: varchar('tenant_id', { length: 255 }).notNull(),
-    userId: uuid('user_id').notNull(),
-    role: userRoleEnum('role').notNull().default('viewer'),
-    isDefault: boolean('is_default').default(false),
-    createdAt: timestamp('created_at').defaultNow(),
-    updatedAt: timestamp('updated_at').defaultNow(),
-  },
-  (t) => [
-    primaryKey({
-      name: 'pk_tenant_memberships',
-      columns: [t.tenantId, t.userId],
-    }),
-    foreignKey({
-      name: 'fk_tenant_memberships_tenant',
-      columns: [t.tenantId],
-      foreignColumns: [tenant.id],
-    }).onDelete('cascade'),
-    foreignKey({
-      name: 'fk_tenant_memberships_user',
-      columns: [t.userId],
-      foreignColumns: [users.id],
-    }).onDelete('cascade'),
-  ]
-);
-export const tenantMembershipsRelations = relations(
-  tenantMemberships,
-  ({ one }) => ({
-    user: one(users, {
-      fields: [tenantMemberships.userId],
-      references: [users.id],
-    }),
-  })
-);

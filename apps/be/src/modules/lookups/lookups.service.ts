@@ -5,43 +5,35 @@ import { lookup } from '@dougust/database';
 import { and, eq } from 'drizzle-orm';
 import { CreateLookupDto } from './dto/create-lookup.dto';
 import { UpdateLookupDto } from './dto/update-lookup.dto';
-import { UserContextService } from '../../common/user-context/user-context.service';
 
 @Injectable()
 class LookupsService {
   constructor(
-    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>,
-    @Inject() private readonly userContext: UserContextService
+    @Inject('DRIZZLE_ORM') private readonly db: NodePgDatabase<typeof schema>
   ) {}
 
-  get table() {
-    return lookup(this.userContext.businessId);
-  }
-
   async findAll() {
-    return this.db.select().from(this.table);
+    return this.db.query.lookup.findMany();
   }
 
   async findByGroup(grupo: string) {
-    return this.db.select().from(this.table).where(eq(this.table.grupo, grupo));
+    return this.db.query.lookup.findMany({
+      where: eq(lookup.grupo, grupo),
+    });
   }
 
   async findOne(grupo: string, id: string) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
-    const result = await this.db
-      .select({ lookup: this.table })
-      .from(this.table)
-      .where(where)
-      .limit(1);
+    const entity = await this.db.query.lookup.findFirst({
+      where: and(eq(lookup.grupo, grupo), eq(lookup.id, id)),
+    });
 
-    const entity = result[0];
     if (!entity) throw new NotFoundException('Lookup not found');
-    return entity;
+    return { lookup: entity };
   }
 
   async create(dto: CreateLookupDto) {
     const [created] = await this.db
-      .insert(this.table)
+      .insert(lookup)
       .values({
         grupo: dto.grupo,
         nome: dto.nome,
@@ -52,10 +44,10 @@ class LookupsService {
   }
 
   async update(grupo: string, id: string, dto: UpdateLookupDto) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
+    const where = and(eq(lookup.grupo, grupo), eq(lookup.id, id));
 
     const [updated] = await this.db
-      .update(this.table)
+      .update(lookup)
       .set({
         grupo: dto.grupo ?? undefined,
         nome: dto.nome ?? undefined,
@@ -70,8 +62,8 @@ class LookupsService {
   }
 
   async remove(grupo: string, id: string) {
-    const where = and(eq(this.table.grupo, grupo), eq(this.table.id, id));
-    const [deleted] = await this.db.delete(this.table).where(where).returning();
+    const where = and(eq(lookup.grupo, grupo), eq(lookup.id, id));
+    const [deleted] = await this.db.delete(lookup).where(where).returning();
     if (!deleted) throw new NotFoundException('Lookup not found');
     return deleted;
   }
